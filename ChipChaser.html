@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ChipChaser – Chase the championship. Not the news.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="ChipChaser is a real-time fantasy football intelligence platform with projections, matchup analytics, sit/start AI, and ESPN/Sleeper sync."
+  />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: #050810;
+      color: #f6f7fb;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(5, 8, 16, 0.96);
+    }
+
+    .nav {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #ffd66b, #e09b2d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #050810;
+      font-size: 1rem;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-text span:first-child {
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      font-size: 1.05rem;
+    }
+
+    .logo-text span:last-child {
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-cta a {
+      font-size: 0.875rem;
+      opacity: 0.8;
+    }
+
+    .btn-primary {
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #ffd66b, #ff914d);
+      color: #111827;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+      transition: transform 0.08s ease, box-shadow 0.08s ease,
+        filter 0.08s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.02);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .hero {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 3.5rem 1.25rem 2.5rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.85rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 4vw, 2.9rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      color: #d1d5db;
+      max-width: 36rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-badge {
+      font-size: 0.75rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(156, 163, 175, 0.12);
+      border: 1px solid rgba(250, 250, 250, 0.06);
+      color: #e5e7eb;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-actions small {
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+
+    .hero-footnote {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .hero-footnote strong {
+      color: #e5e7eb;
+    }
+
+    .hero-card {
+      border-radius: 18px;
+      padding: 1.25rem 1.25rem 1.4rem;
+      background: radial-gradient(circle at 10% 0, #1f2937, #020617);
+      border: 1px solid rgba(249, 250, 251, 0.06);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .hero-card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-card-title span:last-child {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      font-weight: 400;
+    }
+
+    .pill {
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: rgba(34, 197, 94, 0.12);
+      color: #6ee7b7;
+      border: 1px solid rgba(74, 222, 128, 0.35);
+    }
+
+    .hero-card-body {
+      font-size: 0.8rem;
+      color: #d1d5db;
+      display: grid;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-projection-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .hero-projection-row span:first-child {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .hero-projection-row span:last-child {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .hero-chipscore {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chipscore-value {
+      font-weight: 600;
+      color: #facc15;
+    }
+
+    .hero-card-footnote {
+      font-size: 0.7rem;
+      color: #9ca3af;
+      margin-top: 0.5rem;
+    }
+
+    .section {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 2.25rem 1.25rem 0;
+    }
+
+    .section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .section p.section-subtitle {
+      color: #9ca3af;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      border-radius: 16px;
+      padding: 1.1rem 1.1rem 1.2rem;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .feature-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .feature-card p {
+      font-size: 0.85rem;
+      color: #d1d5db;
+      margin-bottom: 0.6rem;
+    }
+
+    .feature-list {
+      list-style: none;
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .feature-list li::before {
+      content: "• ";
+      color: #facc15;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.35rem;
+    }
+
+    .pill-row span {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      color: #e5e7eb;
+    }
+
+    .waitlist {
+      text-align: center;
+      margin: 3rem auto 3.5rem;
+      max-width: 640px;
+      padding: 2rem 1.5rem;
+      border-radius: 20px;
+      background: radial-gradient(circle at 10% 0, #1f2937, #020617);
+      border: 1px solid rgba(250, 250, 250, 0.08);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+    }
+
+    .waitlist h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .waitlist p {
+      font-size: 0.9rem;
+      color: #d1d5db;
+      margin-bottom: 1.25rem;
+    }
+
+    .waitlist-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .waitlist-form input {
+      width: 100%;
+      max-width: 320px;
+      padding: 0.65rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.75);
+      background: rgba(15, 23, 42, 0.95);
+      color: #f9fafb;
+      font-size: 0.85rem;
+    }
+
+    .waitlist-form input::placeholder {
+      color: #6b7280;
+    }
+
+    footer {
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 1.5rem 1.25rem 2rem;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .footer-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+        padding-top: 2.5rem;
+      }
+
+      .hero-card {
+        order: -1;
+      }
+
+      .nav {
+        padding-inline: 1rem;
+      }
+
+      .waitlist {
+        margin-inline: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="nav">
+        <div class="logo-wrap">
+          <div class="logo-mark">CC</div>
+          <div class="logo-text">
+            <span>ChipChaser</span>
+            <span>Chase the championship. Not the news.</span>
+          </div>
+        </div>
+        <div class="nav-cta">
+          <a href="#features">Features</a>
+          <a href="#waitlist">Log in (soon)</a>
+          <button class="btn-primary" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">
+            Join Early Access
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div>
+          <div class="hero-eyebrow">Fantasy football intelligence</div>
+          <h1 class="hero-title">Chase the chip with projections that actually react.</h1>
+          <p class="hero-subtitle">
+            ChipChaser turns NFL practice reports, matchup data, historical trends, and beat reporter intel into real-time, personalized fantasy projections and sit/start calls.
+          </p>
+
+          <div class="hero-badges">
+            <span class="hero-badge">Real-time projections</span>
+            <span class="hero-badge">ESPN &amp; Sleeper sync</span>
+            <span class="hero-badge">Sit/Start AI</span>
+            <span class="hero-badge">Matchup &amp; trench analytics</span>
+          </div>
+
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">
+              Join the Waitlist
+            </button>
+            <small>No spam. Just launch updates and early access.</small>
+          </div>
+
+          <p class="hero-footnote">
+            Built for <strong>competitive fantasy players</strong>, <strong>DFS grinders</strong>, and anyone tired of guessing between “questionable” tags.
+          </p>
+        </div>
+
+        <!-- Right side "mock" card -->
+        <div class="hero-card">
+          <div class="hero-card-header">
+            <div class="hero-card-title">
+              <span>Sit/Start AI</span>
+              <span>Who do I start this week?</span>
+            </div>
+            <span class="pill">Live · Week 7</span>
+          </div>
+
+          <div class="hero-card-body">
+            <div class="hero-projection-row">
+              <span>Recommendation</span>
+              <span>Start Player A</span>
+            </div>
+            <div class="hero-projection-row">
+              <span>PPR Projection (A vs B)</span>
+              <span>18.4 vs 13.1</span>
+            </div>
+            <div class="hero-chipscore">
+              <span>ChipScore</span>
+              <span class="chipscore-value">High confidence • Green matchup</span>
+            </div>
+          </div>
+
+          <p class="hero-card-footnote">
+            Based on practice reports, CB/WR matchup, OL/DL trench score, xFP trends, and beat reporter intel — updated in real time.
+          </p>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section class="section" id="features">
+        <h2>Why ChipChaser?</h2>
+        <p class="section-subtitle">
+          Real-time projections, matchup-aware analytics, and AI that actually explains its calls.
+        </p>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>📈 Real-Time Projections</h3>
+            <p>
+              Every time practice news drops, ChipChaser updates. No more waiting for ESPN or Yahoo to catch up.
+            </p>
+            <ul class="feature-list">
+              <li>Practice participation (DNP/Limited/Full)</li>
+              <li>Injury tag changes &amp; coach quotes</li>
+              <li>Beat writer &amp; Underdog NFL alerts</li>
+            </ul>
+          </div>
+
+          <div class="feature-card">
+            <h3>🧠 Sit/Start AI</h3>
+            <p>
+              Tell ChipChaser your options. Get a clear answer with context — not just a number.
+            </p>
+            <ul class="feature-list">
+              <li>Considers your league scoring</li>
+              <li>Matchup, usage, and volatility aware</li>
+              <li>2–3 sentence explanation every time</li>
+            </ul>
+          </div>
+
+          <div class="feature-card">
+            <h3>🛡 Elite Matchup Analytics</h3>
+            <p>
+              Go deeper than “red &amp; green” matchups with real football data baked into every projection.
+            </p>
+            <ul class="feature-list">
+              <li>CB/WR grades &amp; shadow rates</li>
+              <li>OL vs DL trench scores &amp; pressure rates</li>
+              <li>Explosive play &amp; red-zone tendencies</li>
+            </ul>
+          </div>
+
+          <div class="feature-card">
+            <h3>📱 ESPN &amp; Sleeper Sync</h3>
+            <p>
+              Import your league so every projection, alert, and sit/start call is tailored to you.
+            </p>
+            <ul class="feature-list">
+              <li>Roster &amp; scoring import</li>
+              <li>Personalized projections</li>
+              <li>Alerts only for players you care about</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Historicals & Community -->
+      <section class="section">
+        <div class="two-col">
+          <div>
+            <h2>🧪 Player Historicals That Actually Matter</h2>
+            <p class="section-subtitle">
+              Not just box scores — the deeper signals that separate sharp calls from blind guesses.
+            </p>
+            <div class="pill-row">
+              <span>Age curves</span>
+              <span>xFP &amp; FP over expectation</span>
+              <span>Usage trends (snaps, routes, targets)</span>
+              <span>Past matchup performance</span>
+            </div>
+          </div>
+
+          <div>
+            <h2>💬 Community Insights</h2>
+            <p class="section-subtitle">
+              A focused home for fantasy takes, injury reactions, and matchup notes — all on the player page.
+            </p>
+            <div class="pill-row">
+              <span>Player &amp; team threads</span>
+              <span>Injury &amp; start/sit tags</span>
+              <span>Upvotes &amp; AI summaries</span>
+              <span>Verified analysts (soon)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Waitlist -->
+      <section class="waitlist" id="waitlist">
+        <h2>Get early access to ChipChaser</h2>
+        <p>
+          Be the first to try ChipChaser when it launches. We’ll email you early access, launch updates, and key features — no spam, ever.
+        </p>
+        <form class="waitlist-form" onsubmit="event.preventDefault(); alert('This is a mock form. Connect to your email tool when ready.');">
+          <input type="email" placeholder="Enter your email" required />
+          <button type="submit" class="btn-primary">Join the Waitlist</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <span>© <span id="year"></span> ChipChaser. Chasing chips, an everyday thing.</span>
+        <span>Built for fantasy players who are done guessing.</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
