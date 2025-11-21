@@ -8,6 +8,7 @@
     name="description"
     content="ChipChaser is a real-time fantasy football intelligence platform with projections, matchup analytics, sit/start AI, and ESPN/Sleeper sync."
   />
+
   <style>
     * {
       box-sizing: border-box;
@@ -59,17 +60,11 @@
       gap: 0.75rem;
     }
 
-    .logo-mark {
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #ffd66b, #e09b2d);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      color: #050810;
-      font-size: 1rem;
+    .logo-img {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+      border-radius: 8px;
     }
 
     .logo-text {
@@ -429,35 +424,33 @@
         margin-inline: 1.25rem;
       }
     }
-  </style>.logo-img {
-      height: 40px;
-      width: auto;
-      border-radius: 8px;
-    }
   </style>
 </head>
+
 <body>
   <div class="page">
-<header>
-  <div class="nav">
-    <div class="logo-wrap">
-      <img src="chipchaser_logo.jpeg" alt="ChipChaser logo" class="logo-img" />
-      <div class="logo-text">
-        <span>ChipChaser</span>
-        <span>Chase the championship. Not the news.</span>
-      </div>
-    </div>
 
-    <nav>
-      <a href="#">Features</a>
-      <a href="#">Log in<br />(soon)</a>
-      <a href="#" class="btn-primary nav-btn">Join Early Access</a>
-    </nav>
-  </div>
-</header>
+    <header>
+      <div class="nav">
+        <div class="logo-wrap">
+          <img src="chipchaser_logo.jpeg" alt="ChipChaser logo" class="logo-img" />
+          <div class="logo-text">
+            <span>ChipChaser</span>
+            <span>Chase the championship. Not the news.</span>
+          </div>
+        </div>
+
+        <nav>
+          <a href="#">Features</a>
+          <a href="#">Log in<br />(soon)</a>
+          <a href="#" class="btn-primary nav-btn">Join Early Access</a>
+        </nav>
+      </div>
+    </header>
 
     <main>
-      <!-- Hero -->
+
+      <!-- Hero Section -->
       <section class="hero">
         <div>
           <div class="hero-eyebrow">Fantasy football intelligence</div>
@@ -485,7 +478,6 @@
           </p>
         </div>
 
-        <!-- Right side "mock" card -->
         <div class="hero-card">
           <div class="hero-card-header">
             <div class="hero-card-title">
