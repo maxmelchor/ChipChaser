@@ -147,7 +147,7 @@
     <!-- HEADER -->
     <header>
       <div class="logo-wrap" style="display:flex; align-items:center; gap:10px;">
-        <img src="chip-mascot.png" width="52" alt="Chip" />
+        <img src="chip-mascot-transparent.png" width="52" alt="Chip" />
         <div style="line-height:1.1;">
           <span style="font-weight:700; font-size:18px;">ChipChaser</span><br>
           <span style="font-size:11px; color:#9ca3af;">Powered by Chip</span>
@@ -167,34 +167,32 @@
     <main style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
 
       <!-- LEFT SIDE -->
-     <section>
-  <h1 style="font-size:32px; line-height:1.15;">
-    Meet <strong>Chip</strong> — your fantasy co-pilot.
-  </h1>
+      <section>
+        <h1 style="font-size:32px; line-height:1.15;">
+          Meet <strong>Chip</strong> — your fantasy co-pilot.
+        </h1>
+        <p style="color:var(--text-muted); margin-top:8px; font-size:15px;">
+          Real-time projections, matchup analytics, sit/start calls, and an AI roadmap.
+        </p>
 
-  <p style="color:var(--text-muted); margin-top:8px; font-size:15px;">
-    Real-time projections, matchup analytics, sit/start calls, and an AI roadmap.
-  </p>
-
-  <p style="
-    margin-top: 16px;
-    font-family: Helvetica, sans-serif;
-    font-size: 16px;
-    color: var(--text-main);
-    max-width: 360px;
-    line-height: 1.4;
-  ">
-    Stop doomscrolling fantasy outlooks.<br>
-    Start asking Chip.
-  </p>
-</section>
+        <p style="
+          margin-top: 16px;
+          font-family: Helvetica, sans-serif;
+          font-size: 16px;
+          color: var(--text-main);
+          max-width: 360px;
+          line-height: 1.4;
+        ">
+          Stop doomscrolling fantasy outlooks.<br>
+          Start asking Chip.
+        </p>
+      </section>
 
       <!-- RIGHT SIDE -->
-
       <aside>
 
-        <!-- CHIP MASCOT ABOVE THE CARD -->
-        <img src="chip-mascot.png"
+        <!-- CHIP MASCOT ABOVE CARD -->
+        <img src="chip-mascot-transparent.png"
              alt="Chip"
              style="width:90px; margin:0 auto 12px; display:block;" />
 
@@ -323,7 +321,7 @@
       }
 
       A.addEventListener("change", recompute);
-      B.addEventListener("change", recompute);
+      B.addEventListener("change",$addEventListener=() => recompute());
       btn.addEventListener("click", recompute);
 
       // CHAT PANEL LOGIC
