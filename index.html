@@ -138,6 +138,18 @@
       transition: right 0.3s ease-out;
       z-index: 300;
     }
+
+    /* Floating Chip Animation */
+    @keyframes floatChip {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-8px); }
+      100% { transform: translateY(0); }
+    }
+
+    .chip-floating {
+      animation: floatChip 3.5s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+    }
   </style>
 </head>
 
@@ -171,31 +183,34 @@
         <h1 style="font-size:32px; line-height:1.15;">
           Meet <strong>Chip</strong> — your fantasy co-pilot.
         </h1>
+
         <p style="color:var(--text-muted); margin-top:8px; font-size:15px;">
           Real-time projections, matchup analytics, sit/start calls, and an AI roadmap.
         </p>
 
-     <p style="
-  margin-top: 28px;
-  font-family: Helvetica, sans-serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--text-main);
-  max-width: 420px;
-  line-height: 1.2;
-">
-  Stop doomscrolling fantasy outlooks.<br>
-  Start asking Chip.
-</p>
+        <!-- Enlarged Tagline Filling Left Space -->
+        <p style="
+          margin-top: 28px;
+          font-family: Helvetica, sans-serif;
+          font-size: 28px;
+          font-weight: 700;
+          color: var(--text-main);
+          max-width: 420px;
+          line-height: 1.2;
+        ">
+          Stop doomscrolling fantasy outlooks.<br>
+          Start asking Chip.
+        </p>
       </section>
 
       <!-- RIGHT SIDE -->
       <aside>
 
-        <!-- CHIP MASCOT ABOVE CARD -->
-       <img src="chip-mascot-transparent.png"
-     alt="Chip"
-     style="width:140px; margin:0 auto 18px; display:block;" />
+        <!-- FLOATING CHIP ABOVE CARD -->
+        <img src="chip-mascot-transparent.png"
+             alt="Chip"
+             class="chip-floating"
+             style="width:140px; margin:0 auto 18px; display:block;" />
 
         <!-- SIT/START -->
         <div class="card">
@@ -231,11 +246,13 @@
       <p style="color:var(--text-muted);">Projection engine, matchup breakdowns, AI roadmap.</p>
     </section>
 
+    <!-- HOW IT WORKS -->
     <section id="how-it-works" style="margin-top:40px;">
       <h2>How it works</h2>
       <p style="color:var(--text-muted);">Connect, ask Chip questions, win more matchups.</p>
     </section>
 
+    <!-- FAQ -->
     <section id="faq" style="margin-top:40px;">
       <h2>FAQ</h2>
       <p style="color:var(--text-muted);">More coming soon.</p>
@@ -322,7 +339,7 @@
       }
 
       A.addEventListener("change", recompute);
-B.addEventListener("change", recompute);
+      B.addEventListener("change", recompute);
       btn.addEventListener("click", recompute);
 
       // CHAT PANEL LOGIC
