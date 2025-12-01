@@ -323,7 +323,7 @@
           </div>
         </div>
 
-        <!-- MATCHUPS (with simple "chart") -->
+        <!-- MATCHUPS -->
         <div class="card">
           <h3 style="margin-bottom:6px;">Matchup Analytics</h3>
           <div id="matchupGrid" style="font-size:13px; color:var(--text-muted);"></div>
@@ -408,7 +408,7 @@
   <!-- JAVASCRIPT -->
   <script>
     // -----------------------------
-    // CORNERBACKS (with physical traits)
+    // CORNERBACKS (8 real CBs + generic)
     // -----------------------------
     const cornerbacks = [
       {
@@ -416,17 +416,67 @@
         name: "Sauce Gardner",
         team: "NYJ",
         coverageTier: "elite",
-        heightIn: 75,        // ~6'3"
-        weightLb: 212,       // heavy enough to trigger "heavy" logic
+        heightIn: 75,
+        weightLb: 212,
         playStyle: "press-man",
         archetype: "tall-long"
+      },
+      {
+        id: "patrick_surtain",
+        name: "Patrick Surtain II",
+        team: "DEN",
+        coverageTier: "elite",
+        heightIn: 74,
+        weightLb: 208,
+        playStyle: "press-man",
+        archetype: "tall-long"
+      },
+      {
+        id: "jaire_alexander",
+        name: "Jaire Alexander",
+        team: "GB",
+        coverageTier: "elite",
+        heightIn: 70,
+        weightLb: 196,
+        playStyle: "press-man",
+        archetype: "small-quick"
+      },
+      {
+        id: "charvarius_ward",
+        name: "Charvarius Ward",
+        team: "SF",
+        coverageTier: "good",
+        heightIn: 73,
+        weightLb: 200,
+        playStyle: "press-man",
+        archetype: "tall-long"
+      },
+      {
+        id: "legerius_sneed",
+        name: "L'Jarius Sneed",
+        team: "TEN",
+        coverageTier: "good",
+        heightIn: 73,
+        weightLb: 192,
+        playStyle: "press-zone",
+        archetype: "tall-flex"
+      },
+      {
+        id: "derek_stingley",
+        name: "Derek Stingley Jr.",
+        team: "HOU",
+        coverageTier: "good",
+        heightIn: 72,
+        weightLb: 190,
+        playStyle: "press-man",
+        archetype: "balanced"
       },
       {
         id: "jaylon_johnson",
         name: "Jaylon Johnson",
         team: "CHI",
         coverageTier: "good",
-        heightIn: 71,        // ~5'11"
+        heightIn: 71,
         weightLb: 195,
         playStyle: "off-zone",
         archetype: "balanced"
@@ -436,7 +486,7 @@
         name: "Trevon Diggs",
         team: "DAL",
         coverageTier: "good",
-        heightIn: 73,        // ~6'1"
+        heightIn: 73,
         weightLb: 205,
         playStyle: "aggressive-ballhawk",
         archetype: "tall-ballhawk"
@@ -458,7 +508,7 @@
     );
 
     // -----------------------------
-    // RAW PLAYER DATA (rookie -> 2024) + trait-based splits + schedule
+    // RAW PLAYER DATA + trait splits + schedule (using real CBs)
     // -----------------------------
     const rawPlayers = [
       {
@@ -467,24 +517,23 @@
         position: "WR",
         team: "DET",
         age: 25,
-        // fake 2025 schedule CBs – swap later for real
         schedule: {
           1: "jaylon_johnson",
-          2: "generic_cb",
-          3: "trevon_diggs",
+          2: "patrick_surtain",
+          3: "legerius_sneed",
           4: "generic_cb",
-          5: "sauce_gardner",
-          6: "generic_cb",
-          7: "generic_cb",
-          8: "trevon_diggs",
-          9: "generic_cb",
+          5: "charvarius_ward",
+          6: "derek_stingley",
+          7: "jaire_alexander",
+          8: "generic_cb",
+          9: "trevon_diggs",
           10: "generic_cb",
           11: "sauce_gardner",
-          12: "generic_cb",
+          12: "patrick_surtain",
           13: "generic_cb",
-          14: "generic_cb",
-          15: "trevon_diggs",
-          16: "generic_cb",
+          14: "legerius_sneed",
+          15: "generic_cb",
+          16: "charvarius_ward",
           17: "generic_cb",
           18: "generic_cb"
         },
@@ -497,17 +546,16 @@
         cbSplits: [
           { cbId: "sauce_gardner", games: 1, ppr: 17.0 }
         ],
-        // Trait-based splits: Amon-Ra tends to excel vs lighter zone CBs, slightly down vs heavier press guys
         traitSplits: [
           {
             label: "light_zone",
             games: 8,
-            ppr: 146.0 // ~18.3 PPR/g vs lighter off/zone CBs
+            ppr: 146.0 // ~18.3 PPR/g vs lighter zone/off
           },
           {
             label: "heavy_press",
             games: 5,
-            ppr: 78.0  // ~15.6 PPR/g vs heavier press/physical CBs
+            ppr: 78.0  // ~15.6 PPR/g vs heavier press
           }
         ]
       },
@@ -519,22 +567,22 @@
         age: 23,
         schedule: {
           1: "sauce_gardner",
-          2: "generic_cb",
-          3: "generic_cb",
-          4: "trevon_diggs",
-          5: "sauce_gardner",
-          6: "generic_cb",
+          2: "jaire_alexander",
+          3: "charvarius_ward",
+          4: "generic_cb",
+          5: "patrick_surtain",
+          6: "derek_stingley",
           7: "generic_cb",
-          8: "generic_cb",
+          8: "legerius_sneed",
           9: "trevon_diggs",
           10: "generic_cb",
           11: "sauce_gardner",
           12: "generic_cb",
-          13: "generic_cb",
+          13: "jaire_alexander",
           14: "generic_cb",
-          15: "generic_cb",
-          16: "trevon_diggs",
-          17: "generic_cb",
+          15: "charvarius_ward",
+          16: "generic_cb",
+          17: "patrick_surtain",
           18: "generic_cb"
         },
         seasons: [
@@ -544,22 +592,21 @@
         cbSplits: [
           { cbId: "sauce_gardner", games: 2, ppr: 16.0 } // 8 PPR/g vs Sauce
         ],
-        // Trait-based splits: JSN struggles vs heavy/tall press, better vs slot/undersized guys
         traitSplits: [
           {
             label: "heavy_over_210",
             games: 6,
-            ppr: 40.0 // ~6.7 PPR/g vs CBs >= 210 lb
+            ppr: 40.0 // ~6.7 PPR/g vs heavy CBs
           },
           {
             label: "slot_sized",
             games: 5,
-            ppr: 70.0 // ~14.0 PPR/g vs smaller/slot CBs
+            ppr: 70.0 // ~14.0 PPR/g vs smaller CBs
           },
           {
             label: "tall_long_press",
             games: 4,
-            ppr: 26.0 // ~6.5 PPR/g vs tall-long press CBs
+            ppr: 26.0 // ~6.5 PPR/g vs tall-long press
           }
         ]
       },
@@ -571,21 +618,21 @@
         age: 25,
         schedule: {
           1: "trevon_diggs",
-          2: "generic_cb",
+          2: "legerius_sneed",
           3: "sauce_gardner",
           4: "generic_cb",
-          5: "generic_cb",
-          6: "trevon_diggs",
-          7: "generic_cb",
+          5: "jaire_alexander",
+          6: "generic_cb",
+          7: "patrick_surtain",
           8: "generic_cb",
-          9: "sauce_gardner",
+          9: "charvarius_ward",
           10: "generic_cb",
-          11: "generic_cb",
-          12: "trevon_diggs",
+          11: "derek_stingley",
+          12: "sauce_gardner",
           13: "generic_cb",
-          14: "generic_cb",
-          15: "sauce_gardner",
-          16: "generic_cb",
+          14: "trevon_diggs",
+          15: "generic_cb",
+          16: "legerius_sneed",
           17: "generic_cb",
           18: "generic_cb"
         },
@@ -596,23 +643,21 @@
           { year: 2024, games: 17, ppr: 240.0 }
         ],
         cbSplits: [],
-        // Trait-based splits: loves press-man in general, slightly down vs tall-long ballhawks
         traitSplits: [
           {
             label: "press_man",
             games: 7,
-            ppr: 116.0 // ~16.6 PPR/g vs press-man CBs
+            ppr: 116.0 // ~16.6 PPR/g vs press-man
           },
           {
             label: "tall_long",
             games: 6,
-            ppr: 78.0 // ~13.0 PPR/g vs tall-long archetypes
+            ppr: 78.0 // ~13.0 PPR/g vs tall-long CBs
           }
         ]
       }
     ];
 
-    // Meta list used for selects; raw data stays in rawPlayers
     const players = rawPlayers.map(p => ({
       id: p.id,
       name: p.name,
@@ -643,7 +688,6 @@
         0.3 * ppgPrev +
         0.1 * ppgPrev2;
 
-      // Simple age curve into 2025
       if (playerRaw.age <= 25) {
         basePpg *= 1.05;
       } else if (playerRaw.age >= 29) {
@@ -661,28 +705,23 @@
       if (!playerRaw.traitSplits || !cb) return null;
       const splits = playerRaw.traitSplits;
 
-      // 1) Heavy CBs (≥210 lb)
       if (cb.weightLb >= 210) {
         return splits.find(t => t.label === "heavy_over_210" || t.label === "heavy_cbs") || null;
       }
 
-      // 2) Tall-long press CBs
-      if (cb.archetype === "tall-long" && cb.playStyle === "press-man") {
+      if (cb.archetype === "tall-long" && cb.playStyle.includes("press")) {
         return splits.find(t => t.label === "tall_long_press" || t.label === "tall_long") || null;
       }
 
-      // 3) Press-man in general
-      if (cb.playStyle === "press-man") {
+      if (cb.playStyle === "press-man" || cb.playStyle === "press-zone") {
         return splits.find(t => t.label === "press_man") || null;
       }
 
-      // 4) Lighter zone / off-coverage
       if (cb.playStyle.includes("zone") && cb.weightLb < 200) {
         return splits.find(t => t.label === "light_zone") || null;
       }
 
-      // 5) Slot-sized archetype
-      if (cb.archetype === "slot") {
+      if (cb.archetype === "small-quick" || cb.archetype === "slot") {
         return splits.find(t => t.label === "slot_sized") || null;
       }
 
@@ -700,7 +739,6 @@
       let traitNote = null;
       let cbSplitNote = null;
 
-      // 1) Tier-based adjustment
       if (cb.coverageTier === "elite") {
         adjPpg *= 0.90;
         tierNote = `${cb.name} is graded as an elite CB, so Chip applies a small matchup penalty.`;
@@ -714,11 +752,9 @@
         tierNote = `${cb.name} is closer to an average CB tier.`;
       }
 
-      // 2) Trait-based adjustment (body type / style)
       const traitSplit = findMatchingTraitSplit(playerRaw, cb);
       if (traitSplit && traitSplit.games >= 4) {
         const traitPpg = traitSplit.ppr / traitSplit.games;
-        // Gentle nudge toward trait-based PPG
         adjPpg = 0.85 * adjPpg + 0.15 * traitPpg;
 
         let desc;
@@ -743,7 +779,6 @@
         };
       }
 
-      // 3) Specific CB history (e.g., JSN vs Sauce)
       const cbSplit = (playerRaw.cbSplits || []).find(s => s.cbId === cb.id);
       if (cbSplit && cbSplit.games >= 2) {
         const cbPpg = cbSplit.ppr / cbSplit.games;
@@ -893,7 +928,7 @@
     }
 
     // -----------------------------
-    // INIT (script is at bottom, so DOM is ready)
+    // INIT
     // -----------------------------
     const A = document.getElementById("playerA");
     const B = document.getElementById("playerB");
@@ -935,7 +970,6 @@
         result.textContent = r.reason;
         renderMatchups(a,b);
 
-        // Player art – looks for player-<id>.png, else falls back to Chip thinking
         playerArt.src = `player-${startPlayer.id}.png`;
         playerArt.alt = `${startPlayer.name} portrait`;
         playerArt.onerror = function(){
@@ -960,14 +994,13 @@
       weekSelect.addEventListener("change", recompute);
       btn.addEventListener("click", recompute);
 
-      // initial render
       recompute();
     } else {
       console.error("ChipChaser: key UI elements not found.");
     }
 
     // -----------------------------
-    // CHAT PANEL LOGIC (Ask Chip)
+    // CHAT PANEL LOGIC
     // -----------------------------
     const chatBtn = document.getElementById("chatChipBtn");
     const chatPanel = document.getElementById("chipChatPanel");
