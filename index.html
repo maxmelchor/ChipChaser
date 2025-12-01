@@ -286,6 +286,28 @@
         <div class="card">
           <h3 style="margin-bottom:6px;">Chip’s Sit/Start Assistant</h3>
 
+          <label>Week</label>
+          <select id="weekSelect">
+            <option value="1">Week 1</option>
+            <option value="2">Week 2</option>
+            <option value="3">Week 3</option>
+            <option value="4">Week 4</option>
+            <option value="5">Week 5</option>
+            <option value="6">Week 6</option>
+            <option value="7">Week 7</option>
+            <option value="8">Week 8</option>
+            <option value="9">Week 9</option>
+            <option value="10">Week 10</option>
+            <option value="11">Week 11</option>
+            <option value="12">Week 12</option>
+            <option value="13">Week 13</option>
+            <option value="14">Week 14</option>
+            <option value="15">Week 15</option>
+            <option value="16">Week 16</option>
+            <option value="17">Week 17</option>
+            <option value="18">Week 18</option>
+          </select>
+
           <label>Player A</label>
           <select id="playerA"></select>
 
@@ -395,7 +417,7 @@
         team: "NYJ",
         coverageTier: "elite",
         heightIn: 75,        // ~6'3"
-        weightLb: 212,       // bumped a bit to trigger "heavy" logic
+        weightLb: 212,       // heavy enough to trigger "heavy" logic
         playStyle: "press-man",
         archetype: "tall-long"
       },
@@ -436,7 +458,7 @@
     );
 
     // -----------------------------
-    // RAW PLAYER DATA (rookie -> 2024) + trait-based splits
+    // RAW PLAYER DATA (rookie -> 2024) + trait-based splits + schedule
     // -----------------------------
     const rawPlayers = [
       {
@@ -445,8 +467,27 @@
         position: "WR",
         team: "DET",
         age: 25,
-        currentWeek: 1,
-        currentCbId: "jaylon_johnson", // "good" balanced, off-zone
+        // fake 2025 schedule CBs – swap later for real
+        schedule: {
+          1: "jaylon_johnson",
+          2: "generic_cb",
+          3: "trevon_diggs",
+          4: "generic_cb",
+          5: "sauce_gardner",
+          6: "generic_cb",
+          7: "generic_cb",
+          8: "trevon_diggs",
+          9: "generic_cb",
+          10: "generic_cb",
+          11: "sauce_gardner",
+          12: "generic_cb",
+          13: "generic_cb",
+          14: "generic_cb",
+          15: "trevon_diggs",
+          16: "generic_cb",
+          17: "generic_cb",
+          18: "generic_cb"
+        },
         seasons: [
           { year: 2021, games: 17, ppr: 227.3 },
           { year: 2022, games: 16, ppr: 267.6 },
@@ -476,8 +517,26 @@
         position: "WR",
         team: "SEA",
         age: 23,
-        currentWeek: 1,
-        currentCbId: "sauce_gardner", // heavy, tall, press-man
+        schedule: {
+          1: "sauce_gardner",
+          2: "generic_cb",
+          3: "generic_cb",
+          4: "trevon_diggs",
+          5: "sauce_gardner",
+          6: "generic_cb",
+          7: "generic_cb",
+          8: "generic_cb",
+          9: "trevon_diggs",
+          10: "generic_cb",
+          11: "sauce_gardner",
+          12: "generic_cb",
+          13: "generic_cb",
+          14: "generic_cb",
+          15: "generic_cb",
+          16: "trevon_diggs",
+          17: "generic_cb",
+          18: "generic_cb"
+        },
         seasons: [
           { year: 2023, games: 17, ppr: 163.4 },
           { year: 2024, games: 17, ppr: 201.0 }
@@ -510,8 +569,26 @@
         position: "WR",
         team: "PHI",
         age: 25,
-        currentWeek: 1,
-        currentCbId: "trevon_diggs", // tall ballhawk
+        schedule: {
+          1: "trevon_diggs",
+          2: "generic_cb",
+          3: "sauce_gardner",
+          4: "generic_cb",
+          5: "generic_cb",
+          6: "trevon_diggs",
+          7: "generic_cb",
+          8: "generic_cb",
+          9: "sauce_gardner",
+          10: "generic_cb",
+          11: "generic_cb",
+          12: "trevon_diggs",
+          13: "generic_cb",
+          14: "generic_cb",
+          15: "sauce_gardner",
+          16: "generic_cb",
+          17: "generic_cb",
+          18: "generic_cb"
+        },
         seasons: [
           { year: 2021, games: 17, ppr: 185.6 },
           { year: 2022, games: 17, ppr: 248.4 },
@@ -535,11 +612,21 @@
       }
     ];
 
+    // Meta list used for selects; raw data stays in rawPlayers
+    const players = rawPlayers.map(p => ({
+      id: p.id,
+      name: p.name,
+      position: p.position,
+      team: p.team,
+      age: p.age,
+      raw: p
+    }));
+
     // -----------------------------
     // BASE PROJECTION ENGINE (2025 PPR)
     // -----------------------------
-    function projectPpr2025Base(player) {
-      const seasons = [...player.seasons].sort((a, b) => a.year - b.year);
+    function projectPpr2025Base(playerRaw) {
+      const seasons = [...playerRaw.seasons].sort((a, b) => a.year - b.year);
       const n = seasons.length;
       const recent = seasons[n - 1];
       const prev   = seasons[n - 2];
@@ -557,9 +644,9 @@
         0.1 * ppgPrev2;
 
       // Simple age curve into 2025
-      if (player.age <= 25) {
+      if (playerRaw.age <= 25) {
         basePpg *= 1.05;
-      } else if (player.age >= 29) {
+      } else if (playerRaw.age >= 29) {
         basePpg *= 0.95;
       }
 
@@ -570,11 +657,11 @@
     // -----------------------------
     // Trait-based split matching
     // -----------------------------
-    function findMatchingTraitSplit(player, cb) {
-      if (!player.traitSplits || !cb) return null;
-      const splits = player.traitSplits;
+    function findMatchingTraitSplit(playerRaw, cb) {
+      if (!playerRaw.traitSplits || !cb) return null;
+      const splits = playerRaw.traitSplits;
 
-      // 1) Heavy CBs (≥210 lb) – JSN example
+      // 1) Heavy CBs (≥210 lb)
       if (cb.weightLb >= 210) {
         return splits.find(t => t.label === "heavy_over_210" || t.label === "heavy_cbs") || null;
       }
@@ -605,8 +692,8 @@
     // -----------------------------
     // CB adjustment (tier + traits + specific history)
     // -----------------------------
-    function adjustForCorner(basePpg, player) {
-      const cb = cornersById[player.currentCbId];
+    function adjustForCorner(basePpg, playerRaw, cbId) {
+      const cb = cornersById[cbId] || cornersById["generic_cb"];
       let adjPpg = basePpg;
 
       let tierNote = null;
@@ -614,64 +701,58 @@
       let cbSplitNote = null;
 
       // 1) Tier-based adjustment
-      if (cb) {
-        if (cb.coverageTier === "elite") {
-          adjPpg *= 0.90;
-          tierNote = `${cb.name} is graded as an elite CB, so Chip applies a small matchup penalty.`;
-        } else if (cb.coverageTier === "good") {
-          adjPpg *= 0.95;
-          tierNote = `${cb.name} is a good CB, so Chip applies a mild penalty.`;
-        } else if (cb.coverageTier === "bad") {
-          adjPpg *= 1.05;
-          tierNote = `${cb.name} is a weaker CB, so Chip applies a mild boost.`;
-        } else {
-          tierNote = `${cb.name} is closer to an average CB tier.`;
-        }
+      if (cb.coverageTier === "elite") {
+        adjPpg *= 0.90;
+        tierNote = `${cb.name} is graded as an elite CB, so Chip applies a small matchup penalty.`;
+      } else if (cb.coverageTier === "good") {
+        adjPpg *= 0.95;
+        tierNote = `${cb.name} is a good CB, so Chip applies a mild penalty.`;
+      } else if (cb.coverageTier === "bad") {
+        adjPpg *= 1.05;
+        tierNote = `${cb.name} is a weaker CB, so Chip applies a mild boost.`;
+      } else {
+        tierNote = `${cb.name} is closer to an average CB tier.`;
       }
 
       // 2) Trait-based adjustment (body type / style)
-      if (cb) {
-        const traitSplit = findMatchingTraitSplit(player, cb);
-        if (traitSplit && traitSplit.games >= 4) {
-          const traitPpg = traitSplit.ppr / traitSplit.games;
-          // Gentle nudge toward trait-based PPG
-          adjPpg = 0.85 * adjPpg + 0.15 * traitPpg;
+      const traitSplit = findMatchingTraitSplit(playerRaw, cb);
+      if (traitSplit && traitSplit.games >= 4) {
+        const traitPpg = traitSplit.ppr / traitSplit.games;
+        // Gentle nudge toward trait-based PPG
+        adjPpg = 0.85 * adjPpg + 0.15 * traitPpg;
 
-          let desc;
-          if (traitSplit.label === "heavy_over_210") {
-            desc = `${player.name} has historically underperformed vs heavier CBs (≥210 lb).`;
-          } else if (traitSplit.label === "light_zone") {
-            desc = `${player.name} has historically done well vs lighter zone/off-coverage CBs.`;
-          } else if (traitSplit.label === "slot_sized") {
-            desc = `${player.name} tends to win vs smaller, slot-sized CBs.`;
-          } else if (traitSplit.label === "press_man") {
-            desc = `${player.name} tends to handle press-man CBs well.`;
-          } else if (traitSplit.label === "tall_long" || traitSplit.label === "tall_long_press") {
-            desc = `${player.name} has a slightly tougher time vs tall, long press CBs.`;
-          } else {
-            desc = `${player.name} has a meaningful history vs CBs with this body type/play style.`;
-          }
-
-          traitNote = {
-            description: desc,
-            games: traitSplit.games,
-            ppg: traitPpg.toFixed(1)
-          };
+        let desc;
+        if (traitSplit.label === "heavy_over_210") {
+          desc = `${playerRaw.name} has historically underperformed vs heavier CBs (≥210 lb).`;
+        } else if (traitSplit.label === "light_zone") {
+          desc = `${playerRaw.name} has historically done well vs lighter zone/off-coverage CBs.`;
+        } else if (traitSplit.label === "slot_sized") {
+          desc = `${playerRaw.name} tends to win vs smaller, slot-sized CBs.`;
+        } else if (traitSplit.label === "press_man") {
+          desc = `${playerRaw.name} tends to handle press-man CBs well.`;
+        } else if (traitSplit.label === "tall_long" || traitSplit.label === "tall_long_press") {
+          desc = `${playerRaw.name} has a slightly tougher time vs tall, long press CBs.`;
+        } else {
+          desc = `${playerRaw.name} has a meaningful history vs CBs with this body type/play style.`;
         }
+
+        traitNote = {
+          description: desc,
+          games: traitSplit.games,
+          ppg: traitPpg.toFixed(1)
+        };
       }
 
       // 3) Specific CB history (e.g., JSN vs Sauce)
-      if (cb) {
-        const cbSplit = (player.cbSplits || []).find(s => s.cbId === cb.id);
-        if (cbSplit && cbSplit.games >= 2) {
-          const cbPpg = cbSplit.ppr / cbSplit.games;
-          adjPpg = 0.8 * adjPpg + 0.2 * cbPpg;
-          cbSplitNote = {
-            description: `${player.name} has ${cbSplit.games} games of direct history vs ${cb.name}.`,
-            games: cbSplit.games,
-            ppg: cbPpg.toFixed(1)
-          };
-        }
+      const cbSplit = (playerRaw.cbSplits || []).find(s => s.cbId === cb.id);
+      if (cbSplit && cbSplit.games >= 2) {
+        const cbPpg = cbSplit.ppr / cbSplit.games;
+        adjPpg = 0.8 * adjPpg + 0.2 * cbPpg;
+        cbSplitNote = {
+          description: `${playerRaw.name} has ${cbSplit.games} games of direct history vs ${cb.name}.`,
+          games: cbSplit.games,
+          ppg: cbPpg.toFixed(1)
+        };
       }
 
       return {
@@ -683,32 +764,36 @@
       };
     }
 
-    // Build UI-ready players with precomputed projection vs their current CB
-    const players = rawPlayers.map((p) => {
-      const base = projectPpr2025Base(p);
-      const adj = adjustForCorner(base.basePpg, p);
+    // -----------------------------
+    // Build a UI-ready player for a given week
+    // -----------------------------
+    function getPlayer(id, week) {
+      const meta = players.find(p => p.id === id);
+      if (!meta) return null;
+      const playerRaw = meta.raw;
+      const cbId = playerRaw.schedule[week] || "generic_cb";
+
+      const base = projectPpr2025Base(playerRaw);
+      const adj = adjustForCorner(base.basePpg, playerRaw, cbId);
+
       return {
-        id: p.id,
-        name: p.name,
-        position: p.position,
-        team: p.team,
-        age: p.age,
-        projected: Number(adj.ppg.toFixed(1)),               // vs matchup
-        projectedBasePpg: Number(base.basePpg.toFixed(1)),   // neutral field
-        projectedSeason: Number(base.seasonPpr.toFixed(1)),  // full 17 games
+        id: meta.id,
+        name: meta.name,
+        position: meta.position,
+        team: meta.team,
+        age: meta.age,
+        projectedBasePpg: Number(base.basePpg.toFixed(1)),
+        projectedSeason: Number(base.seasonPpr.toFixed(1)),
+        projected: Number(adj.ppg.toFixed(1)),
         matchupCbId: adj.cb ? adj.cb.id : null,
-        week: p.currentWeek,
+        week,
         adjustmentDetails: adj
       };
-    });
+    }
 
     // -----------------------------
     // HELPERS & UI
     // -----------------------------
-    function getPlayer(id){
-      return players.find(p => p.id === id);
-    }
-
     function comparePlayers(a,b){
       if(!a || !b || a.id === b.id) return null;
       return a.projected > b.projected
@@ -797,7 +882,7 @@
         <br><br>
         • Neutral field, ${startPlayer.name} projects at <strong>${startPlayer.projectedBasePpg}</strong> PPR/g vs ${sitPlayer.projectedBasePpg} for ${sitPlayer.name}. (Δ ${baseDiff} PPR/g)
         <br>
-        • This week, ${startPlayer.name} faces <strong>${cbName}</strong>, which adjusts him to <strong>${startPlayer.projected}</strong> PPR/g.
+        • In Week ${startPlayer.week}, ${startPlayer.name} faces <strong>${cbName}</strong>, which adjusts him to <strong>${startPlayer.projected}</strong> PPR/g.
         <br>
         • ${sitPlayer.name} settles at <strong>${sitPlayer.projected}</strong> PPR/g in his matchup.
         <br><br>
@@ -817,13 +902,21 @@
     const playerArt = document.getElementById("playerArt");
     const playerArtMeta = document.getElementById("playerArtMeta");
     const explanationEl = document.getElementById("chipExplanation");
+    const weekSelect = document.getElementById("weekSelect");
 
-    if (A && B && btn && result && playerArt && playerArtMeta && explanationEl) {
+    function safeWeek() {
+      const w = Number(weekSelect.value);
+      if (!w || w < 1 || w > 18) return 1;
+      return w;
+    }
+
+    if (A && B && btn && result && playerArt && playerArtMeta && explanationEl && weekSelect) {
       populatePlayerSelects(A, B);
 
       function recompute(){
-        const a = getPlayer(A.value);
-        const b = getPlayer(B.value);
+        const week = safeWeek();
+        const a = getPlayer(A.value, week);
+        const b = getPlayer(B.value, week);
         const r = comparePlayers(a,b);
 
         if(!r){
@@ -855,7 +948,7 @@
           <div><strong>${startPlayer.name}</strong></div>
           <div>${startPlayer.position} • ${startPlayer.team}</div>
           <div style="margin-top:4px;">
-            2025 projection vs matchup: ${startPlayer.projected} PPR/g
+            Week ${startPlayer.week} projection vs matchup: ${startPlayer.projected} PPR/g
           </div>
         `;
 
@@ -864,6 +957,7 @@
 
       A.addEventListener("change", recompute);
       B.addEventListener("change", recompute);
+      weekSelect.addEventListener("change", recompute);
       btn.addEventListener("click", recompute);
 
       // initial render
@@ -873,7 +967,7 @@
     }
 
     // -----------------------------
-    // CHAT PANEL LOGIC (Ask Chip – unchanged)
+    // CHAT PANEL LOGIC (Ask Chip)
     // -----------------------------
     const chatBtn = document.getElementById("chatChipBtn");
     const chatPanel = document.getElementById("chipChatPanel");
@@ -897,9 +991,10 @@
       if (!q) return;
 
       const lower = q.toLowerCase();
+      const week = safeWeek();
 
-      const a = A ? getPlayer(A.value) : null;
-      const b = B ? getPlayer(B.value) : null;
+      const a = A ? getPlayer(A.value, week) : null;
+      const b = B ? getPlayer(B.value, week) : null;
       const r = (a && b) ? comparePlayers(a,b) : null;
 
       let answer = "";
@@ -908,15 +1003,15 @@
         answer = buildExplanation(r.start, r.sit);
       } else if (a && lower.includes(a.name.toLowerCase().split(" ")[0])) {
         answer = `
-          For <strong>${a.name}</strong>, Chip projects
+          For <strong>${a.name}</strong> in Week ${week}, Chip projects
           <strong>${a.projectedBasePpg}</strong> PPR/g on a neutral field and
-          <strong>${a.projected}</strong> PPR/g in this week's matchup.
+          <strong>${a.projected}</strong> PPR/g vs this matchup.
         `;
       } else if (b && lower.includes(b.name.toLowerCase().split(" ")[0])) {
         answer = `
-          For <strong>${b.name}</strong>, Chip projects
+          For <strong>${b.name}</strong> in Week ${week}, Chip projects
           <strong>${b.projectedBasePpg}</strong> PPR/g on a neutral field and
-          <strong>${b.projected}</strong> PPR/g in this week's matchup.
+          <strong>${b.projected}</strong> PPR/g vs this matchup.
         `;
       } else if (r && (lower.includes("who") || lower.includes("start") || lower.includes("sit"))) {
         answer = r.reason + "<br><br>" + buildExplanation(r.start, r.sit);
@@ -924,7 +1019,7 @@
         answer = `
           Chip is currently focused on <strong>Amon-Ra St. Brown</strong>, 
           <strong>Jaxon Smith-Njigba</strong>, and <strong>DeVonta Smith</strong>.
-          Ask something like “Why is JSN a sit vs Amon-Ra?” or “What does Chip think about DeVonta this week?”
+          Ask something like “Why is JSN a sit vs Amon-Ra in Week ${week}?” or “What does Chip think about DeVonta this week?”
         `;
       }
 
@@ -949,7 +1044,6 @@
       });
     }
   </script>
-
 
 </body>
 </html>
