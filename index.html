@@ -309,7 +309,7 @@
               alt="Chip thinking"
               class="player-art"
             />
-            <div id="playerArtMeta" style="font-size:13px; color:var(--text-muted);">
+            <div id="playerArtMeta" style="font-size:13px; color:#9ca3af;">
               Chip will show who you should start here.
             </div>
           </div>
@@ -399,23 +399,87 @@
       },
     ];
 
-    // Very lightweight physical profiles used for CB body-type logic
+    // WR body-type tendencies vs CB archetypes
     const wrProfiles = {
       amonra: {
         size: "sturdy",
+        bodyPref: {
+          big: {
+            tendency: "plus",
+            text:
+              "Chip sees Amon-Ra as sturdy enough to win underneath vs bigger 205–220 lb corners. Slight body-type edge here.",
+          },
+          long: {
+            tendency: "neutral",
+            text:
+              "Long, rangy corners can bother the boundary more than his slot work, so Chip treats this as mostly neutral.",
+          },
+          small: {
+            tendency: "plus",
+            text:
+              "Against smaller slot-sized CBs, Amon-Ra’s frame + route craft usually carry him.",
+          },
+          balanced: {
+            tendency: "neutral",
+            text:
+              "Balanced CB body-type — Chip mostly leans on coverage grade and volume here.",
+          },
+        },
       },
       jsn: {
         size: "medium",
+        bodyPref: {
+          big: {
+            tendency: "plus",
+            text:
+              "Chip’s profile for JSN says he can actually shine vs bigger 210–225 lb CBs when he’s in the slot, using leverage and YAC.",
+          },
+          long: {
+            tendency: "minus",
+            text:
+              "Long, rangy press corners can disrupt JSN’s timing more, so Chip dials him back a bit here.",
+          },
+          small: {
+            tendency: "plus",
+            text:
+              "Smaller slot-style corners often struggle to tackle JSN cleanly after the catch — Chip gives a small bump.",
+          },
+          balanced: {
+            tendency: "neutral",
+            text:
+              "Neutral body-type matchup for JSN — coverage tier does most of the work.",
+          },
+        },
       },
       devonta: {
         size: "slight",
+        bodyPref: {
+          big: {
+            tendency: "minus",
+            text:
+              "At around 170 lbs, DeVonta can get bodied by bigger 205–220 lb CBs in tight coverage, so Chip trims the projection slightly.",
+          },
+          long: {
+            tendency: "minus",
+            text:
+              "Long, physical CBs can ride his routes at the catch point — Chip bakes in a small penalty.",
+          },
+          small: {
+            tendency: "plus",
+            text:
+              "Versus smaller, quicker CBs, his release/route game tends to win — Chip nudges his projection up.",
+          },
+          balanced: {
+            tendency: "neutral",
+            text:
+              "Balanced CB body-type — Chip treats this as roughly neutral and leans on coverage grade.",
+          },
+        },
       },
     };
 
-    // ---------- TRUE 2025 SCHEDULE SNAPSHOT (ESPN) ----------
+    // ---------- 2025 SCHEDULE SNAPSHOT ----------
 
-    // coverageTier: "elite" | "good" | "average" | "soft"
-    // cbArchetype: "big" | "long" | "small" | "balanced"
     const schedule2025 = {
       DET: [
         { week: 1, oppCode: "GB",  oppName: "Green Bay Packers",      homeAway: "away", coverageTier: "elite",   cbArchetype: "balanced" },
@@ -511,20 +575,34 @@
           break;
       }
 
-      // Body-type / physical profile interaction
+      // Generic size mismatch
       if (matchup.cbArchetype === "big") {
         if (profile.size === "slight") {
-          adj -= 0.8; // small WR vs big, grabby CB
+          adj -= 0.8;
         } else if (profile.size === "sturdy") {
           adj -= 0.2;
         }
       } else if (matchup.cbArchetype === "long") {
         if (player.archetype === "separator") {
-          adj -= 0.6; // long-armed CB vs finesse separator
+          adj -= 0.6;
         }
       } else if (matchup.cbArchetype === "small") {
         if (player.archetype === "slot_yac" || profile.size === "sturdy") {
-          adj += 0.5; // beefy / YAC slot vs smaller CB
+          adj += 0.5;
+        }
+      }
+
+      // Body-type preference from profile (explicit "shines / struggles" logic)
+      const pref =
+        profile.bodyPref && profile.bodyPref[matchup.cbArchetype]
+          ? profile.bodyPref[matchup.cbArchetype]
+          : null;
+
+      if (pref) {
+        if (pref.tendency === "plus") {
+          adj += 0.5;
+        } else if (pref.tendency === "minus") {
+          adj -= 0.5;
         }
       }
 
@@ -580,9 +658,9 @@
       };
 
       const bodyLabelMap = {
-        big: "Bigger, more physical CB archetype",
+        big: "Bigger 205–225 lb CB archetype",
         long: "Long, rangy CB archetype",
-        small: "Quicker, smaller CB archetype",
+        small: "Smaller, quicker CB archetype",
         balanced: "Balanced CB archetype",
       };
 
@@ -593,7 +671,18 @@
       if (matchup.cbArchetype && bodyLabelMap[matchup.cbArchetype]) {
         bits.push(bodyLabelMap[matchup.cbArchetype]);
       }
+
+      const profile = wrProfiles[player.id];
+      const pref =
+        profile && profile.bodyPref
+          ? profile.bodyPref[matchup.cbArchetype]
+          : null;
+
       let notes = bits.join(" • ");
+      if (pref) {
+        // Make sure there's some spacing if we already had notes
+        notes = (notes ? notes + ". " : "") + pref.text;
+      }
       if (!notes) notes = "Neutral matchup.";
 
       return {
@@ -810,4 +899,21 @@
       recompute();
 
       // CHAT PANEL LOGIC
-      const chatBtn = document.getE
+      const chatBtn = document.getElementById("chatChipBtn");
+      const chatPanel = document.getElementById("chipChatPanel");
+      const closeChat = document.getElementById("closeChipChat");
+
+      if (chatBtn && chatPanel && closeChat) {
+        chatBtn.addEventListener("click", () => {
+          chatPanel.style.right = "0";
+        });
+
+        closeChat.addEventListener("click", () => {
+          chatPanel.style.right = "-380px";
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
