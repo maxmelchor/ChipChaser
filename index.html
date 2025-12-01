@@ -211,6 +211,17 @@
       height: 100%;
       background: var(--accent);
     }
+
+    /* Explainer modal */
+    #explainerBackdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 400;
+    }
   </style>
 </head>
 
@@ -284,7 +295,16 @@
 
         <!-- SIT/START -->
         <div class="card">
-          <h3 style="margin-bottom:6px;">Chip’s Sit/Start Assistant</h3>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <h3>Chip’s Sit/Start Assistant</h3>
+            <button
+              id="openExplainerBtn"
+              class="btn btn-ghost"
+              style="padding:4px 8px; font-size:11px; border-radius:999px;"
+            >
+              How Chip works
+            </button>
+          </div>
 
           <label>Week</label>
           <select id="weekSelect">
@@ -351,6 +371,17 @@
           <div id="chipExplanation" style="font-size:13px; color:var(--text-muted);">
             Run a comparison and Chip will break down the call.
           </div>
+          <button
+            id="copyReportBtn"
+            class="btn btn-ghost"
+            style="margin-top:8px; width:100%; font-size:12px;"
+          >
+            Copy sit/start report
+          </button>
+          <div
+            id="copyReportStatus"
+            style="margin-top:4px; font-size:11px; color:var(--text-muted);"
+          ></div>
         </div>
 
       </aside>
@@ -374,6 +405,54 @@
       <p style="color:var(--text-muted);">More coming soon.</p>
     </section>
 
+  </div>
+
+  <!-- EXPLAINER MODAL -->
+  <div id="explainerBackdrop">
+    <div
+      style="
+        background:#020617;
+        border:1px solid #1f2937;
+        border-radius:16px;
+        max-width:520px;
+        width:90%;
+        padding:20px;
+      "
+    >
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <h2 style="font-size:18px;">How Chip makes projections</h2>
+        <button
+          id="closeExplainerBtn"
+          style="background:none; border:none; font-size:20px; color:#9ca3af; cursor:pointer;"
+        >×</button>
+      </div>
+      <div
+        id="explainerBody"
+        style="font-size:13px; color:#d1d5db; line-height:1.4;"
+      >
+        <p style="margin-bottom:8px;">
+          Chip isn’t just guessing. Under the hood, each projection is built from:
+        </p>
+        <ul style="margin-left:18px; margin-bottom:8px;">
+          <li>Multi-season PPR production (rookie year → 2024)</li>
+          <li>Age curve into the 2025 season</li>
+          <li>Coverage tier of the opposing CB (elite / good / average)</li>
+          <li>CB body type & play style (weight, height, press vs zone, archetype)</li>
+          <li>Historical splits vs similar CB builds & specific corners where we have data</li>
+        </ul>
+        <p style="margin-bottom:8px;">
+          Chip then outputs a <strong>2025 neutral PPR per game baseline</strong>, adjusts it for the
+          <strong>Week X CB matchup</strong>, and attaches a
+          <strong>confidence score</strong> based on sample size. Volatility reflects how boom/bust a
+          player’s usage profile is.
+        </p>
+        <p>
+          In this prototype, everything runs locally with curated sample data for Amon-Ra St. Brown,
+          Jaxon Smith-Njigba, and DeVonta Smith — but the same engine can plug into a real stats
+          pipeline.
+        </p>
+      </div>
+    </div>
   </div>
 
   <!-- CHAT BUTTON -->
@@ -508,7 +587,7 @@
     );
 
     // -----------------------------
-    // RAW PLAYER DATA + trait splits + schedule (using real CBs)
+    // RAW PLAYER DATA + trait splits + schedule + volatility
     // -----------------------------
     const rawPlayers = [
       {
@@ -517,6 +596,7 @@
         position: "WR",
         team: "DET",
         age: 25,
+        volatility: "low",
         schedule: {
           1: "jaylon_johnson",
           2: "patrick_surtain",
@@ -550,12 +630,12 @@
           {
             label: "light_zone",
             games: 8,
-            ppr: 146.0 // ~18.3 PPR/g vs lighter zone/off
+            ppr: 146.0
           },
           {
             label: "heavy_press",
             games: 5,
-            ppr: 78.0  // ~15.6 PPR/g vs heavier press
+            ppr: 78.0
           }
         ]
       },
@@ -565,6 +645,7 @@
         position: "WR",
         team: "SEA",
         age: 23,
+        volatility: "high",
         schedule: {
           1: "sauce_gardner",
           2: "jaire_alexander",
@@ -590,23 +671,23 @@
           { year: 2024, games: 17, ppr: 201.0 }
         ],
         cbSplits: [
-          { cbId: "sauce_gardner", games: 2, ppr: 16.0 } // 8 PPR/g vs Sauce
+          { cbId: "sauce_gardner", games: 2, ppr: 16.0 }
         ],
         traitSplits: [
           {
             label: "heavy_over_210",
             games: 6,
-            ppr: 40.0 // ~6.7 PPR/g vs heavy CBs
+            ppr: 40.0
           },
           {
             label: "slot_sized",
             games: 5,
-            ppr: 70.0 // ~14.0 PPR/g vs smaller CBs
+            ppr: 70.0
           },
           {
             label: "tall_long_press",
             games: 4,
-            ppr: 26.0 // ~6.5 PPR/g vs tall-long press
+            ppr: 26.0
           }
         ]
       },
@@ -616,6 +697,7 @@
         position: "WR",
         team: "PHI",
         age: 25,
+        volatility: "medium",
         schedule: {
           1: "trevon_diggs",
           2: "legerius_sneed",
@@ -647,12 +729,12 @@
           {
             label: "press_man",
             games: 7,
-            ppr: 116.0 // ~16.6 PPR/g vs press-man
+            ppr: 116.0
           },
           {
             label: "tall_long",
             games: 6,
-            ppr: 78.0 // ~13.0 PPR/g vs tall-long CBs
+            ppr: 78.0
           }
         ]
       }
@@ -664,6 +746,7 @@
       position: p.position,
       team: p.team,
       age: p.age,
+      volatility: p.volatility,
       raw: p
     }));
 
@@ -699,6 +782,34 @@
     }
 
     // -----------------------------
+    // Confidence scoring
+    // -----------------------------
+    function computeConfidence(playerRaw, cbId) {
+      const seasons = playerRaw.seasons || [];
+      const nSeasons = seasons.length;
+
+      const baseComponent = Math.min(0.7, 0.4 + nSeasons * 0.1);
+
+      const cbSplit = (playerRaw.cbSplits || []).find(s => s.cbId === cbId);
+      const cbGames = cbSplit ? cbSplit.games : 0;
+      const cbComponent = Math.min(0.15, cbGames * 0.025);
+
+      const cb = cornersById[cbId] || cornersById["generic_cb"];
+      const traitSplit = findMatchingTraitSplit(playerRaw, cb);
+      const traitGames = traitSplit ? traitSplit.games : 0;
+      const traitComponent = Math.min(0.15, traitGames * 0.02);
+
+      let score = baseComponent + cbComponent + traitComponent;
+      score = Math.max(0.4, Math.min(score, 0.95));
+
+      let label = "medium";
+      if (score >= 0.8) label = "high";
+      else if (score <= 0.55) label = "low";
+
+      return { score, label };
+    }
+
+    // -----------------------------
     // Trait-based split matching
     // -----------------------------
     function findMatchingTraitSplit(playerRaw, cb) {
@@ -729,7 +840,7 @@
     }
 
     // -----------------------------
-    // CB adjustment (tier + traits + specific history)
+    // CB adjustment (tier + traits + specific history + confidence)
     // -----------------------------
     function adjustForCorner(basePpg, playerRaw, cbId) {
       const cb = cornersById[cbId] || cornersById["generic_cb"];
@@ -790,12 +901,16 @@
         };
       }
 
+      const confidence = computeConfidence(playerRaw, cbId);
+
       return {
         ppg: adjPpg,
         cb,
         tierNote,
         traitNote,
-        cbSplitNote
+        cbSplitNote,
+        confidenceScore: confidence.score,
+        confidenceLabel: confidence.label
       };
     }
 
@@ -817,12 +932,15 @@
         position: meta.position,
         team: meta.team,
         age: meta.age,
+        volatility: meta.volatility || "medium",
         projectedBasePpg: Number(base.basePpg.toFixed(1)),
         projectedSeason: Number(base.seasonPpr.toFixed(1)),
         projected: Number(adj.ppg.toFixed(1)),
         matchupCbId: adj.cb ? adj.cb.id : null,
         week,
-        adjustmentDetails: adj
+        adjustmentDetails: adj,
+        confidenceScore: adj.confidenceScore,
+        confidenceLabel: adj.confidenceLabel
       };
     }
 
@@ -894,6 +1012,11 @@
       const cbSplitNote = adj.cbSplitNote;
       const tierNote = adj.tierNote;
 
+      const confLabel = startPlayer.confidenceLabel || "medium";
+      const confPct = startPlayer.confidenceScore != null
+        ? Math.round(startPlayer.confidenceScore * 100)
+        : null;
+
       let extraLines = "";
 
       if (tierNote) {
@@ -912,6 +1035,10 @@
         extraLines = "• This matchup mostly reflects Chip's base projection and CB tier adjustments.<br>";
       }
 
+      const confLine = confPct
+        ? `• Chip’s confidence in this projection is <strong>${confLabel}</strong> (~${confPct}%).<br>`
+        : `• Chip’s confidence in this projection is <strong>${confLabel}</strong>.<br>`;
+
       return `
         Chip is leaning <strong>${startPlayer.name}</strong> over ${sitPlayer.name}.
         <br><br>
@@ -922,9 +1049,58 @@
         • ${sitPlayer.name} settles at <strong>${sitPlayer.projected}</strong> PPR/g in his matchup.
         <br><br>
         ${extraLines}
+        ${confLine}
         <br>
         Net: Chip sees about a <strong>${diff} PPR/g</strong> edge for ${startPlayer.name} in this specific matchup.
       `;
+    }
+
+    // Text-only report for copying
+    function buildTextReport(startPlayer, sitPlayer) {
+      const cb = cornersById[startPlayer.matchupCbId];
+      const cbName = cb ? cb.name : "his matchup CB";
+
+      const diff = (startPlayer.projected - sitPlayer.projected).toFixed(1);
+      const baseDiff = (startPlayer.projectedBasePpg - sitPlayer.projectedBasePpg).toFixed(1);
+
+      const adj = startPlayer.adjustmentDetails || {};
+      const traitNote = adj.traitNote;
+      const cbSplitNote = adj.cbSplitNote;
+      const tierNote = adj.tierNote;
+
+      const confLabel = startPlayer.confidenceLabel || "medium";
+      const confPct = startPlayer.confidenceScore != null
+        ? Math.round(startPlayer.confidenceScore * 100)
+        : null;
+
+      const lines = [];
+      lines.push(`ChipChaser sit/start call for Week ${startPlayer.week}:`);
+      lines.push(`Start: ${startPlayer.name} (${startPlayer.team})`);
+      lines.push(`Sit:   ${sitPlayer.name} (${sitPlayer.team})`);
+      lines.push("");
+      lines.push(`Neutral PPR/g: ${startPlayer.name} ${startPlayer.projectedBasePpg} vs ${sitPlayer.projectedBasePpg} (Δ ${baseDiff})`);
+      lines.push(
+        `Matchup vs ${cbName}: ${startPlayer.name} ${startPlayer.projected} PPR/g vs ${sitPlayer.projected} PPR/g (edge ${diff} PPR/g)`
+      );
+      lines.push("");
+      if (tierNote) lines.push(`- ${tierNote}`);
+      if (traitNote) lines.push(`- ${traitNote.description} (~${traitNote.ppg} PPR/g in that split).`);
+      if (cbSplitNote) lines.push(`- ${cbSplitNote.description} (~${cbSplitNote.ppg} PPR/g in that sample).`);
+
+      if (!tierNote && !traitNote && !cbSplitNote) {
+        lines.push(`- Mostly driven by Chip's base projection and CB tier adjustment.`);
+      }
+
+      if (confPct) {
+        lines.push(`Confidence: ${confLabel} (~${confPct}%).`);
+      } else {
+        lines.push(`Confidence: ${confLabel}.`);
+      }
+
+      lines.push("");
+      lines.push("Sent from ChipChaser 🟣");
+
+      return lines.join("\n");
     }
 
     // -----------------------------
@@ -938,6 +1114,15 @@
     const playerArtMeta = document.getElementById("playerArtMeta");
     const explanationEl = document.getElementById("chipExplanation");
     const weekSelect = document.getElementById("weekSelect");
+
+    const openExplainerBtn = document.getElementById("openExplainerBtn");
+    const closeExplainerBtn = document.getElementById("closeExplainerBtn");
+    const explainerBackdrop = document.getElementById("explainerBackdrop");
+
+    const copyReportBtn = document.getElementById("copyReportBtn");
+    const copyReportStatus = document.getElementById("copyReportStatus");
+
+    let lastDecision = null;
 
     function safeWeek() {
       const w = Number(weekSelect.value);
@@ -961,11 +1146,15 @@
           playerArt.alt = "Chip thinking";
           playerArtMeta.textContent = "Chip will show who you should start here.";
           explanationEl.innerHTML = "Run a comparison and Chip will break down the call.";
+          lastDecision = null;
+          if (copyReportStatus) copyReportStatus.textContent = "";
           return;
         }
 
         const startPlayer = r.start;
         const sitPlayer = r.sit;
+
+        lastDecision = { start: startPlayer, sit: sitPlayer };
 
         result.textContent = r.reason;
         renderMatchups(a,b);
@@ -978,15 +1167,26 @@
           this.alt = "Chip thinking";
         };
 
+        const confLabel = startPlayer.confidenceLabel || "medium";
+        const confPct = startPlayer.confidenceScore != null
+          ? Math.round(startPlayer.confidenceScore * 100)
+          : null;
+        const volatility = (startPlayer.volatility || "medium")
+          .replace(/^./, c => c.toUpperCase());
+
         playerArtMeta.innerHTML = `
           <div><strong>${startPlayer.name}</strong></div>
           <div>${startPlayer.position} • ${startPlayer.team}</div>
           <div style="margin-top:4px;">
             Week ${startPlayer.week} projection vs matchup: ${startPlayer.projected} PPR/g
           </div>
+          <div style="margin-top:4px;">
+            Volatility: ${volatility} • Confidence: ${confLabel}${confPct ? " (~" + confPct + "%)" : ""}
+          </div>
         `;
 
         explanationEl.innerHTML = buildExplanation(startPlayer, sitPlayer);
+        if (copyReportStatus) copyReportStatus.textContent = "";
       }
 
       A.addEventListener("change", recompute);
@@ -1035,16 +1235,24 @@
       if (r && (lower.includes("why") || lower.includes("reason") || lower.includes("explain"))) {
         answer = buildExplanation(r.start, r.sit);
       } else if (a && lower.includes(a.name.toLowerCase().split(" ")[0])) {
+        const confLabel = a.confidenceLabel || "medium";
+        const confPct = a.confidenceScore != null ? Math.round(a.confidenceScore * 100) : null;
         answer = `
           For <strong>${a.name}</strong> in Week ${week}, Chip projects
           <strong>${a.projectedBasePpg}</strong> PPR/g on a neutral field and
           <strong>${a.projected}</strong> PPR/g vs this matchup.
+          <br>
+          Confidence: ${confLabel}${confPct ? " (~" + confPct + "%)" : ""}.
         `;
       } else if (b && lower.includes(b.name.toLowerCase().split(" ")[0])) {
+        const confLabel = b.confidenceLabel || "medium";
+        const confPct = b.confidenceScore != null ? Math.round(b.confidenceScore * 100) : null;
         answer = `
           For <strong>${b.name}</strong> in Week ${week}, Chip projects
           <strong>${b.projectedBasePpg}</strong> PPR/g on a neutral field and
           <strong>${b.projected}</strong> PPR/g vs this matchup.
+          <br>
+          Confidence: ${confLabel}${confPct ? " (~" + confPct + "%)" : ""}.
         `;
       } else if (r && (lower.includes("who") || lower.includes("start") || lower.includes("sit"))) {
         answer = r.reason + "<br><br>" + buildExplanation(r.start, r.sit);
@@ -1073,6 +1281,55 @@
       chatInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
           handleChipQuestion();
+        }
+      });
+    }
+
+    // -----------------------------
+    // Explainer modal logic
+    // -----------------------------
+    if (openExplainerBtn && closeExplainerBtn && explainerBackdrop) {
+      openExplainerBtn.addEventListener("click", () => {
+        explainerBackdrop.style.display = "flex";
+      });
+      closeExplainerBtn.addEventListener("click", () => {
+        explainerBackdrop.style.display = "none";
+      });
+      explainerBackdrop.addEventListener("click", (e) => {
+        if (e.target === explainerBackdrop) {
+          explainerBackdrop.style.display = "none";
+        }
+      });
+    }
+
+    // -----------------------------
+    // Copy report logic
+    // -----------------------------
+    if (copyReportBtn && copyReportStatus) {
+      copyReportBtn.addEventListener("click", async () => {
+        if (!lastDecision) {
+          copyReportStatus.textContent = "Run a sit/start comparison first.";
+          return;
+        }
+        const { start, sit } = lastDecision;
+        const text = buildTextReport(start, sit);
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+            copyReportStatus.textContent = "Report copied. Paste into your league chat.";
+          } else {
+            // Fallback
+            const temp = document.createElement("textarea");
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand("copy");
+            document.body.removeChild(temp);
+            copyReportStatus.textContent = "Report copied. Paste into your league chat.";
+          }
+        } catch (err) {
+          console.error("Copy failed:", err);
+          copyReportStatus.textContent = "Could not copy automatically. You can still screenshot this card.";
         }
       });
     }
