@@ -1245,5 +1245,91 @@
       window.scrollToSection = scrollToSection;
     });
   </script>
+  <!-- CHAT WITH CHIP BUTTON -->
+<button id="chatChipBtn" 
+        style="
+          position: fixed;
+          bottom: 24px;
+          right: 24px;
+          background: #a855f7;
+          color: #0b0213;
+          border: none;
+          padding: 14px 18px;
+          border-radius: 12px;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+          z-index: 200;
+        ">
+  💬 Chat with Chip
+</button>
+<!-- CHIP CHAT PANEL -->
+<div id="chipChatPanel" 
+     style="
+      position: fixed;
+      top: 0;
+      right: -380px;
+      width: 360px;
+      height: 100vh;
+      background: #0b0213;
+      border-left: 1px solid rgba(255,255,255,0.1);
+      box-shadow: -4px 0 20px rgba(0,0,0,0.5);
+      padding: 20px;
+      color: white;
+      transition: right 0.3s ease-out;
+      z-index: 300;
+     ">
+  <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:16px;">
+    <h2 style="font-size:18px;">Chat with Chip</h2>
+    <button id="closeChipChat" 
+            style="background:none; border:none; font-size:22px; color:#aaa; cursor:pointer;">
+      ×
+    </button>
+  </div>
+
+  <p style="font-size:13px; color:#aaa; margin-bottom:14px;">
+    This is a preview. Chip will be your AI fantasy assistant — type questions here once the AI backend is connected.
+  </p>
+
+  <textarea id="chipInput"
+            placeholder="Ask Chip anything... (Coming soon)"
+            style="
+              width:100%;
+              height:120px;
+              background:#111827;
+              border:1px solid #1f2937;
+              border-radius:8px;
+              color:white;
+              padding:10px;
+              resize:none;
+              font-size:13px;
+            "></textarea>
+
+  <button disabled
+          style="
+            margin-top:12px;
+            width:100%;
+            padding:10px;
+            border-radius:8px;
+            background:#444;
+            color:#777;
+            border:none;
+            cursor:not-allowed;
+          ">
+    AI Coming Soon
+  </button>
+</div>
+  <script>
+  // Chat with Chip – slide-out panel
+document.getElementById("chatChipBtn").addEventListener("click", () => {
+  document.getElementById("chipChatPanel").style.right = "0";
+});
+
+document.getElementById("closeChipChat").addEventListener("click", () => {
+  document.getElementById("chipChatPanel").style.right = "-380px";
+});
+
+</script>
 </body>
 </html>
