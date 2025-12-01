@@ -6,14 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="ChipChaser is a real-time fantasy football intelligence platform with projections, matchup analytics, sit/start AI, and ESPN/Sleeper sync."
+    content="ChipChaser is a real-time fantasy football intelligence platform with projections, matchup analytics, sit/start tools, and an AI-powered roadmap."
   />
+
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --bg: #050816;
@@ -32,87 +29,84 @@
       min-height: 100vh;
     }
 
-    img { max-width: 100%; display:block; }
-
     .page {
       max-width: 1120px;
       margin: 0 auto;
       padding: 20px 16px 60px;
     }
 
-    /* HEADER + NAV */
     header {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:10px 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0 20px;
     }
 
-    nav {
-      display:flex;
-      gap:16px;
-    }
+    nav { display: flex; gap: 16px; }
 
     nav a {
-      color:var(--text-muted);
-      text-decoration:none;
-      font-size:14px;
-      position:relative;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
     }
-
-    nav a:hover { color:var(--text-main); }
+    nav a:hover { color: var(--text-main); }
 
     .btn {
-      padding:8px 14px;
-      border-radius:999px;
-      border:none;
-      cursor:pointer;
-      font-size:14px;
-      font-weight:600;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
     }
 
     .btn-primary {
-      background:var(--accent);
-      color:#0b0213;
+      background: var(--accent);
+      color: #0b0213;
     }
 
     .btn-ghost {
-      background:#111827;
-      color:var(--text-muted);
+      background: #111827;
+      color: var(--text-muted);
     }
 
-    /* RIGHT PANEL */
     aside {
-      background:#111827;
-      border:1px solid #1f2937;
-      padding:14px;
-      border-radius:16px;
-      box-shadow:0 20px 40px rgba(0,0,0,0.4);
+      background: #111827;
+      border: 1px solid #1f2937;
+      padding: 14px;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
 
-    .card { background:#0f172a; border:1px solid #1f2937; padding:12px; border-radius:12px; margin-bottom:10px; }
+    .card {
+      background: #0f172a;
+      border: 1px solid #1f2937;
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
 
     select {
-      width:100%;
-      padding:6px;
-      border-radius:8px;
-      background:#111827;
-      border:1px solid #1f2937;
-      color:white;
-      margin-bottom:8px;
-      font-size:14px;
+      width: 100%;
+      padding: 6px;
+      border-radius: 8px;
+      background: #111827;
+      border: 1px solid #1f2937;
+      color: white;
+      margin-bottom: 8px;
+      font-size: 14px;
     }
 
     #sitStartResult {
-      margin-top:8px;
-      background:#0f172a;
-      border:1px solid #1f2937;
-      padding:10px;
-      border-radius:10px;
-      font-size:13px;
+      margin-top: 8px;
+      background: #0f172a;
+      border: 1px solid #1f2937;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 13px;
     }
 
-    /* CHIP CHAT PANEL BUTTON */
+    /* Chat Button */
     #chatChipBtn {
       position: fixed;
       bottom: 24px;
@@ -129,7 +123,7 @@
       z-index: 200;
     }
 
-    /* CHIP CHAT PANEL */
+    /* Chat Panel */
     #chipChatPanel {
       position: fixed;
       top: 0;
@@ -149,10 +143,17 @@
 
 <body>
   <div class="page">
+
+    <!-- HEADER -->
     <header>
-      <div class="logo-wrap">
-        <img src="chipchaser_logo.jpeg" width="42" style="border-radius:10px;" />
+      <div class="logo-wrap" style="display:flex; align-items:center; gap:10px;">
+        <img src="chip-mascot.png" width="52" alt="Chip" />
+        <div style="line-height:1.1;">
+          <span style="font-weight:700; font-size:18px;">ChipChaser</span><br>
+          <span style="font-size:11px; color:#9ca3af;">Powered by Chip</span>
+        </div>
       </div>
+
       <nav>
         <a href="#features">Features</a>
         <a href="#how-it-works">How it works</a>
@@ -164,16 +165,27 @@
 
     <!-- MAIN LAYOUT -->
     <main style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+
+      <!-- LEFT SIDE -->
       <section>
-        <h1 style="font-size:32px; line-height:1.1;">
+        <h1 style="font-size:32px; line-height:1.15;">
           Meet <strong>Chip</strong> — your fantasy co-pilot.
         </h1>
         <p style="color:var(--text-muted); margin-top:8px; font-size:15px;">
-          Real-time projections, matchup analytics, sit/start decisions and more.
+          Real-time projections, matchup analytics, sit/start calls, and an AI roadmap.
         </p>
       </section>
 
+      <!-- RIGHT SIDE -->
+
       <aside>
+
+        <!-- CHIP MASCOT ABOVE THE CARD -->
+        <img src="chip-mascot.png"
+             alt="Chip"
+             style="width:90px; margin:0 auto 12px; display:block;" />
+
+        <!-- SIT/START -->
         <div class="card">
           <h3 style="margin-bottom:6px;">Chip’s Sit/Start Assistant</h3>
 
@@ -188,18 +200,20 @@
           </button>
 
           <div id="sitStartResult">
-            Pick two players and Chip will make the call.
+            Pick two players and Chip will decide.
           </div>
         </div>
 
+        <!-- MATCHUPS -->
         <div class="card">
           <h3 style="margin-bottom:6px;">Matchup Analytics</h3>
           <div id="matchupGrid" style="font-size:13px; color:var(--text-muted);"></div>
         </div>
+
       </aside>
     </main>
 
-    <!-- SECTIONS -->
+    <!-- FEATURES -->
     <section id="features" style="margin-top:40px;">
       <h2>Features</h2>
       <p style="color:var(--text-muted);">Projection engine, matchup breakdowns, AI roadmap.</p>
@@ -214,6 +228,7 @@
       <h2>FAQ</h2>
       <p style="color:var(--text-muted);">More coming soon.</p>
     </section>
+
   </div>
 
   <!-- CHAT BUTTON -->
@@ -227,7 +242,7 @@
     </div>
 
     <p style="color:#aaa; font-size:14px; margin-top:8px;">
-      This is a preview. Soon you'll be able to ask Chip anything.
+      This is a preview. Soon Chip will answer your fantasy questions.
     </p>
 
     <textarea
@@ -240,11 +255,11 @@
     </button>
   </div>
 
-  <!-- SCRIPT -->
+  <!-- JAVASCRIPT -->
   <script>
-    // MOCK DATA
+    // MOCK PLAYER DATA
     const players = [
-      { id:"amonra", name:"Amon-Ra St Brown", position:"WR", team:"DET", projected:18.5, matchupRank:18, volatility:"low" },
+      { id:"amonra", name:"Amon-Ra St. Brown", position:"WR", team:"DET", projected:18.5, matchupRank:18, volatility:"low" },
       { id:"jsn", name:"Jaxon Smith-Njigba", position:"WR", team:"SEA", projected:16.1, matchupRank:12, volatility:"high" },
       { id:"devonta", name:"DeVonta Smith", position:"WR", team:"PHI", projected:15.1, matchupRank:10, volatility:"high" }
     ];
@@ -270,7 +285,7 @@
 
     function renderMatchups(a,b){
       const el = document.getElementById("matchupGrid");
-      if(!a||!b||a.id===b.id){ el.innerHTML="Pick two players."; return; }
+      if(!a||!b||a.id===b.id){ el.textContent="Pick two players."; return; }
       el.innerHTML = `
         <div>${a.name}: ${a.projected} PPR</div>
         <div>${b.name}: ${b.projected} PPR</div>
@@ -309,5 +324,6 @@
 
     });
   </script>
+
 </body>
 </html>
