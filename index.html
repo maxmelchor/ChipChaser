@@ -1074,9 +1074,10 @@
       const { start, sit, reasons } = result;
 
       el.innerHTML = `
-        <div style="margin-bottom:4px;">
-          Start <strong>${start.name}</strong> over <strong>${sit.name}</strong>.
-        </div>
+       el.innerHTML = `
+    <div style="margin-bottom:4px; font-weight:600;">
+      Chip says: Start <strong>${start.name}</strong> over <strong>${sit.name}</strong>.
+    </div>
         <div style="color: var(--text-muted); margin-top:2px;">
           ${reasons.join(" ")}
         </div>
