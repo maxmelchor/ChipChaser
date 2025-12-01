@@ -1,383 +1,171 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>ChipChaser – Chase the championship. Not the news.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta
-    name="description"
-    content="ChipChaser is a real-time fantasy football intelligence platform with projections, matchup analytics, sit/start tools, and an AI-powered roadmap."
-  />
-
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #050816;
-      --accent: #a855f7;
-      --accent-soft: rgba(168, 85, 247, 0.15);
-      --text-main: #f9fafb;
-      --text-muted: #9ca3af;
-      --danger: #f97373;
-      --success: #4ade80;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica", sans-serif;
-      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
-      color: var(--text-main);
-      min-height: 100vh;
-    }
-
-    .page {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 20px 16px 60px;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 0 20px;
-    }
-
-    nav { display: flex; gap: 16px; }
-
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 14px;
-    }
-    nav a:hover { color: var(--text-main); }
-
-    .btn {
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #0b0213;
-    }
-
-    .btn-ghost {
-      background: #111827;
-      color: var(--text-muted);
-    }
-
-    main {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-
-    aside {
-      background: #111827;
-      border: 1px solid #1f2937;
-      padding: 14px;
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    }
-
-    .card {
-      background: #0f172a;
-      border: 1px solid #1f2937;
-      padding: 12px;
-      border-radius: 12px;
-      margin-bottom: 10px;
-    }
-
-    select {
-      width: 100%;
-      padding: 6px;
-      border-radius: 8px;
-      background: #111827;
-      border: 1px solid #1f2937;
-      color: white;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-
-    #sitStartResult {
-      margin-top: 8px;
-      background: #0f172a;
-      border: 1px solid #1f2937;
-      padding: 10px;
-      border-radius: 10px;
-      font-size: 13px;
-    }
-
-    /* Chat Button */
-    #chatChipBtn {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--accent);
-      color: #0b0213;
-      border: none;
-      padding: 14px 18px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-      z-index: 200;
-    }
-
-    /* Chat Panel */
-    #chipChatPanel {
-      position: fixed;
-      top: 0;
-      right: -380px;
-      width: 360px;
-      height: 100vh;
-      background: #0b0213;
-      border-left: 1px solid rgba(255,255,255,0.1);
-      box-shadow: -4px 0 20px rgba(0,0,0,0.5);
-      padding: 20px;
-      color: white;
-      transition: right 0.3s ease-out;
-      z-index: 300;
-    }
-
-    /* Floating Chip Animation */
-    @keyframes floatChip {
-      0%   { transform: translateY(0); }
-      50%  { transform: translateY(-10px); }
-      100% { transform: translateY(0); }
-    }
-
-    .chip-floating {
-      animation: floatChip 3.5s ease-in-out infinite;
-      filter: drop-shadow(0 4px 14px rgba(0,0,0,0.7));
-    }
-
-    .chip-hero-wrap {
-      position: relative;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      margin-bottom: 8px;
-      margin-top: -4px;
-    }
-
-    .chip-glow {
-      position: absolute;
-      bottom: 0;
-      width: 140px;
-      height: 40px;
-      background: radial-gradient(circle, rgba(168,85,247,0.65) 0, transparent 70%);
-      opacity: 0.8;
-      transform: translateY(18px);
-      filter: blur(10px);
-      z-index: 0;
-    }
-
-    .chip-odell {
-      position: relative;
-      z-index: 1;
-      width: 150px;
-    }
-
-    .chip-wink-hero {
-      margin-top: 24px;
-      max-width: 220px;
-    }
-
-    .player-art {
-      width: 64px;
-      height: 64px;
-      border-radius: 12px;
-      background: #020617;
-      object-fit: cover;
-      border: 1px solid #1f2937;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="page">
-
-    <!-- HEADER -->
-    <header>
-      <div class="logo-wrap" style="display:flex; align-items:center; gap:10px;">
-        <!-- transparent logo -->
-        <img src="chip-mascot-transparent.png" width="52" alt="Chip logo" />
-        <div style="line-height:1.1;">
-          <span style="font-weight:700; font-size:18px;">ChipChaser</span><br>
-          <span style="font-size:11px; color:#9ca3af;">Powered by Chip</span>
-        </div>
-      </div>
-
-      <nav>
-        <a href="#features">Features</a>
-        <a href="#how-it-works">How it works</a>
-        <a href="#faq">FAQ</a>
-        <button class="btn btn-ghost" data-open-login>Log in</button>
-        <button class="btn btn-primary" data-open-login>Get started</button>
-      </nav>
-    </header>
-
-    <!-- MAIN LAYOUT -->
-    <main>
-
-      <!-- LEFT SIDE -->
-      <section>
-        <h1 style="font-size:32px; line-height:1.15;">
-          Meet <strong>Chip</strong> — your fantasy co-pilot.
-        </h1>
-
-        <p style="color:var(--text-muted); margin-top:8px; font-size:15px;">
-          Real-time projections, matchup analytics, sit/start calls, and an AI roadmap.
-        </p>
-
-        <!-- Hero tagline -->
-        <p style="
-          margin-top: 28px;
-          font-family: Helvetica, sans-serif;
-          font-size: 28px;
-          font-weight: 700;
-          color: var(--text-main);
-          max-width: 420px;
-          line-height: 1.2;
-        ">
-          Stop doomscrolling fantasy outlooks.<br>
-          Start asking Chip.
-        </p>
-
-        <!-- Winking Chip with football under the tagline -->
-        <img
-          src="chip-wink-football.png"
-          alt="Chip winking with a thumbs up and a football"
-          class="chip-wink-hero"
-        />
-      </section>
-
-      <!-- RIGHT SIDE -->
-      <aside>
-
-        <!-- Odell-style Chip above Sit/Start -->
-        <div class="chip-hero-wrap">
-          <div class="chip-glow"></div>
-          <img
-            src="chip-odell.png"
-            alt="Chip making a one-handed catch"
-            class="chip-floating chip-odell"
-          />
-        </div>
-
-        <!-- SIT/START -->
-        <div class="card">
-          <h3 style="margin-bottom:6px;">Chip’s Sit/Start Assistant</h3>
-
-          <label>Player A</label>
-          <select id="playerA"></select>
-
-          <label>Player B</label>
-          <select id="playerB"></select>
-
-          <button id="sitStartBtn" class="btn btn-primary" style="width:100%; margin-top:8px;">
-            Who should I start?
-          </button>
-
-          <div id="sitStartResult">
-            Pick two players and Chip will decide.
-          </div>
-        </div>
-
-        <!-- MATCHUPS -->
-        <div class="card">
-          <h3 style="margin-bottom:6px;">Matchup Analytics</h3>
-          <div id="matchupGrid" style="font-size:13px; color:var(--text-muted);"></div>
-        </div>
-
-        <!-- PLAYER PROPS / PLAYER IMAGE -->
-        <div class="card">
-          <h3 style="margin-bottom:6px;">Player Props</h3>
-          <div style="display:flex; align-items:center; gap:12px;">
-            <img
-              id="playerArt"
-              src="chip-thinking.png"
-              alt="Chip thinking"
-              class="player-art"
-              onerror="this.src='chip-thinking.png';"
-            />
-            <div id="playerArtMeta" style="font-size:13px; color:var(--text-muted);">
-              Chip will show who you should start here.
-            </div>
-          </div>
-        </div>
-
-      </aside>
-    </main>
-
-    <!-- FEATURES -->
-    <section id="features" style="margin-top:40px;">
-      <h2>Features</h2>
-      <p style="color:var(--text-muted);">Projection engine, matchup breakdowns, AI roadmap.</p>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section id="how-it-works" style="margin-top:40px;">
-      <h2>How it works</h2>
-      <p style="color:var(--text-muted);">Connect, ask Chip questions, win more matchups.</p>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq" style="margin-top:40px;">
-      <h2>FAQ</h2>
-      <p style="color:var(--text-muted);">More coming soon.</p>
-    </section>
-
-  </div>
-
-  <!-- CHAT BUTTON -->
-  <button id="chatChipBtn">💬 Chat with Chip</button>
-
-  <!-- CHAT PANEL -->
-  <div id="chipChatPanel">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h2>Chat with Chip</h2>
-      <button id="closeChipChat" style="background:none; border:none; font-size:22px; color:#aaa; cursor:pointer;">×</button>
-    </div>
-
-    <p style="color:#aaa; font-size:14px; margin-top:8px;">
-      This is a preview. Soon Chip will answer your fantasy questions.
-    </p>
-
-    <textarea
-      style="margin-top:12px; width:100%; height:120px; background:#111827; border:1px solid #1f2937; border-radius:8px; color:white; padding:10px; resize:none;"
-      placeholder="Ask Chip anything... (coming soon)"
-    ></textarea>
-
-    <button disabled style="margin-top:12px; width:100%; padding:10px; border-radius:8px; background:#444; color:#777;">
-      AI Coming Soon
-    </button>
-  </div>
-
   <!-- JAVASCRIPT -->
   <script>
-    // MOCK PLAYER DATA
-    const players = [
-      { id:"amonra", name:"Amon-Ra St. Brown", position:"WR", team:"DET", projected:18.5, matchupRank:18, volatility:"low" },
-      { id:"jsn", name:"Jaxon Smith-Njigba", position:"WR", team:"SEA", projected:16.1, matchupRank:12, volatility:"high" },
-      { id:"devonta", name:"DeVonta Smith", position:"WR", team:"PHI", projected:15.1, matchupRank:10, volatility:"high" }
+    // -----------------------------
+    // CORNERBACKS & LOOKUP
+    // -----------------------------
+    const cornerbacks = [
+      { id: "sauce_gardner", name: "Sauce Gardner", team: "NYJ", coverageTier: "elite" },
+      { id: "generic_cb", name: "Generic CB", team: "ANY", coverageTier: "average" }
     ];
 
+    const cornersById = Object.fromEntries(
+      cornerbacks.map(cb => [cb.id, cb])
+    );
+
+    // -----------------------------
+    // RAW PLAYER DATA (rookie -> 2024)
+    // -----------------------------
+    const rawPlayers = [
+      {
+        id: "amonra",
+        name: "Amon-Ra St. Brown",
+        position: "WR",
+        team: "DET",
+        age: 25,
+        currentCbId: "generic_cb",
+        seasons: [
+          // Example PPR totals (you can tweak with real data later)
+          { year: 2021, games: 17, ppr: 227.3 },
+          { year: 2022, games: 16, ppr: 267.6 },
+          { year: 2023, games: 16, ppr: 329.0 },
+          { year: 2024, games: 17, ppr: 310.5 }
+        ],
+        cbSplits: [
+          // Example split vs Sauce – he's fine here
+          { cbId: "sauce_gardner", games: 1, ppr: 17.0 }
+        ]
+      },
+      {
+        id: "jsn",
+        name: "Jaxon Smith-Njigba",
+        position: "WR",
+        team: "SEA",
+        age: 23,
+        // This week we say he's facing Sauce
+        currentCbId: "sauce_gardner",
+        seasons: [
+          { year: 2023, games: 17, ppr: 163.4 },
+          { year: 2024, games: 17, ppr: 201.0 }
+        ],
+        cbSplits: [
+          // Example: JSN has struggled vs Sauce historically
+          { cbId: "sauce_gardner", games: 2, ppr: 16.0 } // 8 PPR/g vs Sauce
+        ]
+      },
+      {
+        id: "devonta",
+        name: "DeVonta Smith",
+        position: "WR",
+        team: "PHI",
+        age: 25,
+        currentCbId: "generic_cb",
+        seasons: [
+          { year: 2021, games: 17, ppr: 185.6 },
+          { year: 2022, games: 17, ppr: 248.4 },
+          { year: 2023, games: 17, ppr: 230.6 },
+          { year: 2024, games: 17, ppr: 240.0 }
+        ],
+        cbSplits: []
+      }
+    ];
+
+    // -----------------------------
+    // PROJECTION ENGINE (2025 PPR)
+    // -----------------------------
+    function projectPpr2025Base(player) {
+      const seasons = [...player.seasons].sort((a, b) => a.year - b.year);
+      const n = seasons.length;
+      const recent = seasons[n - 1];
+      const prev   = seasons[n - 2];
+      const prev2  = seasons[n - 3];
+
+      const ppg = (s) => s ? (s.ppr / s.games) : null;
+
+      const ppgRecent = ppg(recent) ?? 0;
+      const ppgPrev   = ppg(prev)   ?? ppgRecent;
+      const ppgPrev2  = ppg(prev2)  ?? ppgPrev;
+
+      // Weighted average: most recent seasons matter more
+      let basePpg =
+        0.6 * ppgRecent +
+        0.3 * ppgPrev +
+        0.1 * ppgPrev2;
+
+      // Age curve: simple version
+      if (player.age <= 25) {
+        basePpg *= 1.05;      // young & ascending
+      } else if (player.age >= 29) {
+        basePpg *= 0.95;      // gentle decline
+      }
+
+      const seasonPpr = basePpg * 17; // assume 17 games for 2025
+
+      return { basePpg, seasonPpr };
+    }
+
+    function adjustForCorner(basePpg, player) {
+      const cbId = player.currentCbId;
+      if (!cbId) return basePpg;
+
+      const cb = cornersById[cbId];
+      let adjPpg = basePpg;
+
+      // 1) Generic coverage tier adjustment
+      if (cb) {
+        if (cb.coverageTier === "elite") {
+          adjPpg *= 0.90;
+        } else if (cb.coverageTier === "good") {
+          adjPpg *= 0.95;
+        } else if (cb.coverageTier === "bad") {
+          adjPpg *= 1.05;
+        }
+        // "average" → no change
+      }
+
+      // 2) WR vs CB specific splits (if enough games)
+      const split = (player.cbSplits || []).find(s => s.cbId === cbId);
+      if (split && split.games >= 2) {
+        const splitPpg = split.ppr / split.games;
+        // Blend in a bit of history so we don't overfit
+        adjPpg = 0.8 * adjPpg + 0.2 * splitPpg;
+      }
+
+      return adjPpg;
+    }
+
+    // Build the players array used by the UI
+    const players = rawPlayers.map((p) => {
+      const base = projectPpr2025Base(p);
+      const vsCbPpg = adjustForCorner(base.basePpg, p);
+
+      return {
+        id: p.id,
+        name: p.name,
+        position: p.position,
+        team: p.team,
+        age: p.age,
+        // This is what drives sit/start decisions
+        projected: Number(vsCbPpg.toFixed(1)),       // 2025 PPR per game vs this CB
+        projectedBasePpg: Number(base.basePpg.toFixed(1)),  // 2025 neutral PPG
+        projectedSeason: Number(base.seasonPpr.toFixed(1)), // 2025 full season
+        matchupCbId: p.currentCbId
+      };
+    });
+
+    // -----------------------------
+    // HELPERS & UI WIRING
+    // -----------------------------
     function getPlayer(id){
       return players.find(p => p.id === id);
     }
 
     function comparePlayers(a,b){
       if(!a || !b || a.id === b.id) return null;
+
+      // Higher projected PPG vs matchup wins
       return a.projected > b.projected
-        ? { start:a, sit:b, reason:`Chip says start ${a.name} — projection edge.` }
-        : { start:b, sit:a, reason:`Chip says start ${b.name} — projection edge.` };
+        ? { start:a, sit:b, reason:`Chip says start ${a.name} — better 2025 PPR vs this matchup.` }
+        : { start:b, sit:a, reason:`Chip says start ${b.name} — better 2025 PPR vs this matchup.` };
     }
 
     function populatePlayerSelects(){
@@ -386,12 +174,12 @@
       players.forEach((p,i)=>{
         const o1 = document.createElement("option");
         o1.value = p.id;
-        o1.textContent = p.name;
+        o1.textContent = `${p.name} (${p.position} • ${p.team})`;
         if(i === 0) o1.selected = true;
 
         const o2 = document.createElement("option");
         o2.value = p.id;
-        o2.textContent = p.name;
+        o2.textContent = `${p.name} (${p.position} • ${p.team})`;
         if(i === 1) o2.selected = true;
 
         A.appendChild(o1);
@@ -405,12 +193,27 @@
         el.textContent = "Pick two players.";
         return;
       }
+
+      const cbName = (p) => {
+        const cb = cornersById[p.matchupCbId];
+        return cb ? cb.name : "Unknown CB";
+      };
+
       el.innerHTML = `
-        <div>${a.name}: ${a.projected} PPR</div>
-        <div>${b.name}: ${b.projected} PPR</div>
+        <div style="margin-bottom:8px;">
+          <strong>${a.name}</strong><br>
+          Base: ${a.projectedBasePpg} PPR/g → vs ${cbName(a)}: <strong>${a.projected}</strong> PPR/g
+        </div>
+        <div>
+          <strong>${b.name}</strong><br>
+          Base: ${b.projectedBasePpg} PPR/g → vs ${cbName(b)}: <strong>${b.projected}</strong> PPR/g
+        </div>
       `;
     }
 
+    // -----------------------------
+    // INIT
+    // -----------------------------
     document.addEventListener("DOMContentLoaded", () => {
 
       populatePlayerSelects();
@@ -452,13 +255,18 @@
         playerArtMeta.innerHTML = `
           <div><strong>${startPlayer.name}</strong></div>
           <div>${startPlayer.position} • ${startPlayer.team}</div>
-          <div style="margin-top:4px;">Projection: ${startPlayer.projected} PPR</div>
+          <div style="margin-top:4px;">
+            2025 projection vs matchup: ${startPlayer.projected} PPR/g
+          </div>
         `;
       }
 
       A.addEventListener("change", recompute);
       B.addEventListener("change", recompute);
       btn.addEventListener("click", recompute);
+
+      // Initial render
+      recompute();
 
       // CHAT PANEL LOGIC
       document.getElementById("chatChipBtn").addEventListener("click", () => {
@@ -471,6 +279,3 @@
 
     });
   </script>
-
-</body>
-</html>
