@@ -70,6 +70,12 @@
       color: var(--text-muted);
     }
 
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
     aside {
       background: #111827;
       border: 1px solid #1f2937;
@@ -142,13 +148,54 @@
     /* Floating Chip Animation */
     @keyframes floatChip {
       0%   { transform: translateY(0); }
-      50%  { transform: translateY(-8px); }
+      50%  { transform: translateY(-10px); }
       100% { transform: translateY(0); }
     }
 
     .chip-floating {
       animation: floatChip 3.5s ease-in-out infinite;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+      filter: drop-shadow(0 4px 14px rgba(0,0,0,0.7));
+    }
+
+    .chip-hero-wrap {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 8px;
+      margin-top: -4px;
+    }
+
+    .chip-glow {
+      position: absolute;
+      bottom: 0;
+      width: 140px;
+      height: 40px;
+      background: radial-gradient(circle, rgba(168,85,247,0.65) 0, transparent 70%);
+      opacity: 0.8;
+      transform: translateY(18px);
+      filter: blur(10px);
+      z-index: 0;
+    }
+
+    .chip-odell {
+      position: relative;
+      z-index: 1;
+      width: 150px;
+    }
+
+    .chip-wink-hero {
+      margin-top: 24px;
+      max-width: 220px;
+    }
+
+    .player-art {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      background: #020617;
+      object-fit: cover;
+      border: 1px solid #1f2937;
     }
   </style>
 </head>
@@ -159,7 +206,8 @@
     <!-- HEADER -->
     <header>
       <div class="logo-wrap" style="display:flex; align-items:center; gap:10px;">
-        <img src="chip-mascot-transparent.png" width="52" alt="Chip" />
+        <!-- transparent logo -->
+        <img src="chip-mascot-transparent.png" width="52" alt="Chip logo" />
         <div style="line-height:1.1;">
           <span style="font-weight:700; font-size:18px;">ChipChaser</span><br>
           <span style="font-size:11px; color:#9ca3af;">Powered by Chip</span>
@@ -176,7 +224,7 @@
     </header>
 
     <!-- MAIN LAYOUT -->
-    <main style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+    <main>
 
       <!-- LEFT SIDE -->
       <section>
@@ -188,7 +236,7 @@
           Real-time projections, matchup analytics, sit/start calls, and an AI roadmap.
         </p>
 
-        <!-- Enlarged Tagline Filling Left Space -->
+        <!-- Hero tagline -->
         <p style="
           margin-top: 28px;
           font-family: Helvetica, sans-serif;
@@ -201,16 +249,27 @@
           Stop doomscrolling fantasy outlooks.<br>
           Start asking Chip.
         </p>
+
+        <!-- Winking Chip with football under the tagline -->
+        <img
+          src="chip-wink-football.png"
+          alt="Chip winking with a thumbs up and a football"
+          class="chip-wink-hero"
+        />
       </section>
 
       <!-- RIGHT SIDE -->
       <aside>
 
-        <!-- FLOATING CHIP ABOVE CARD -->
-        <img src="chip-mascot-transparent.png"
-             alt="Chip"
-             class="chip-floating"
-             style="width:140px; margin:0 auto 18px; display:block;" />
+        <!-- Odell-style Chip above Sit/Start -->
+        <div class="chip-hero-wrap">
+          <div class="chip-glow"></div>
+          <img
+            src="chip-odell.png"
+            alt="Chip making a one-handed catch"
+            class="chip-floating chip-odell"
+          />
+        </div>
 
         <!-- SIT/START -->
         <div class="card">
@@ -235,6 +294,23 @@
         <div class="card">
           <h3 style="margin-bottom:6px;">Matchup Analytics</h3>
           <div id="matchupGrid" style="font-size:13px; color:var(--text-muted);"></div>
+        </div>
+
+        <!-- PLAYER PROPS / PLAYER IMAGE -->
+        <div class="card">
+          <h3 style="margin-bottom:6px;">Player Props</h3>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <img
+              id="playerArt"
+              src="chip-thinking.png"
+              alt="Chip thinking"
+              class="player-art"
+              onerror="this.src='chip-thinking.png';"
+            />
+            <div id="playerArtMeta" style="font-size:13px; color:var(--text-muted);">
+              Chip will show who you should start here.
+            </div>
+          </div>
         </div>
 
       </aside>
@@ -293,7 +369,9 @@
       { id:"devonta", name:"DeVonta Smith", position:"WR", team:"PHI", projected:15.1, matchupRank:10, volatility:"high" }
     ];
 
-    function getPlayer(id){ return players.find(p => p.id === id); }
+    function getPlayer(id){
+      return players.find(p => p.id === id);
+    }
 
     function comparePlayers(a,b){
       if(!a || !b || a.id === b.id) return null;
@@ -306,15 +384,27 @@
       const A = document.getElementById("playerA");
       const B = document.getElementById("playerB");
       players.forEach((p,i)=>{
-        const o1=document.createElement("option"); o1.value=p.id; o1.textContent=p.name; if(i===0)o1.selected=true;
-        const o2=document.createElement("option"); o2.value=p.id; o2.textContent=p.name; if(i===1)o2.selected=true;
-        A.appendChild(o1); B.appendChild(o2);
+        const o1 = document.createElement("option");
+        o1.value = p.id;
+        o1.textContent = p.name;
+        if(i === 0) o1.selected = true;
+
+        const o2 = document.createElement("option");
+        o2.value = p.id;
+        o2.textContent = p.name;
+        if(i === 1) o2.selected = true;
+
+        A.appendChild(o1);
+        B.appendChild(o2);
       });
     }
 
     function renderMatchups(a,b){
       const el = document.getElementById("matchupGrid");
-      if(!a||!b||a.id===b.id){ el.textContent="Pick two players."; return; }
+      if(!a || !b || a.id === b.id){
+        el.textContent = "Pick two players.";
+        return;
+      }
       el.innerHTML = `
         <div>${a.name}: ${a.projected} PPR</div>
         <div>${b.name}: ${b.projected} PPR</div>
@@ -329,13 +419,41 @@
       const B = document.getElementById("playerB");
       const btn = document.getElementById("sitStartBtn");
       const result = document.getElementById("sitStartResult");
+      const playerArt = document.getElementById("playerArt");
+      const playerArtMeta = document.getElementById("playerArtMeta");
 
       function recompute(){
-        const a=getPlayer(A.value), b=getPlayer(B.value);
-        const r=comparePlayers(a,b);
-        if(!r){ result.textContent="Pick two players."; return; }
+        const a = getPlayer(A.value);
+        const b = getPlayer(B.value);
+        const r = comparePlayers(a,b);
+
+        if(!r){
+          result.textContent = "Pick two players and Chip will decide.";
+          renderMatchups(a,b);
+          playerArt.src = "chip-thinking.png";
+          playerArt.alt = "Chip thinking";
+          playerArtMeta.textContent = "Chip will show who you should start here.";
+          return;
+        }
+
         result.textContent = r.reason;
         renderMatchups(a,b);
+
+        const startPlayer = r.start;
+        // Try to load a per-player image like player-amonra.png; fall back to Chip thinking
+        playerArt.src = `player-${startPlayer.id}.png`;
+        playerArt.alt = `${startPlayer.name} portrait`;
+        playerArt.onerror = function(){
+          this.onerror = null;
+          this.src = "chip-thinking.png";
+          this.alt = "Chip thinking";
+        };
+
+        playerArtMeta.innerHTML = `
+          <div><strong>${startPlayer.name}</strong></div>
+          <div>${startPlayer.position} • ${startPlayer.team}</div>
+          <div style="margin-top:4px;">Projection: ${startPlayer.projected} PPR</div>
+        `;
       }
 
       A.addEventListener("change", recompute);
