@@ -197,6 +197,20 @@
       object-fit: cover;
       border: 1px solid #1f2937;
     }
+
+    /* simple bar "chart" */
+    .bar-row {
+      margin-top: 4px;
+      background: #020617;
+      border-radius: 999px;
+      overflow: hidden;
+      height: 6px;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--accent);
+    }
   </style>
 </head>
 
@@ -287,7 +301,7 @@
           </div>
         </div>
 
-        <!-- MATCHUPS -->
+        <!-- MATCHUPS (with simple "chart") -->
         <div class="card">
           <h3 style="margin-bottom:6px;">Matchup Analytics</h3>
           <div id="matchupGrid" style="font-size:13px; color:var(--text-muted);"></div>
@@ -306,6 +320,14 @@
             <div id="playerArtMeta" style="font-size:13px; color:var(--text-muted);">
               Chip will show who you should start here.
             </div>
+          </div>
+        </div>
+
+        <!-- EXPLANATION CARD -->
+        <div class="card">
+          <h3 style="margin-bottom:6px;">Why Chip picked this</h3>
+          <div id="chipExplanation" style="font-size:13px; color:var(--text-muted);">
+            Run a comparison and Chip will break down the call.
           </div>
         </div>
 
@@ -343,16 +365,21 @@
     </div>
 
     <p style="color:#aaa; font-size:14px; margin-top:8px;">
-      This is a preview. Soon Chip will answer your fantasy questions.
+      This is a prototype. Chip uses his 2025 projections, CB matchups, and history to answer questions.
     </p>
 
+    <div id="chipChatLog" style="margin-top:12px; font-size:13px; color:#9ca3af;">
+      Ask something like: “Why is JSN a sit vs Amon-Ra?” or “What does Chip think about DeVonta this week?”
+    </div>
+
     <textarea
+      id="chipChatInput"
       style="margin-top:12px; width:100%; height:120px; background:#111827; border:1px solid #1f2937; border-radius:8px; color:white; padding:10px; resize:none;"
-      placeholder="Ask Chip anything... (coming soon)"
+      placeholder="Ask Chip anything about these players or their matchups..."
     ></textarea>
 
-    <button disabled style="margin-top:12px; width:100%; padding:10px; border-radius:8px; background:#444; color:#777;">
-      AI Coming Soon
+    <button id="chipChatSendBtn" style="margin-top:12px; width:100%; padding:10px; border-radius:8px; background:var(--accent); color:#0b0213; border:none; cursor:pointer;">
+      Ask Chip (prototype)
     </button>
   </div>
 
@@ -380,6 +407,7 @@
         position: "WR",
         team: "DET",
         age: 25,
+        currentWeek: 1,
         currentCbId: "generic_cb",
         seasons: [
           { year: 2021, games: 17, ppr: 227.3 },
@@ -397,6 +425,7 @@
         position: "WR",
         team: "SEA",
         age: 23,
+        currentWeek: 1,
         currentCbId: "sauce_gardner",
         seasons: [
           { year: 2023, games: 17, ppr: 163.4 },
@@ -412,6 +441,7 @@
         position: "WR",
         team: "PHI",
         age: 25,
+        currentWeek: 1,
         currentCbId: "generic_cb",
         seasons: [
           { year: 2021, games: 17, ppr: 185.6 },
@@ -493,7 +523,8 @@
         projected: Number(vsCbPpg.toFixed(1)),          // vs matchup
         projectedBasePpg: Number(base.basePpg.toFixed(1)),
         projectedSeason: Number(base.seasonPpr.toFixed(1)),
-        matchupCbId: p.currentCbId
+        matchupCbId: p.currentCbId,
+        week: p.currentWeek
       };
     });
 
@@ -540,20 +571,46 @@
         return cb ? cb.name : "Unknown CB";
       };
 
+      const maxPpg = Math.max(a.projected, b.projected, 0.1);
+
+      const barWidth = (p) => (p.projected / maxPpg) * 100;
+
       el.innerHTML = `
         <div style="margin-bottom:8px;">
-          <strong>${a.name}</strong><br>
-          Base: ${a.projectedBasePpg} PPR/g → vs ${cbName(a)}: <strong>${a.projected}</strong> PPR/g
+          <strong>${a.name}</strong> — Week ${a.week} vs ${cbName(a)}<br>
+          Base: ${a.projectedBasePpg} PPR/g → matchup: <strong>${a.projected}</strong> PPR/g
+          <div class="bar-row"><div class="bar-fill" style="width:${barWidth(a)}%;"></div></div>
         </div>
         <div>
-          <strong>${b.name}</strong><br>
-          Base: ${b.projectedBasePpg} PPR/g → vs ${cbName(b)}: <strong>${b.projected}</strong> PPR/g
+          <strong>${b.name}</strong> — Week ${b.week} vs ${cbName(b)}<br>
+          Base: ${b.projectedBasePpg} PPR/g → matchup: <strong>${b.projected}</strong> PPR/g
+          <div class="bar-row"><div class="bar-fill" style="width:${barWidth(b)}%;"></div></div>
         </div>
       `;
     }
 
+    function buildExplanation(startPlayer, sitPlayer){
+      const cb = cornersById[startPlayer.matchupCbId];
+      const cbName = cb ? cb.name : "his matchup CB";
+
+      const diff = (startPlayer.projected - sitPlayer.projected).toFixed(1);
+      const baseDiff = (startPlayer.projectedBasePpg - sitPlayer.projectedBasePpg).toFixed(1);
+
+      return `
+        Chip is leaning <strong>${startPlayer.name}</strong> over ${sitPlayer.name}.
+        <br><br>
+        • Neutral field, ${startPlayer.name} projects at <strong>${startPlayer.projectedBasePpg}</strong> PPR/g vs ${sitPlayer.projectedBasePpg} for ${sitPlayer.name}. (Δ ${baseDiff} PPR/g)
+        <br>
+        • This week, ${startPlayer.name} faces <strong>${cbName}</strong>, which adjusts him to <strong>${startPlayer.projected}</strong> PPR/g.
+        <br>
+        • ${sitPlayer.name} settles at <strong>${sitPlayer.projected}</strong> PPR/g in his matchup.
+        <br><br>
+        Net: Chip sees about a <strong>${diff} PPR/g</strong> edge for ${startPlayer.name} in this specific matchup.
+      `;
+    }
+
     // -----------------------------
-    // INIT (runs immediately since script is at bottom)
+    // INIT (script is at bottom, so DOM is ready)
     // -----------------------------
     const A = document.getElementById("playerA");
     const B = document.getElementById("playerB");
@@ -561,8 +618,9 @@
     const result = document.getElementById("sitStartResult");
     const playerArt = document.getElementById("playerArt");
     const playerArtMeta = document.getElementById("playerArtMeta");
+    const explanationEl = document.getElementById("chipExplanation");
 
-    if (A && B && btn && result && playerArt && playerArtMeta) {
+    if (A && B && btn && result && playerArt && playerArtMeta && explanationEl) {
       populatePlayerSelects(A, B);
 
       function recompute(){
@@ -576,13 +634,17 @@
           playerArt.src = "chip-thinking.png";
           playerArt.alt = "Chip thinking";
           playerArtMeta.textContent = "Chip will show who you should start here.";
+          explanationEl.innerHTML = "Run a comparison and Chip will break down the call.";
           return;
         }
+
+        const startPlayer = r.start;
+        const sitPlayer = r.sit;
 
         result.textContent = r.reason;
         renderMatchups(a,b);
 
-        const startPlayer = r.start;
+        // Player art – looks for player-<id>.png, else falls back to Chip thinking
         playerArt.src = `player-${startPlayer.id}.png`;
         playerArt.alt = `${startPlayer.name} portrait`;
         playerArt.onerror = function(){
@@ -598,6 +660,8 @@
             2025 projection vs matchup: ${startPlayer.projected} PPR/g
           </div>
         `;
+
+        explanationEl.innerHTML = buildExplanation(startPlayer, sitPlayer);
       }
 
       A.addEventListener("change", recompute);
@@ -610,10 +674,15 @@
       console.error("ChipChaser: key UI elements not found.");
     }
 
-    // CHAT PANEL LOGIC
+    // -----------------------------
+    // CHAT PANEL LOGIC (Ask Chip)
+    // -----------------------------
     const chatBtn = document.getElementById("chatChipBtn");
     const chatPanel = document.getElementById("chipChatPanel");
     const closeChat = document.getElementById("closeChipChat");
+    const chatInput = document.getElementById("chipChatInput");
+    const chatSend = document.getElementById("chipChatSendBtn");
+    const chatLog = document.getElementById("chipChatLog");
 
     if (chatBtn && chatPanel && closeChat) {
       chatBtn.addEventListener("click", () => {
@@ -621,6 +690,65 @@
       });
       closeChat.addEventListener("click", () => {
         chatPanel.style.right = "-380px";
+      });
+    }
+
+    function handleChipQuestion() {
+      if (!chatInput || !chatLog) return;
+      const q = chatInput.value.trim();
+      if (!q) return;
+
+      const lower = q.toLowerCase();
+
+      // Try to detect players involved
+      const a = A ? getPlayer(A.value) : null;
+      const b = B ? getPlayer(B.value) : null;
+      const r = (a && b) ? comparePlayers(a,b) : null;
+
+      let answer = "";
+
+      if (r && (lower.includes("why") || lower.includes("reason") || lower.includes("explain"))) {
+        answer = buildExplanation(r.start, r.sit);
+      } else if (a && lower.includes(a.name.toLowerCase().split(" ")[0])) {
+        answer = `
+          For <strong>${a.name}</strong>, Chip projects
+          <strong>${a.projectedBasePpg}</strong> PPR/g on a neutral field and
+          <strong>${a.projected}</strong> PPR/g in this week's matchup.
+        `;
+      } else if (b && lower.includes(b.name.toLowerCase().split(" ")[0])) {
+        answer = `
+          For <strong>${b.name}</strong>, Chip projects
+          <strong>${b.projectedBasePpg}</strong> PPR/g on a neutral field and
+          <strong>${b.projected}</strong> PPR/g in this week's matchup.
+        `;
+      } else if (r && (lower.includes("who") || lower.includes("start") || lower.includes("sit"))) {
+        answer = r.reason + "<br><br>" + buildExplanation(r.start, r.sit);
+      } else {
+        answer = `
+          Chip is currently focused on <strong>Amon-Ra St. Brown</strong>, 
+          <strong>Jaxon Smith-Njigba</strong>, and <strong>DeVonta Smith</strong>.
+          Ask something like “Why is JSN a sit vs Amon-Ra?” or “What does Chip think about DeVonta this week?”
+        `;
+      }
+
+      chatLog.innerHTML = `
+        <div style="margin-bottom:6px; color:#e5e7eb;">
+          <strong>You:</strong> ${q}
+        </div>
+        <div>
+          <strong>Chip:</strong> ${answer}
+        </div>
+      `;
+
+      chatInput.value = "";
+    }
+
+    if (chatSend && chatInput && chatLog) {
+      chatSend.addEventListener("click", handleChipQuestion);
+      chatInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+          handleChipQuestion();
+        }
       });
     }
   </script>
