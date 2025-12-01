@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="ChipChaser is a real-time fantasy football intelligence platform with projections, matchup analytics, sit/start analysis, and ESPN/Sleeper sync."
+    content="ChipChaser is a real-time fantasy football intelligence platform with projections, matchup analytics, sit/start AI, and ESPN/Sleeper sync."
   />
   <style>
     * {
@@ -17,35 +17,22 @@
 
     :root {
       --bg: #050816;
-      --bg-alt: #0c1020;
-      --card: #111827;
-      --accent: #a855f7; /* purple */
-      --accent-soft: rgba(168, 85, 247, 0.12);
-      --accent-strong: rgba(168, 85, 247, 0.25);
+      --accent: #a855f7;
+      --accent-soft: rgba(168, 85, 247, 0.15);
       --text-main: #f9fafb;
       --text-muted: #9ca3af;
-      --border-subtle: #1f2933;
       --danger: #f97373;
       --success: #4ade80;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica", "Segoe UI",
-        sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica", sans-serif;
       background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
       color: var(--text-main);
       min-height: 100vh;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
+    img { max-width: 100%; display:block; }
 
     .page {
       max-width: 1120px;
@@ -53,1220 +40,97 @@
       padding: 20px 16px 60px;
     }
 
-    /* HEADER / NAV */
-
+    /* HEADER + NAV */
     header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 8px 0 18px;
-    }
-
-    .logo-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-wrap img {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      object-fit: cover;
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .brand-text span:first-child {
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      font-size: 18px;
-    }
-
-    .brand-text span:last-child {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:10px 0 20px;
     }
 
     nav {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      font-size: 14px;
+      display:flex;
+      gap:16px;
     }
 
-    nav a.nav-link {
-      color: var(--text-muted);
-      padding: 4px 0;
-      position: relative;
+    nav a {
+      color:var(--text-muted);
+      text-decoration:none;
+      font-size:14px;
+      position:relative;
     }
 
-    nav a.nav-link::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -4px;
-      width: 0;
-      height: 2px;
-      background: var(--accent);
-      transition: width 0.18s ease-out;
-    }
-
-    nav a.nav-link:hover {
-      color: var(--text-main);
-    }
-
-    nav a.nav-link:hover::after {
-      width: 16px;
-    }
-
-    .nav-cta {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-left: 10px;
-    }
+    nav a:hover { color:var(--text-main); }
 
     .btn {
-      border: none;
-      border-radius: 999px;
-      padding: 7px 14px;
-      font-size: 13px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out,
-        background 0.12s ease-out, opacity 0.12s ease-out;
-      white-space: nowrap;
+      padding:8px 14px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:600;
     }
 
     .btn-primary {
-      background: var(--accent);
-      color: #0b0213;
-      font-weight: 600;
-      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.6),
-        0 14px 35px rgba(59, 130, 246, 0.18);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 18px 40px rgba(59, 130, 246, 0.28);
+      background:var(--accent);
+      color:#0b0213;
     }
 
     .btn-ghost {
-      background: transparent;
-      color: var(--text-muted);
-      border-radius: 999px;
-      padding-inline: 10px;
+      background:#111827;
+      color:var(--text-muted);
     }
 
-    .btn-ghost:hover {
-      color: var(--text-main);
-      background: rgba(15, 23, 42, 0.9);
+    /* RIGHT PANEL */
+    aside {
+      background:#111827;
+      border:1px solid #1f2937;
+      padding:14px;
+      border-radius:16px;
+      box-shadow:0 20px 40px rgba(0,0,0,0.4);
     }
 
-    /* LAYOUT */
+    .card { background:#0f172a; border:1px solid #1f2937; padding:12px; border-radius:12px; margin-bottom:10px; }
 
-    main {
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr);
-      gap: 28px;
-      align-items: flex-start;
-      margin-top: 12px;
+    select {
+      width:100%;
+      padding:6px;
+      border-radius:8px;
+      background:#111827;
+      border:1px solid #1f2937;
+      color:white;
+      margin-bottom:8px;
+      font-size:14px;
     }
 
-    @media (max-width: 860px) {
-      nav {
-        display: none;
-      }
-
-      header {
-        justify-content: space-between;
-      }
-
-      main {
-        grid-template-columns: minmax(0, 1fr);
-      }
+    #sitStartResult {
+      margin-top:8px;
+      background:#0f172a;
+      border:1px solid #1f2937;
+      padding:10px;
+      border-radius:10px;
+      font-size:13px;
     }
 
-    /* HERO LEFT */
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      padding: 3px 10px 3px 4px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      margin-bottom: 12px;
-      gap: 8px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .eyebrow-pill {
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    h1 {
-      font-size: clamp(30px, 3.1vw, 38px);
-      line-height: 1.05;
-      margin-bottom: 10px;
-    }
-
-    h1 span.highlight {
-      background: radial-gradient(circle at top left, #f9fafb, #e5e7eb);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .hero-subtitle {
-      color: var(--text-muted);
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 16px;
-      max-width: 460px;
-    }
-
-    .hero-cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .hero-meta span {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--success);
-      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.22);
-    }
-
-    /* RIGHT: APP DEMO CARD */
-
-    .right-panel {
-      background: radial-gradient(circle at top right, #111827 0, #020617 65%);
-      border-radius: 18px;
-      padding: 14px 14px 16px;
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.9);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .right-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      font-size: 12px;
-    }
-
-    .right-header span:first-child {
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      font-size: 10px;
-    }
-
-    .live-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(22, 163, 74, 0.1);
-      color: var(--success);
-      font-size: 11px;
-    }
-
-    .right-body {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-      gap: 12px;
-    }
-
-    @media (max-width: 640px) {
-      .right-body {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .card {
-      background: linear-gradient(145deg, #020617, #020617);
-      border-radius: 14px;
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      padding: 10px 11px;
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      margin-bottom: 6px;
-    }
-
-    .card-title {
-      font-weight: 600;
-    }
-
-    .card-sub {
-      color: var(--text-muted);
-      font-size: 10px;
-    }
-
-    .badge {
-      font-size: 10px;
-      padding: 3px 7px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      color: var(--text-muted);
-    }
-
-    .badge.primary {
-      background: var(--accent-soft);
-      color: var(--accent);
-      border-color: var(--accent-strong);
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-      margin-bottom: 8px;
-      font-size: 12px;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 3px;
-      color: var(--text-muted);
-      font-size: 11px;
-    }
-
-    select,
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-      width: 100%;
-      padding: 6px 9px;
-      border-radius: 9px;
-      border: 1px solid var(--border-subtle);
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--text-main);
-      font-size: 12px;
-    }
-
-    select:focus,
-    input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.4);
-    }
-
-    .btn-block {
-      width: 100%;
-      justify-content: center;
-      margin-top: 4px;
-      padding-top: 7px;
-      padding-bottom: 7px;
-    }
-
-    .sitstart-result {
-      margin-top: 8px;
-      padding: 8px 9px;
-      border-radius: 10px;
-      background: radial-gradient(circle at top left, #111827, #020617);
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      font-size: 11px;
-      line-height: 1.45;
-    }
-
-    .sitstart-result strong {
-      color: var(--accent);
-    }
-
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 6px;
-    }
-
-    .tiny-pill {
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: rgba(31, 41, 55, 0.9);
-      color: var(--text-muted);
-    }
-
-    .tiny-pill.good {
-      color: var(--success);
-      background: rgba(22, 163, 74, 0.15);
-    }
-
-    .tiny-pill.bad {
-      color: var(--danger);
-      background: rgba(248, 113, 113, 0.12);
-    }
-
-    .matchup-card {
-      font-size: 11px;
-      line-height: 1.45;
-    }
-
-    .matchup-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      margin-top: 6px;
-    }
-
-    .matchup-item {
-      padding: 6px 7px;
-      border-radius: 8px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(31, 41, 55, 0.9);
-    }
-
-    .matchup-item span {
-      display: block;
-    }
-
-    .matchup-label {
-      font-size: 10px;
-      color: var(--text-muted);
-    }
-
-    .matchup-value {
-      font-size: 11px;
-      margin-top: 1px;
-    }
-
-    /* SECTIONS */
-
-    section {
-      margin-top: 40px;
-    }
-
-    section h2 {
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
-
-    section p {
-      color: var(--text-muted);
-      font-size: 13px;
-      margin-bottom: 12px;
-      max-width: 640px;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    @media (max-width: 800px) {
-      .features-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .feature-card {
-      padding: 10px 11px 12px;
-      border-radius: 14px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      font-size: 13px;
-    }
-
-    .feature-card h3 {
-      font-size: 13px;
-      margin-bottom: 6px;
-    }
-
-    .feature-card p {
-      font-size: 12px;
-      margin-bottom: 0;
-    }
-
-    .faq-item {
-      margin-bottom: 10px;
-      border-radius: 10px;
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      background: rgba(15, 23, 42, 0.9);
-      padding: 8px 9px;
-      font-size: 12px;
-    }
-
-    .faq-item h3 {
-      font-size: 12px;
-      margin-bottom: 4px;
-    }
-
-    /* LOGIN MODAL */
-
-    .modal-backdrop {
+    /* CHIP CHAT PANEL BUTTON */
+    #chatChipBtn {
       position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.85);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 30;
-    }
-
-    .modal-backdrop.open {
-      display: flex;
-    }
-
-    .modal {
-      width: 100%;
-      max-width: 360px;
-      background: #020617;
-      border-radius: 16px;
-      border: 1px solid rgba(31, 41, 55, 0.95);
-      padding: 16px 16px 14px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
-      font-size: 13px;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .modal-header h2 {
-      font-size: 16px;
-      margin: 0;
-    }
-
-    .modal-close {
+      bottom: 24px;
+      right: 24px;
+      background: var(--accent);
+      color: #0b0213;
       border: none;
-      background: transparent;
-      color: var(--text-muted);
-      font-size: 18px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
-      padding: 2px 4px;
-      line-height: 1;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      z-index: 200;
     }
 
-    .modal small {
-      color: var(--text-muted);
-      font-size: 11px;
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    .modal-footer {
-      margin-top: 8px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .modal-footer a {
-      color: var(--accent);
-    }
-
-    /* UTIL */
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
-    }
-
-    footer {
-      margin-top: 32px;
-      font-size: 11px;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      border-top: 1px solid rgba(31, 41, 55, 0.7);
-      padding-top: 10px;
-    }
-
-    @media (max-width: 640px) {
-      footer {
-        flex-direction: column;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="page">
-    <header>
-      <div class="logo-wrap">
-        <img src="chipchaser_logo.jpeg" alt="ChipChaser logo" />
-        <div class="brand-text">
-          <span>ChipChaser</span>
-          <span>Chase the championship. Not the news.</span>
-        </div>
-      </div>
-
-      <nav>
-        <a href="#features" class="nav-link">Features</a>
-        <a href="#how-it-works" class="nav-link">How it works</a>
-        <a href="#faq" class="nav-link">FAQ</a>
-
-        <div class="nav-cta">
-          <button class="btn btn-ghost" data-open-login>Log in</button>
-          <button class="btn btn-primary" data-open-login>
-            Get started
-          </button>
-        </div>
-      </nav>
-    </header>
-
-    <main>
-      <section aria-label="ChipChaser overview">
-        <div class="eyebrow">
-          <span class="eyebrow-pill">Live in-season brain</span>
-          <span>ESPN &amp; Sleeper sync • Sit/Start AI • Matchup analytics</span>
-        </div>
-
-        <h1>
-          Stop doomscrolling fantasy advice.
-          <span class="highlight">Start making instant, sharp decisions.</span>
-        </h1>
-
-        <p class="hero-subtitle">
-          ChipChaser watches your league in real time, surfaces the only moves
-          that matter, and explains the "why" in plain English — so you can stop
-          juggling 12 tabs and just win.
-        </p>
-
-        <div class="hero-cta-row">
-          <button class="btn btn-primary" data-open-login>
-            Connect your league
-          </button>
-          <button class="btn btn-ghost" onclick="scrollToSection('features')">
-            Preview the engine
-          </button>
-        </div>
-
-        <div class="hero-meta">
-          <span>
-            <span class="dot"></span> Live projections, updated every snap.
-          </span>
-          <span> No hot takes. Just math and context. </span>
-        </div>
-      </section>
-
-      <aside class="right-panel" aria-label="ChipChaser demo">
-        <div class="right-header">
-          <div>
-            <span>Week 6 • Sit/Start AI</span>
-          </div>
-          <div class="live-pill">
-            <span class="dot"></span>
-            <span>LIVE</span>
-          </div>
-        </div>
-
-        <div class="right-body">
-          <!-- SIT / START CARD -->
-          <div class="card">
-            <div class="card-header">
-              <div>
-<div class="card-title">Chip’s Sit/Start Assistant</div>
-                <div class="card-sub">Ask it like a friend, get an answer like an analyst.</div>
-              </div>
-              <span class="badge primary">Demo</span>
-            </div>
-
-            <div class="form-row">
-              <label class="form-label" for="playerA">Player A</label>
-              <select id="playerA"></select>
-            </div>
-
-            <div class="form-row">
-              <label class="form-label" for="playerB">Player B</label>
-              <select id="playerB"></select>
-            </div>
-
-            <button class="btn btn-primary btn-block" id="sitStartBtn">
-              Who should I start?
-            </button>
-
-            <div class="sitstart-result" id="sitStartResult" aria-live="polite">
-              Pick two players and I'll tell you who to start, using projections,
-              matchup difficulty, and volatility.
-            </div>
-          </div>
-
-          <!-- MATCHUP ANALYTICS CARD -->
-          <div class="card matchup-card">
-            <div class="card-header">
-              <div>
-                <div class="card-title">Matchup Analytics</div>
-                <div class="card-sub">League-aware context at a glance.</div>
-              </div>
-              <span class="badge">vs. league average</span>
-            </div>
-
-            <p>
-              See how each option stacks up in projected points, matchup strength,
-              and boom/bust risk.
-            </p>
-
-            <div class="matchup-grid" id="matchupGrid">
-              <!-- Filled dynamically -->
-            </div>
-
-            <div class="pill-row" id="matchupNotes">
-              <!-- dynamic tags -->
-            </div>
-          </div>
-        </div>
-      </aside>
-    </main>
-
-    <!-- FEATURES -->
-    <section id="features" aria-label="Features">
-      <h2>What ChipChaser actually does for you</h2>
-      <p>
-        Under the hood, ChipChaser is a real-time engine watching every snap,
-        every league transaction, and every projection shift — then boiling that
-        chaos into a tiny list of "do this now" moves.
-      </p>
-
-      <div class="features-grid">
-        <article class="feature-card">
-          <h3>Real-time projection engine</h3>
-          <p>
-            Ingests multiple projection sources, injury reports, and line movement
-            to keep your player outlooks live — not stale by Sunday morning.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <h3>Sit/Start &amp; trade explanations</h3>
-          <p>
-            Every recommendation comes with a human-readable breakdown:
-            matchup, usage trends, volatility, and risk tolerance.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <h3>ESPN + Sleeper sync</h3>
-          <p>
-            Securely connect your leagues, pull rosters and matchups, and let
-            ChipChaser surface moves contextually to your scoring settings.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section id="how-it-works" aria-label="How ChipChaser works">
-      <h2>How it works</h2>
-      <p>
-        The live app will plug directly into your leagues. This demo shows a
-        small slice of the decision engine running in your browser with sample
-        data.
-      </p>
-
-      <ol style="font-size: 13px; color: var(--text-muted); padding-left: 18px;">
-        <li style="margin-bottom: 4px;">Connect your ESPN or Sleeper leagues.</li>
-        <li style="margin-bottom: 4px;">We sync your rosters, matchups, and scoring.</li>
-        <li style="margin-bottom: 4px;">You ask questions in plain English — sit/start, waivers, trades.</li>
-        <li>ChipChaser answers with context and a clear recommendation.</li>
-      </ol>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq" aria-label="Frequently asked questions">
-      <h2>FAQ</h2>
-
-      <div class="faq-item">
-        <h3>Is this connected to real leagues yet?</h3>
-        <p>
-          This demo runs entirely in your browser with mock data. The production
-          version will offer secure ESPN and Sleeper integrations.
-        </p>
-      </div>
-
-      <div class="faq-item">
-        <h3>Is this using "real AI" or just rules?</h3>
-        <p>
-          The goal is a hybrid system: hard math for projections and constraints,
-          plus a language layer to explain decisions in English you actually
-          understand.
-        </p>
-      </div>
-
-      <div class="faq-item">
-        <h3>Can I break this?</h3>
-        <p>
-          Please try. The whole point of this prototype is to see how people
-          actually ask questions and where the decision engine needs to be sharper.
-        </p>
-      </div>
-    </section>
-
-    <footer>
-      <span>© <span id="year"></span> ChipChaser. All rights reserved.</span>
-      <span>Built for people who stare at their lineups way too much.</span>
-    </footer>
-  </div>
-
-  <!-- LOGIN MODAL -->
-  <div class="modal-backdrop" id="loginModal">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
-      <div class="modal-header">
-        <h2 id="loginTitle">Sign in to ChipChaser</h2>
-        <button class="modal-close" type="button" id="closeLoginBtn" aria-label="Close login dialog">
-          ×
-        </button>
-      </div>
-      <small>
-        This is a frontend-only demo. Submitting this form won't create a real account
-        yet — it's here to show the flow.
-      </small>
-
-      <div class="form-row">
-        <label class="form-label" for="loginEmail">Email</label>
-        <input type="email" id="loginEmail" placeholder="you@leaguewinner.com" />
-      </div>
-
-      <div class="form-row">
-        <label class="form-label" for="loginPassword">Password</label>
-        <input type="password" id="loginPassword" placeholder="••••••••" />
-      </div>
-
-      <button class="btn btn-primary btn-block" id="loginSubmitBtn">
-        Continue
-      </button>
-
-      <div class="modal-footer" id="loginMessage" aria-live="polite">
-        We'll eventually support OAuth from ESPN &amp; Sleeper here.
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // ---------- MOCK DATA ----------
-
-  const players = [
-  {
-    id: "amonra_2025",
-    name: "Amon-Ra St. Brown",
-    position: "WR",
-    team: "DET",
-    opponent: "vs GB",            // just pick a sample matchup
-    projected: 18.5,              // based on 2024 per-game PPR
-    matchupRank: 18,              // 1 = brutal, 32 = cupcake (you choose)
-    volatility: "low",            // target hog
-  },
-    {
-    id: "jsn_2025",
-    name: "Jaxon Smith-Njigba",
-    position: "WR",
-    team: "SEA",
-    opponent: "@ SF",
-    projected: 16.1,              // 2024 per-game PPR * 1.1 growth
-    matchupRank: 12,              // tougher divisional matchup
-    volatility: "high",           // more boom/bust
-  },
-  {
-    id: "devonta_smith",
-    name: "DeVonta Smith",
-    position: "WR",
-    team: "PHI",
-    opponent: "vs DAL",
-    projected: 15.1,
-    matchupRank: 10,
-    volatility: "high",
-  },
-  {
-    id: "isaiah_pacheco",
-    name: "Isiah Pacheco",
-    position: "RB",
-
-        team: "KC",
-        opponent: "@ LAC",
-        projected: 17.8,
-        matchupRank: 20,
-        volatility: "low",
-      },
-      {
-        id: "james_cook",
-        name: "James Cook",
-        position: "RB",
-        team: "BUF",
-        opponent: "vs NE",
-        projected: 14.0,
-        matchupRank: 18,
-        volatility: "medium",
-      },
-      {
-        id: "tank_dell",
-        name: "Tank Dell",
-        position: "WR",
-        team: "HOU",
-        opponent: "@ JAX",
-        projected: 13.2,
-        matchupRank: 22,
-        volatility: "high",
-      },
-      {
-        id: "raheem_mostert",
-        name: "Raheem Mostert",
-        position: "RB",
-        team: "MIA",
-        opponent: "vs NYJ",
-        projected: 12.5,
-        matchupRank: 8,
-        volatility: "high",
-      },
-    ];
-
-    function getPlayerById(id) {
-      return players.find((p) => p.id === id);
-    }
-
-    // ---------- SIT / START ENGINE (SIMPLIFIED) ----------
-
-    function comparePlayers(a, b) {
-      const result = {
-        start: null,
-        sit: null,
-        reasons: [],
-        tags: [],
-      };
-
-      if (!a || !b || a.id === b.id) {
-        return null;
-      }
-
-      // 1. Projection
-      if (a.projected !== b.projected) {
-        const diff = Math.abs(a.projected - b.projected);
-        const higher = a.projected > b.projected ? a : b;
-        const lower = higher === a ? b : a;
-
-        result.start = higher;
-        result.sit = lower;
-
-        let strength = "slight";
-        if (diff >= 3 && diff < 6) strength = "solid";
-        else if (diff >= 6) strength = "massive";
-
-        result.reasons.push(
-          `${higher.name} has a ${strength} projection edge (${higher.projected.toFixed(
-            1
-          )} vs ${lower.projected.toFixed(1)} PPR).`
-        );
-
-        if (diff >= 3) {
-          result.tags.push({
-            label: "Projection edge",
-            type: "good",
-          });
-        }
-      } else {
-        // fallback if equal projection
-        result.start = a;
-        result.sit = b;
-      }
-
-      // 2. Matchup (higher rank = easier)
-      if (a.matchupRank !== b.matchupRank) {
-        const easier = a.matchupRank > b.matchupRank ? a : b;
-        const tougher = easier === a ? b : a;
-        const swing = Math.abs(a.matchupRank - b.matchupRank);
-
-        const line =
-          swing >= 8
-            ? `${easier.name} gets a noticeably softer matchup (${easier.opponent}) than ${tougher.name} (${tougher.opponent}).`
-            : `${easier.name} has a slight matchup edge this week.`;
-
-        result.reasons.push(line);
-
-        result.tags.push({
-          label: "Softer matchup",
-          type: "good",
-        });
-
-        // If matchup + projection disagree, mention risk tolerance
-        const currentlyStartId = result.start.id;
-        if (currentlyStartId !== easier.id) {
-          result.reasons.push(
-            `You're taking the better projection over the softer matchup — that's fine if you're a favorite in your matchup.`
-          );
-        }
-      }
-
-      // 3. Volatility / risk framing
-      const volLevels = { low: 1, medium: 2, high: 3 };
-      const aVol = volLevels[a.volatility];
-      const bVol = volLevels[b.volatility];
-
-      if (aVol !== bVol) {
-        const riskier = aVol > bVol ? a : b;
-        const steadier = riskier === a ? b : a;
-
-        result.reasons.push(
-          `${riskier.name} carries more boom/bust risk, while ${steadier.name} is the steadier option.`
-        );
-
-        result.tags.push({
-          label: "Boom/bust upside",
-          type: "bad",
-        });
-      }
-
-      return result;
-    }
-
-    function renderSitStartSummary(result, el) {
-      if (!result) {
-        el.textContent =
-          "Pick two different players above and I'll tell you who to start.";
-        return;
-      }
-
-      const { start, sit, reasons } = result;
-
-      el.innerHTML = `
-       el.innerHTML = `
-    <div style="margin-bottom:4px; font-weight:600;">
-      Chip says: Start <strong>${start.name}</strong> over <strong>${sit.name}</strong>.
-    </div>
-        <div style="color: var(--text-muted); margin-top:2px;">
-          ${reasons.join(" ")}
-        </div>
-      `;
-    }
-
-    function renderMatchupCard(a, b) {
-      const grid = document.getElementById("matchupGrid");
-      const notes = document.getElementById("matchupNotes");
-
-      if (!a || !b || a.id === b.id) {
-        grid.innerHTML = `
-          <div class="matchup-item">
-            <span class="matchup-label">Pick two players</span>
-            <span class="matchup-value">We'll compare projection, matchup, and risk.</span>
-          </div>
-        `;
-        notes.innerHTML = "";
-        return;
-      }
-
-      grid.innerHTML = `
-        <div class="matchup-item">
-          <span class="matchup-label">${a.name}</span>
-          <span class="matchup-value">
-            ${a.projected.toFixed(1)} PPR • ${a.team} ${a.opponent} • ${a.volatility} volatility
-          </span>
-        </div>
-        <div class="matchup-item">
-          <span class="matchup-label">${b.name}</span>
-          <span class="matchup-value">
-            ${b.projected.toFixed(1)} PPR • ${b.team} ${b.opponent} • ${b.volatility} volatility
-          </span>
-        </div>
-      `;
-
-      // Simple tags about how tight the decision is
-      const diff = Math.abs(a.projected - b.projected);
-      let tightLabel = "";
-      if (diff < 2) tightLabel = "True coin flip";
-      else if (diff < 4) tightLabel = "Edge, but not a lock";
-      else tightLabel = "Clear lean";
-
-      notes.innerHTML = `
-        <span class="tiny-pill">${tightLabel}</span>
-        <span class="tiny-pill good">Projection-aware</span>
-        <span class="tiny-pill bad">Doesn't know your league yet (demo)</span>
-      `;
-    }
-
-    // ---------- UI WIRING ----------
-
-    function populatePlayerSelects() {
-      const selectA = document.getElementById("playerA");
-      const selectB = document.getElementById("playerB");
-
-      players.forEach((p, idx) => {
-        const optionA = document.createElement("option");
-        optionA.value = p.id;
-        optionA.textContent = `${p.name} (${p.position} • ${p.team})`;
-        if (idx === 0) optionA.selected = true;
-
-        const optionB = document.createElement("option");
-        optionB.value = p.id;
-        optionB.textContent = `${p.name} (${p.position} • ${p.team})`;
-        if (idx === 1) optionB.selected = true;
-
-        selectA.appendChild(optionA);
-        selectB.appendChild(optionB);
-      });
-
-      // Initial render
-      const a = getPlayerById(selectA.value);
-      const b = getPlayerById(selectB.value);
-      renderMatchupCard(a, b);
-    }
-
-    function setupSitStart() {
-      const btn = document.getElementById("sitStartBtn");
-      const resultEl = document.getElementById("sitStartResult");
-      const selectA = document.getElementById("playerA");
-      const selectB = document.getElementById("playerB");
-
-      function recompute() {
-        const a = getPlayerById(selectA.value);
-        const b = getPlayerById(selectB.value);
-
-        const comparison = comparePlayers(a, b);
-        renderSitStartSummary(comparison, resultEl);
-        renderMatchupCard(a, b);
-      }
-
-      btn.addEventListener("click", recompute);
-      selectA.addEventListener("change", recompute);
-      selectB.addEventListener("change", recompute);
-    }
-
-    // Smooth scroll for nav links
-    function scrollToSection(id) {
-      const el = document.getElementById(id);
-      if (el) {
-        window.scrollTo({
-          top: el.offsetTop - 16,
-          behavior: "smooth",
-        });
-      }
-    }
-
-    // ---------- LOGIN MODAL ----------
-
-    function setupLoginModal() {
-      const modal = document.getElementById("loginModal");
-      const closeBtn = document.getElementById("closeLoginBtn");
-      const openButtons = document.querySelectorAll("[data-open-login]");
-      const submitBtn = document.getElementById("loginSubmitBtn");
-      const messageEl = document.getElementById("loginMessage");
-      const emailInput = document.getElementById("loginEmail");
-      const passwordInput = document.getElementById("loginPassword");
-
-      function openModal() {
-        modal.classList.add("open");
-        emailInput.focus();
-      }
-
-      function closeModal() {
-        modal.classList.remove("open");
-      }
-
-      openButtons.forEach((btn) => btn.addEventListener("click", openModal));
-      closeBtn.addEventListener("click", closeModal);
-
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-          closeModal();
-        }
-      });
-
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          closeModal();
-        }
-      });
-
-      submitBtn.addEventListener("click", () => {
-        const email = emailInput.value.trim();
-        if (!email) {
-          messageEl.textContent = "Add an email so we know where to send your invite.";
-          messageEl.style.color = "var(--danger)";
-          return;
-        }
-        messageEl.textContent =
-          "Nice. If this were live, we'd send you a magic link and connect your leagues next.";
-        messageEl.style.color = "var(--success)";
-      });
-    }
-
-    // ---------- INIT ----------
-
-    document.addEventListener("DOMContentLoaded", () => {
-      populatePlayerSelects();
-      setupSitStart();
-      setupLoginModal();
-      document.getElementById("year").textContent = new Date().getFullYear();
-      // expose scroll function
-      window.scrollToSection = scrollToSection;
-    });
-  </script>
-  <!-- CHAT WITH CHIP BUTTON -->
-<button id="chatChipBtn" 
-        style="
-          position: fixed;
-          bottom: 24px;
-          right: 24px;
-          background: #a855f7;
-          color: #0b0213;
-          border: none;
-          padding: 14px 18px;
-          border-radius: 12px;
-          font-size: 14px;
-          font-weight: 600;
-          cursor: pointer;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-          z-index: 200;
-        ">
-  💬 Chat with Chip
-</button>
-<!-- CHIP CHAT PANEL -->
-<div id="chipChatPanel" 
-     style="
+    /* CHIP CHAT PANEL */
+    #chipChatPanel {
       position: fixed;
       top: 0;
       right: -380px;
@@ -1279,57 +143,171 @@
       color: white;
       transition: right 0.3s ease-out;
       z-index: 300;
-     ">
-  <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:16px;">
-    <h2 style="font-size:18px;">Chat with Chip</h2>
-    <button id="closeChipChat" 
-            style="background:none; border:none; font-size:22px; color:#aaa; cursor:pointer;">
-      ×
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header>
+      <div class="logo-wrap">
+        <img src="chipchaser_logo.jpeg" width="42" style="border-radius:10px;" />
+      </div>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#faq">FAQ</a>
+        <button class="btn btn-ghost" data-open-login>Log in</button>
+        <button class="btn btn-primary" data-open-login>Get started</button>
+      </nav>
+    </header>
+
+    <!-- MAIN LAYOUT -->
+    <main style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+      <section>
+        <h1 style="font-size:32px; line-height:1.1;">
+          Meet <strong>Chip</strong> — your fantasy co-pilot.
+        </h1>
+        <p style="color:var(--text-muted); margin-top:8px; font-size:15px;">
+          Real-time projections, matchup analytics, sit/start decisions and more.
+        </p>
+      </section>
+
+      <aside>
+        <div class="card">
+          <h3 style="margin-bottom:6px;">Chip’s Sit/Start Assistant</h3>
+
+          <label>Player A</label>
+          <select id="playerA"></select>
+
+          <label>Player B</label>
+          <select id="playerB"></select>
+
+          <button id="sitStartBtn" class="btn btn-primary" style="width:100%; margin-top:8px;">
+            Who should I start?
+          </button>
+
+          <div id="sitStartResult">
+            Pick two players and Chip will make the call.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-bottom:6px;">Matchup Analytics</h3>
+          <div id="matchupGrid" style="font-size:13px; color:var(--text-muted);"></div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- SECTIONS -->
+    <section id="features" style="margin-top:40px;">
+      <h2>Features</h2>
+      <p style="color:var(--text-muted);">Projection engine, matchup breakdowns, AI roadmap.</p>
+    </section>
+
+    <section id="how-it-works" style="margin-top:40px;">
+      <h2>How it works</h2>
+      <p style="color:var(--text-muted);">Connect, ask Chip questions, win more matchups.</p>
+    </section>
+
+    <section id="faq" style="margin-top:40px;">
+      <h2>FAQ</h2>
+      <p style="color:var(--text-muted);">More coming soon.</p>
+    </section>
+  </div>
+
+  <!-- CHAT BUTTON -->
+  <button id="chatChipBtn">💬 Chat with Chip</button>
+
+  <!-- CHAT PANEL -->
+  <div id="chipChatPanel">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h2>Chat with Chip</h2>
+      <button id="closeChipChat" style="background:none; border:none; font-size:22px; color:#aaa; cursor:pointer;">×</button>
+    </div>
+
+    <p style="color:#aaa; font-size:14px; margin-top:8px;">
+      This is a preview. Soon you'll be able to ask Chip anything.
+    </p>
+
+    <textarea
+      style="margin-top:12px; width:100%; height:120px; background:#111827; border:1px solid #1f2937; border-radius:8px; color:white; padding:10px; resize:none;"
+      placeholder="Ask Chip anything... (coming soon)"
+    ></textarea>
+
+    <button disabled style="margin-top:12px; width:100%; padding:10px; border-radius:8px; background:#444; color:#777;">
+      AI Coming Soon
     </button>
   </div>
 
-  <p style="font-size:13px; color:#aaa; margin-bottom:14px;">
-    This is a preview. Chip will be your AI fantasy assistant — type questions here once the AI backend is connected.
-  </p>
-
-  <textarea id="chipInput"
-            placeholder="Ask Chip anything... (Coming soon)"
-            style="
-              width:100%;
-              height:120px;
-              background:#111827;
-              border:1px solid #1f2937;
-              border-radius:8px;
-              color:white;
-              padding:10px;
-              resize:none;
-              font-size:13px;
-            "></textarea>
-
-  <button disabled
-          style="
-            margin-top:12px;
-            width:100%;
-            padding:10px;
-            border-radius:8px;
-            background:#444;
-            color:#777;
-            border:none;
-            cursor:not-allowed;
-          ">
-    AI Coming Soon
-  </button>
-</div>
+  <!-- SCRIPT -->
   <script>
-  // Chat with Chip – slide-out panel
-document.getElementById("chatChipBtn").addEventListener("click", () => {
-  document.getElementById("chipChatPanel").style.right = "0";
-});
+    // MOCK DATA
+    const players = [
+      { id:"amonra", name:"Amon-Ra St Brown", position:"WR", team:"DET", projected:18.5, matchupRank:18, volatility:"low" },
+      { id:"jsn", name:"Jaxon Smith-Njigba", position:"WR", team:"SEA", projected:16.1, matchupRank:12, volatility:"high" },
+      { id:"devonta", name:"DeVonta Smith", position:"WR", team:"PHI", projected:15.1, matchupRank:10, volatility:"high" }
+    ];
 
-document.getElementById("closeChipChat").addEventListener("click", () => {
-  document.getElementById("chipChatPanel").style.right = "-380px";
-});
+    function getPlayer(id){ return players.find(p => p.id === id); }
 
-</script>
+    function comparePlayers(a,b){
+      if(!a || !b || a.id === b.id) return null;
+      return a.projected > b.projected
+        ? { start:a, sit:b, reason:`Chip says start ${a.name} — projection edge.` }
+        : { start:b, sit:a, reason:`Chip says start ${b.name} — projection edge.` };
+    }
+
+    function populatePlayerSelects(){
+      const A = document.getElementById("playerA");
+      const B = document.getElementById("playerB");
+      players.forEach((p,i)=>{
+        const o1=document.createElement("option"); o1.value=p.id; o1.textContent=p.name; if(i===0)o1.selected=true;
+        const o2=document.createElement("option"); o2.value=p.id; o2.textContent=p.name; if(i===1)o2.selected=true;
+        A.appendChild(o1); B.appendChild(o2);
+      });
+    }
+
+    function renderMatchups(a,b){
+      const el = document.getElementById("matchupGrid");
+      if(!a||!b||a.id===b.id){ el.innerHTML="Pick two players."; return; }
+      el.innerHTML = `
+        <div>${a.name}: ${a.projected} PPR</div>
+        <div>${b.name}: ${b.projected} PPR</div>
+      `;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+      populatePlayerSelects();
+
+      const A = document.getElementById("playerA");
+      const B = document.getElementById("playerB");
+      const btn = document.getElementById("sitStartBtn");
+      const result = document.getElementById("sitStartResult");
+
+      function recompute(){
+        const a=getPlayer(A.value), b=getPlayer(B.value);
+        const r=comparePlayers(a,b);
+        if(!r){ result.textContent="Pick two players."; return; }
+        result.textContent = r.reason;
+        renderMatchups(a,b);
+      }
+
+      A.addEventListener("change", recompute);
+      B.addEventListener("change", recompute);
+      btn.addEventListener("click", recompute);
+
+      // CHAT PANEL LOGIC
+      document.getElementById("chatChipBtn").addEventListener("click", () => {
+        document.getElementById("chipChatPanel").style.right = "0";
+      });
+
+      document.getElementById("closeChipChat").addEventListener("click", () => {
+        document.getElementById("chipChatPanel").style.right = "-380px";
+      });
+
+    });
+  </script>
 </body>
 </html>
