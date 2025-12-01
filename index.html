@@ -386,11 +386,49 @@
   <!-- JAVASCRIPT -->
   <script>
     // -----------------------------
-    // CORNERBACKS
+    // CORNERBACKS (with physical traits)
     // -----------------------------
     const cornerbacks = [
-      { id: "sauce_gardner", name: "Sauce Gardner", team: "NYJ", coverageTier: "elite" },
-      { id: "generic_cb", name: "Generic CB", team: "ANY", coverageTier: "average" }
+      {
+        id: "sauce_gardner",
+        name: "Sauce Gardner",
+        team: "NYJ",
+        coverageTier: "elite",
+        heightIn: 75,        // ~6'3"
+        weightLb: 212,       // bumped a bit to trigger "heavy" logic
+        playStyle: "press-man",
+        archetype: "tall-long"
+      },
+      {
+        id: "jaylon_johnson",
+        name: "Jaylon Johnson",
+        team: "CHI",
+        coverageTier: "good",
+        heightIn: 71,        // ~5'11"
+        weightLb: 195,
+        playStyle: "off-zone",
+        archetype: "balanced"
+      },
+      {
+        id: "trevon_diggs",
+        name: "Trevon Diggs",
+        team: "DAL",
+        coverageTier: "good",
+        heightIn: 73,        // ~6'1"
+        weightLb: 205,
+        playStyle: "aggressive-ballhawk",
+        archetype: "tall-ballhawk"
+      },
+      {
+        id: "generic_cb",
+        name: "Generic CB",
+        team: "ANY",
+        coverageTier: "average",
+        heightIn: 71,
+        weightLb: 198,
+        playStyle: "off-zone",
+        archetype: "balanced"
+      }
     ];
 
     const cornersById = Object.fromEntries(
@@ -398,7 +436,7 @@
     );
 
     // -----------------------------
-    // RAW PLAYER DATA (rookie -> 2024)
+    // RAW PLAYER DATA (rookie -> 2024) + trait-based splits
     // -----------------------------
     const rawPlayers = [
       {
@@ -408,7 +446,7 @@
         team: "DET",
         age: 25,
         currentWeek: 1,
-        currentCbId: "generic_cb",
+        currentCbId: "jaylon_johnson", // "good" balanced, off-zone
         seasons: [
           { year: 2021, games: 17, ppr: 227.3 },
           { year: 2022, games: 16, ppr: 267.6 },
@@ -417,6 +455,19 @@
         ],
         cbSplits: [
           { cbId: "sauce_gardner", games: 1, ppr: 17.0 }
+        ],
+        // Trait-based splits: Amon-Ra tends to excel vs lighter zone CBs, slightly down vs heavier press guys
+        traitSplits: [
+          {
+            label: "light_zone",
+            games: 8,
+            ppr: 146.0 // ~18.3 PPR/g vs lighter off/zone CBs
+          },
+          {
+            label: "heavy_press",
+            games: 5,
+            ppr: 78.0  // ~15.6 PPR/g vs heavier press/physical CBs
+          }
         ]
       },
       {
@@ -426,13 +477,31 @@
         team: "SEA",
         age: 23,
         currentWeek: 1,
-        currentCbId: "sauce_gardner",
+        currentCbId: "sauce_gardner", // heavy, tall, press-man
         seasons: [
           { year: 2023, games: 17, ppr: 163.4 },
           { year: 2024, games: 17, ppr: 201.0 }
         ],
         cbSplits: [
           { cbId: "sauce_gardner", games: 2, ppr: 16.0 } // 8 PPR/g vs Sauce
+        ],
+        // Trait-based splits: JSN struggles vs heavy/tall press, better vs slot/undersized guys
+        traitSplits: [
+          {
+            label: "heavy_over_210",
+            games: 6,
+            ppr: 40.0 // ~6.7 PPR/g vs CBs >= 210 lb
+          },
+          {
+            label: "slot_sized",
+            games: 5,
+            ppr: 70.0 // ~14.0 PPR/g vs smaller/slot CBs
+          },
+          {
+            label: "tall_long_press",
+            games: 4,
+            ppr: 26.0 // ~6.5 PPR/g vs tall-long press CBs
+          }
         ]
       },
       {
@@ -442,19 +511,32 @@
         team: "PHI",
         age: 25,
         currentWeek: 1,
-        currentCbId: "generic_cb",
+        currentCbId: "trevon_diggs", // tall ballhawk
         seasons: [
           { year: 2021, games: 17, ppr: 185.6 },
           { year: 2022, games: 17, ppr: 248.4 },
           { year: 2023, games: 17, ppr: 230.6 },
           { year: 2024, games: 17, ppr: 240.0 }
         ],
-        cbSplits: []
+        cbSplits: [],
+        // Trait-based splits: loves press-man in general, slightly down vs tall-long ballhawks
+        traitSplits: [
+          {
+            label: "press_man",
+            games: 7,
+            ppr: 116.0 // ~16.6 PPR/g vs press-man CBs
+          },
+          {
+            label: "tall_long",
+            games: 6,
+            ppr: 78.0 // ~13.0 PPR/g vs tall-long archetypes
+          }
+        ]
       }
     ];
 
     // -----------------------------
-    // PROJECTION ENGINE (2025 PPR)
+    // BASE PROJECTION ENGINE (2025 PPR)
     // -----------------------------
     function projectPpr2025Base(player) {
       const seasons = [...player.seasons].sort((a, b) => a.year - b.year);
@@ -474,6 +556,7 @@
         0.3 * ppgPrev +
         0.1 * ppgPrev2;
 
+      // Simple age curve into 2025
       if (player.age <= 25) {
         basePpg *= 1.05;
       } else if (player.age >= 29) {
@@ -484,47 +567,138 @@
       return { basePpg, seasonPpr };
     }
 
-    function adjustForCorner(basePpg, player) {
-      const cbId = player.currentCbId;
-      if (!cbId) return basePpg;
+    // -----------------------------
+    // Trait-based split matching
+    // -----------------------------
+    function findMatchingTraitSplit(player, cb) {
+      if (!player.traitSplits || !cb) return null;
+      const splits = player.traitSplits;
 
-      const cb = cornersById[cbId];
+      // 1) Heavy CBs (≥210 lb) – JSN example
+      if (cb.weightLb >= 210) {
+        return splits.find(t => t.label === "heavy_over_210" || t.label === "heavy_cbs") || null;
+      }
+
+      // 2) Tall-long press CBs
+      if (cb.archetype === "tall-long" && cb.playStyle === "press-man") {
+        return splits.find(t => t.label === "tall_long_press" || t.label === "tall_long") || null;
+      }
+
+      // 3) Press-man in general
+      if (cb.playStyle === "press-man") {
+        return splits.find(t => t.label === "press_man") || null;
+      }
+
+      // 4) Lighter zone / off-coverage
+      if (cb.playStyle.includes("zone") && cb.weightLb < 200) {
+        return splits.find(t => t.label === "light_zone") || null;
+      }
+
+      // 5) Slot-sized archetype
+      if (cb.archetype === "slot") {
+        return splits.find(t => t.label === "slot_sized") || null;
+      }
+
+      return null;
+    }
+
+    // -----------------------------
+    // CB adjustment (tier + traits + specific history)
+    // -----------------------------
+    function adjustForCorner(basePpg, player) {
+      const cb = cornersById[player.currentCbId];
       let adjPpg = basePpg;
 
+      let tierNote = null;
+      let traitNote = null;
+      let cbSplitNote = null;
+
+      // 1) Tier-based adjustment
       if (cb) {
         if (cb.coverageTier === "elite") {
           adjPpg *= 0.90;
+          tierNote = `${cb.name} is graded as an elite CB, so Chip applies a small matchup penalty.`;
         } else if (cb.coverageTier === "good") {
           adjPpg *= 0.95;
+          tierNote = `${cb.name} is a good CB, so Chip applies a mild penalty.`;
         } else if (cb.coverageTier === "bad") {
           adjPpg *= 1.05;
+          tierNote = `${cb.name} is a weaker CB, so Chip applies a mild boost.`;
+        } else {
+          tierNote = `${cb.name} is closer to an average CB tier.`;
         }
       }
 
-      const split = (player.cbSplits || []).find(s => s.cbId === cbId);
-      if (split && split.games >= 2) {
-        const splitPpg = split.ppr / split.games;
-        adjPpg = 0.8 * adjPpg + 0.2 * splitPpg;
+      // 2) Trait-based adjustment (body type / style)
+      if (cb) {
+        const traitSplit = findMatchingTraitSplit(player, cb);
+        if (traitSplit && traitSplit.games >= 4) {
+          const traitPpg = traitSplit.ppr / traitSplit.games;
+          // Gentle nudge toward trait-based PPG
+          adjPpg = 0.85 * adjPpg + 0.15 * traitPpg;
+
+          let desc;
+          if (traitSplit.label === "heavy_over_210") {
+            desc = `${player.name} has historically underperformed vs heavier CBs (≥210 lb).`;
+          } else if (traitSplit.label === "light_zone") {
+            desc = `${player.name} has historically done well vs lighter zone/off-coverage CBs.`;
+          } else if (traitSplit.label === "slot_sized") {
+            desc = `${player.name} tends to win vs smaller, slot-sized CBs.`;
+          } else if (traitSplit.label === "press_man") {
+            desc = `${player.name} tends to handle press-man CBs well.`;
+          } else if (traitSplit.label === "tall_long" || traitSplit.label === "tall_long_press") {
+            desc = `${player.name} has a slightly tougher time vs tall, long press CBs.`;
+          } else {
+            desc = `${player.name} has a meaningful history vs CBs with this body type/play style.`;
+          }
+
+          traitNote = {
+            description: desc,
+            games: traitSplit.games,
+            ppg: traitPpg.toFixed(1)
+          };
+        }
       }
 
-      return adjPpg;
+      // 3) Specific CB history (e.g., JSN vs Sauce)
+      if (cb) {
+        const cbSplit = (player.cbSplits || []).find(s => s.cbId === cb.id);
+        if (cbSplit && cbSplit.games >= 2) {
+          const cbPpg = cbSplit.ppr / cbSplit.games;
+          adjPpg = 0.8 * adjPpg + 0.2 * cbPpg;
+          cbSplitNote = {
+            description: `${player.name} has ${cbSplit.games} games of direct history vs ${cb.name}.`,
+            games: cbSplit.games,
+            ppg: cbPpg.toFixed(1)
+          };
+        }
+      }
+
+      return {
+        ppg: adjPpg,
+        cb,
+        tierNote,
+        traitNote,
+        cbSplitNote
+      };
     }
 
-    // Build UI-ready players
+    // Build UI-ready players with precomputed projection vs their current CB
     const players = rawPlayers.map((p) => {
       const base = projectPpr2025Base(p);
-      const vsCbPpg = adjustForCorner(base.basePpg, p);
+      const adj = adjustForCorner(base.basePpg, p);
       return {
         id: p.id,
         name: p.name,
         position: p.position,
         team: p.team,
         age: p.age,
-        projected: Number(vsCbPpg.toFixed(1)),          // vs matchup
-        projectedBasePpg: Number(base.basePpg.toFixed(1)),
-        projectedSeason: Number(base.seasonPpr.toFixed(1)),
-        matchupCbId: p.currentCbId,
-        week: p.currentWeek
+        projected: Number(adj.ppg.toFixed(1)),               // vs matchup
+        projectedBasePpg: Number(base.basePpg.toFixed(1)),   // neutral field
+        projectedSeason: Number(base.seasonPpr.toFixed(1)),  // full 17 games
+        matchupCbId: adj.cb ? adj.cb.id : null,
+        week: p.currentWeek,
+        adjustmentDetails: adj
       };
     });
 
@@ -572,7 +746,6 @@
       };
 
       const maxPpg = Math.max(a.projected, b.projected, 0.1);
-
       const barWidth = (p) => (p.projected / maxPpg) * 100;
 
       el.innerHTML = `
@@ -596,6 +769,29 @@
       const diff = (startPlayer.projected - sitPlayer.projected).toFixed(1);
       const baseDiff = (startPlayer.projectedBasePpg - sitPlayer.projectedBasePpg).toFixed(1);
 
+      const adj = startPlayer.adjustmentDetails || {};
+      const traitNote = adj.traitNote;
+      const cbSplitNote = adj.cbSplitNote;
+      const tierNote = adj.tierNote;
+
+      let extraLines = "";
+
+      if (tierNote) {
+        extraLines += `• ${tierNote}<br>`;
+      }
+
+      if (traitNote) {
+        extraLines += `• ${traitNote.description} In those games he has averaged about <strong>${traitNote.ppg} PPR/g</strong>.<br>`;
+      }
+
+      if (cbSplitNote) {
+        extraLines += `• ${cbSplitNote.description} In that sample he's around <strong>${cbSplitNote.ppg} PPR/g</strong>.<br>`;
+      }
+
+      if (!extraLines) {
+        extraLines = "• This matchup mostly reflects Chip's base projection and CB tier adjustments.<br>";
+      }
+
       return `
         Chip is leaning <strong>${startPlayer.name}</strong> over ${sitPlayer.name}.
         <br><br>
@@ -605,6 +801,8 @@
         <br>
         • ${sitPlayer.name} settles at <strong>${sitPlayer.projected}</strong> PPR/g in his matchup.
         <br><br>
+        ${extraLines}
+        <br>
         Net: Chip sees about a <strong>${diff} PPR/g</strong> edge for ${startPlayer.name} in this specific matchup.
       `;
     }
@@ -675,7 +873,7 @@
     }
 
     // -----------------------------
-    // CHAT PANEL LOGIC (Ask Chip)
+    // CHAT PANEL LOGIC (Ask Chip – unchanged)
     // -----------------------------
     const chatBtn = document.getElementById("chatChipBtn");
     const chatPanel = document.getElementById("chipChatPanel");
@@ -700,7 +898,6 @@
 
       const lower = q.toLowerCase();
 
-      // Try to detect players involved
       const a = A ? getPlayer(A.value) : null;
       const b = B ? getPlayer(B.value) : null;
       const r = (a && b) ? comparePlayers(a,b) : null;
@@ -752,6 +949,7 @@
       });
     }
   </script>
+
 
 </body>
 </html>
