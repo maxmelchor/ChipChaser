@@ -676,7 +676,7 @@
 
         <p class="hero-subtitle">
           ChipChaser watches your league in real time, surfaces the only moves
-          that matter, and explains the “why” in plain English — so you can stop
+          that matter, and explains the "why" in plain English — so you can stop
           juggling 12 tabs and just win.
         </p>
 
@@ -734,7 +734,7 @@
             </button>
 
             <div class="sitstart-result" id="sitStartResult" aria-live="polite">
-              Pick two players and I’ll tell you who to start, using projections,
+              Pick two players and I'll tell you who to start, using projections,
               matchup difficulty, and volatility.
             </div>
           </div>
@@ -772,7 +772,7 @@
       <p>
         Under the hood, ChipChaser is a real-time engine watching every snap,
         every league transaction, and every projection shift — then boiling that
-        chaos into a tiny list of “do this now” moves.
+        chaos into a tiny list of "do this now" moves.
       </p>
 
       <div class="features-grid">
@@ -832,7 +832,7 @@
       </div>
 
       <div class="faq-item">
-        <h3>Is this using “real AI” or just rules?</h3>
+        <h3>Is this using "real AI" or just rules?</h3>
         <p>
           The goal is a hybrid system: hard math for projections and constraints,
           plus a language layer to explain decisions in English you actually
@@ -865,8 +865,8 @@
         </button>
       </div>
       <small>
-        This is a frontend-only demo. Submitting this form won’t create a real account
-        yet — it’s here to show the flow.
+        This is a frontend-only demo. Submitting this form won't create a real account
+        yet — it's here to show the flow.
       </small>
 
       <div class="form-row">
@@ -884,7 +884,7 @@
       </button>
 
       <div class="modal-footer" id="loginMessage" aria-live="polite">
-        We’ll eventually support OAuth from ESPN &amp; Sleeper here.
+        We'll eventually support OAuth from ESPN &amp; Sleeper here.
       </div>
     </div>
   </div>
@@ -1037,7 +1037,7 @@
         const currentlyStartId = result.start.id;
         if (currentlyStartId !== easier.id) {
           result.reasons.push(
-            `You’re taking the better projection over the softer matchup — that’s fine if you’re a favorite in your matchup.`
+            `You're taking the better projection over the softer matchup — that's fine if you're a favorite in your matchup.`
           );
         }
       }
@@ -1067,7 +1067,7 @@
     function renderSitStartSummary(result, el) {
       if (!result) {
         el.textContent =
-          "Pick two different players above and I’ll tell you who to start.";
+          "Pick two different players above and I'll tell you who to start.";
         return;
       }
 
@@ -1091,7 +1091,7 @@
         grid.innerHTML = `
           <div class="matchup-item">
             <span class="matchup-label">Pick two players</span>
-            <span class="matchup-value">We’ll compare projection, matchup, and risk.</span>
+            <span class="matchup-value">We'll compare projection, matchup, and risk.</span>
           </div>
         `;
         notes.innerHTML = "";
@@ -1123,7 +1123,7 @@
       notes.innerHTML = `
         <span class="tiny-pill">${tightLabel}</span>
         <span class="tiny-pill good">Projection-aware</span>
-        <span class="tiny-pill bad">Doesn’t know your league yet (demo)</span>
+        <span class="tiny-pill bad">Doesn't know your league yet (demo)</span>
       `;
     }
 
@@ -1228,7 +1228,7 @@
           return;
         }
         messageEl.textContent =
-          "Nice. If this were live, we’d send you a magic link and connect your leagues next.";
+          "Nice. If this were live, we'd send you a magic link and connect your leagues next.";
         messageEl.style.color = "var(--success)";
       });
     }
