@@ -892,17 +892,28 @@
   <script>
     // ---------- MOCK DATA ----------
 
-    const players = [
-      {
-        id: "a_monra_st_brown",
-        name: "Amon-Ra St. Brown",
-        position: "WR",
-        team: "DET",
-        opponent: "@ MIN",
-        projected: 19.4,
-        matchupRank: 24, // higher = easier
-        volatility: "medium",
-      },
+  const players = [
+  {
+    id: "amonra_2025",
+    name: "Amon-Ra St. Brown",
+    position: "WR",
+    team: "DET",
+    opponent: "vs GB",            // just pick a sample matchup
+    projected: 18.5,              // based on 2024 per-game PPR
+    matchupRank: 18,              // 1 = brutal, 32 = cupcake (you choose)
+    volatility: "low",            // target hog
+  },
+  {
+    id: "jsn_2025",
+    name: "Jaxon Smith-Njigba",
+    position: "WR",
+    team: "SEA",
+    opponent: "@ SF",
+    projected: 16.1,              // 2024 per-game PPR * 1.1 growth
+    matchupRank: 12,              // tougher divisional matchup
+    volatility: "high",           // more boom/bust
+  },
+];
       {
         id: "devonta_smith",
         name: "DeVonta Smith",
