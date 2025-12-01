@@ -197,31 +197,6 @@
       object-fit: cover;
       border: 1px solid #1f2937;
     }
-
-    /* simple bar "chart" */
-    .bar-row {
-      margin-top: 4px;
-      background: #020617;
-      border-radius: 999px;
-      overflow: hidden;
-      height: 6px;
-    }
-
-    .bar-fill {
-      height: 100%;
-      background: var(--accent);
-    }
-
-    /* Explainer modal */
-    #explainerBackdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 400;
-    }
   </style>
 </head>
 
@@ -231,6 +206,7 @@
     <!-- HEADER -->
     <header>
       <div class="logo-wrap" style="display:flex; align-items:center; gap:10px;">
+        <!-- transparent logo -->
         <img src="chip-mascot-transparent.png" width="52" alt="Chip logo" />
         <div style="line-height:1.1;">
           <span style="font-weight:700; font-size:18px;">ChipChaser</span><br>
@@ -260,6 +236,7 @@
           Real-time projections, matchup analytics, sit/start calls, and an AI roadmap.
         </p>
 
+        <!-- Hero tagline -->
         <p style="
           margin-top: 28px;
           font-family: Helvetica, sans-serif;
@@ -273,6 +250,7 @@
           Start asking Chip.
         </p>
 
+        <!-- Winking Chip with football under the tagline -->
         <img
           src="chip-wink-football.png"
           alt="Chip winking with a thumbs up and a football"
@@ -295,51 +273,23 @@
 
         <!-- SIT/START -->
         <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-            <h3>Chip’s Sit/Start Assistant</h3>
-            <button
-              id="openExplainerBtn"
-              class="btn btn-ghost"
-              style="padding:4px 8px; font-size:11px; border-radius:999px;"
-            >
-              How Chip works
-            </button>
-          </div>
+          <h3 style="margin-bottom:6px;">Chip’s Sit/Start Assistant</h3>
 
-          <label>Week</label>
-          <select id="weekSelect">
-            <option value="1">Week 1</option>
-            <option value="2">Week 2</option>
-            <option value="3">Week 3</option>
-            <option value="4">Week 4</option>
-            <option value="5">Week 5</option>
-            <option value="6">Week 6</option>
-            <option value="7">Week 7</option>
-            <option value="8">Week 8</option>
-            <option value="9">Week 9</option>
-            <option value="10">Week 10</option>
-            <option value="11">Week 11</option>
-            <option value="12">Week 12</option>
-            <option value="13">Week 13</option>
-            <option value="14">Week 14</option>
-            <option value="15">Week 15</option>
-            <option value="16">Week 16</option>
-            <option value="17">Week 17</option>
-            <option value="18">Week 18</option>
-          </select>
-
-          <label>Player A</label>
+          <label for="playerA">Player A</label>
           <select id="playerA"></select>
 
-          <label>Player B</label>
+          <label for="playerB">Player B</label>
           <select id="playerB"></select>
+
+          <label for="weekSelector" style="margin-top:6px; display:block;">Week</label>
+          <select id="weekSelector"></select>
 
           <button id="sitStartBtn" class="btn btn-primary" style="width:100%; margin-top:8px;">
             Who should I start?
           </button>
 
           <div id="sitStartResult">
-            Pick two players and Chip will decide.
+            Pick two players and a week and Chip will decide.
           </div>
         </div>
 
@@ -365,25 +315,6 @@
           </div>
         </div>
 
-        <!-- EXPLANATION CARD -->
-        <div class="card">
-          <h3 style="margin-bottom:6px;">Why Chip picked this</h3>
-          <div id="chipExplanation" style="font-size:13px; color:var(--text-muted);">
-            Run a comparison and Chip will break down the call.
-          </div>
-          <button
-            id="copyReportBtn"
-            class="btn btn-ghost"
-            style="margin-top:8px; width:100%; font-size:12px;"
-          >
-            Copy sit/start report
-          </button>
-          <div
-            id="copyReportStatus"
-            style="margin-top:4px; font-size:11px; color:var(--text-muted);"
-          ></div>
-        </div>
-
       </aside>
     </main>
 
@@ -407,54 +338,6 @@
 
   </div>
 
-  <!-- EXPLAINER MODAL -->
-  <div id="explainerBackdrop">
-    <div
-      style="
-        background:#020617;
-        border:1px solid #1f2937;
-        border-radius:16px;
-        max-width:520px;
-        width:90%;
-        padding:20px;
-      "
-    >
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <h2 style="font-size:18px;">How Chip makes projections</h2>
-        <button
-          id="closeExplainerBtn"
-          style="background:none; border:none; font-size:20px; color:#9ca3af; cursor:pointer;"
-        >×</button>
-      </div>
-      <div
-        id="explainerBody"
-        style="font-size:13px; color:#d1d5db; line-height:1.4;"
-      >
-        <p style="margin-bottom:8px;">
-          Chip isn’t just guessing. Under the hood, each projection is built from:
-        </p>
-        <ul style="margin-left:18px; margin-bottom:8px;">
-          <li>Multi-season PPR production (rookie year → 2024)</li>
-          <li>Age curve into the 2025 season</li>
-          <li>Coverage tier of the opposing CB (elite / good / average)</li>
-          <li>CB body type & play style (weight, height, press vs zone, archetype)</li>
-          <li>Historical splits vs similar CB builds & specific corners where we have data</li>
-        </ul>
-        <p style="margin-bottom:8px;">
-          Chip then outputs a <strong>2025 neutral PPR per game baseline</strong>, adjusts it for the
-          <strong>Week X CB matchup</strong>, and attaches a
-          <strong>confidence score</strong> based on sample size. Volatility reflects how boom/bust a
-          player’s usage profile is.
-        </p>
-        <p>
-          In this prototype, everything runs locally with curated sample data for Amon-Ra St. Brown,
-          Jaxon Smith-Njigba, and DeVonta Smith — but the same engine can plug into a real stats
-          pipeline.
-        </p>
-      </div>
-    </div>
-  </div>
-
   <!-- CHAT BUTTON -->
   <button id="chatChipBtn">💬 Chat with Chip</button>
 
@@ -466,874 +349,465 @@
     </div>
 
     <p style="color:#aaa; font-size:14px; margin-top:8px;">
-      This is a prototype. Chip uses his 2025 projections, CB matchups, and history to answer questions.
+      This is a preview. Soon Chip will answer your fantasy questions.
     </p>
 
-    <div id="chipChatLog" style="margin-top:12px; font-size:13px; color:#9ca3af;">
-      Ask something like: “Why is JSN a sit vs Amon-Ra?” or “What does Chip think about DeVonta this week?”
-    </div>
-
     <textarea
-      id="chipChatInput"
       style="margin-top:12px; width:100%; height:120px; background:#111827; border:1px solid #1f2937; border-radius:8px; color:white; padding:10px; resize:none;"
-      placeholder="Ask Chip anything about these players or their matchups..."
+      placeholder="Ask Chip anything... (coming soon)"
     ></textarea>
 
-    <button id="chipChatSendBtn" style="margin-top:12px; width:100%; padding:10px; border-radius:8px; background:var(--accent); color:#0b0213; border:none; cursor:pointer;">
-      Ask Chip (prototype)
+    <button disabled style="margin-top:12px; width:100%; padding:10px; border-radius:8px; background:#444; color:#777;">
+      AI Coming Soon
     </button>
   </div>
 
   <!-- JAVASCRIPT -->
   <script>
-    // -----------------------------
-    // CORNERBACKS (8 real CBs + generic)
-    // -----------------------------
-    const cornerbacks = [
-      {
-        id: "sauce_gardner",
-        name: "Sauce Gardner",
-        team: "NYJ",
-        coverageTier: "elite",
-        heightIn: 75,
-        weightLb: 212,
-        playStyle: "press-man",
-        archetype: "tall-long"
-      },
-      {
-        id: "patrick_surtain",
-        name: "Patrick Surtain II",
-        team: "DEN",
-        coverageTier: "elite",
-        heightIn: 74,
-        weightLb: 208,
-        playStyle: "press-man",
-        archetype: "tall-long"
-      },
-      {
-        id: "jaire_alexander",
-        name: "Jaire Alexander",
-        team: "GB",
-        coverageTier: "elite",
-        heightIn: 70,
-        weightLb: 196,
-        playStyle: "press-man",
-        archetype: "small-quick"
-      },
-      {
-        id: "charvarius_ward",
-        name: "Charvarius Ward",
-        team: "SF",
-        coverageTier: "good",
-        heightIn: 73,
-        weightLb: 200,
-        playStyle: "press-man",
-        archetype: "tall-long"
-      },
-      {
-        id: "legerius_sneed",
-        name: "L'Jarius Sneed",
-        team: "TEN",
-        coverageTier: "good",
-        heightIn: 73,
-        weightLb: 192,
-        playStyle: "press-zone",
-        archetype: "tall-flex"
-      },
-      {
-        id: "derek_stingley",
-        name: "Derek Stingley Jr.",
-        team: "HOU",
-        coverageTier: "good",
-        heightIn: 72,
-        weightLb: 190,
-        playStyle: "press-man",
-        archetype: "balanced"
-      },
-      {
-        id: "jaylon_johnson",
-        name: "Jaylon Johnson",
-        team: "CHI",
-        coverageTier: "good",
-        heightIn: 71,
-        weightLb: 195,
-        playStyle: "off-zone",
-        archetype: "balanced"
-      },
-      {
-        id: "trevon_diggs",
-        name: "Trevon Diggs",
-        team: "DAL",
-        coverageTier: "good",
-        heightIn: 73,
-        weightLb: 205,
-        playStyle: "aggressive-ballhawk",
-        archetype: "tall-ballhawk"
-      },
-      {
-        id: "generic_cb",
-        name: "Generic CB",
-        team: "ANY",
-        coverageTier: "average",
-        heightIn: 71,
-        weightLb: 198,
-        playStyle: "off-zone",
-        archetype: "balanced"
-      }
-    ];
+    // ---------- PLAYER + WR PROFILES ----------
 
-    const cornersById = Object.fromEntries(
-      cornerbacks.map(cb => [cb.id, cb])
-    );
-
-    // -----------------------------
-    // RAW PLAYER DATA + trait splits + schedule + volatility
-    // -----------------------------
-    const rawPlayers = [
+    const players = [
       {
         id: "amonra",
         name: "Amon-Ra St. Brown",
         position: "WR",
         team: "DET",
-        age: 25,
-        volatility: "low",
-        schedule: {
-          1: "jaylon_johnson",
-          2: "patrick_surtain",
-          3: "legerius_sneed",
-          4: "generic_cb",
-          5: "charvarius_ward",
-          6: "derek_stingley",
-          7: "jaire_alexander",
-          8: "generic_cb",
-          9: "trevon_diggs",
-          10: "generic_cb",
-          11: "sauce_gardner",
-          12: "patrick_surtain",
-          13: "generic_cb",
-          14: "legerius_sneed",
-          15: "generic_cb",
-          16: "charvarius_ward",
-          17: "generic_cb",
-          18: "generic_cb"
-        },
-        seasons: [
-          { year: 2021, games: 17, ppr: 227.3 },
-          { year: 2022, games: 16, ppr: 267.6 },
-          { year: 2023, games: 16, ppr: 329.0 },
-          { year: 2024, games: 17, ppr: 310.5 }
-        ],
-        cbSplits: [
-          { cbId: "sauce_gardner", games: 1, ppr: 17.0 }
-        ],
-        traitSplits: [
-          {
-            label: "light_zone",
-            games: 8,
-            ppr: 146.0
-          },
-          {
-            label: "heavy_press",
-            games: 5,
-            ppr: 78.0
-          }
-        ]
+        basePpr: 18.5,
+        height: 72,
+        weight: 202,
+        archetype: "route_technician",
       },
       {
         id: "jsn",
         name: "Jaxon Smith-Njigba",
         position: "WR",
         team: "SEA",
-        age: 23,
-        volatility: "high",
-        schedule: {
-          1: "sauce_gardner",
-          2: "jaire_alexander",
-          3: "charvarius_ward",
-          4: "generic_cb",
-          5: "patrick_surtain",
-          6: "derek_stingley",
-          7: "generic_cb",
-          8: "legerius_sneed",
-          9: "trevon_diggs",
-          10: "generic_cb",
-          11: "sauce_gardner",
-          12: "generic_cb",
-          13: "jaire_alexander",
-          14: "generic_cb",
-          15: "charvarius_ward",
-          16: "generic_cb",
-          17: "patrick_surtain",
-          18: "generic_cb"
-        },
-        seasons: [
-          { year: 2023, games: 17, ppr: 163.4 },
-          { year: 2024, games: 17, ppr: 201.0 }
-        ],
-        cbSplits: [
-          { cbId: "sauce_gardner", games: 2, ppr: 16.0 }
-        ],
-        traitSplits: [
-          {
-            label: "heavy_over_210",
-            games: 6,
-            ppr: 40.0
-          },
-          {
-            label: "slot_sized",
-            games: 5,
-            ppr: 70.0
-          },
-          {
-            label: "tall_long_press",
-            games: 4,
-            ppr: 26.0
-          }
-        ]
+        basePpr: 16.1,
+        height: 72,
+        weight: 196,
+        archetype: "slot_yac",
       },
       {
         id: "devonta",
         name: "DeVonta Smith",
         position: "WR",
         team: "PHI",
-        age: 25,
-        volatility: "medium",
-        schedule: {
-          1: "trevon_diggs",
-          2: "legerius_sneed",
-          3: "sauce_gardner",
-          4: "generic_cb",
-          5: "jaire_alexander",
-          6: "generic_cb",
-          7: "patrick_surtain",
-          8: "generic_cb",
-          9: "charvarius_ward",
-          10: "generic_cb",
-          11: "derek_stingley",
-          12: "sauce_gardner",
-          13: "generic_cb",
-          14: "trevon_diggs",
-          15: "generic_cb",
-          16: "legerius_sneed",
-          17: "generic_cb",
-          18: "generic_cb"
-        },
-        seasons: [
-          { year: 2021, games: 17, ppr: 185.6 },
-          { year: 2022, games: 17, ppr: 248.4 },
-          { year: 2023, games: 17, ppr: 230.6 },
-          { year: 2024, games: 17, ppr: 240.0 }
-        ],
-        cbSplits: [],
-        traitSplits: [
-          {
-            label: "press_man",
-            games: 7,
-            ppr: 116.0
-          },
-          {
-            label: "tall_long",
-            games: 6,
-            ppr: 78.0
-          }
-        ]
-      }
+        basePpr: 15.1,
+        height: 72,
+        weight: 170,
+        archetype: "separator",
+      },
     ];
 
-    const players = rawPlayers.map(p => ({
-      id: p.id,
-      name: p.name,
-      position: p.position,
-      team: p.team,
-      age: p.age,
-      volatility: p.volatility,
-      raw: p
-    }));
+    // Very lightweight physical profiles used for CB body-type logic
+    const wrProfiles = {
+      amonra: {
+        size: "sturdy",
+      },
+      jsn: {
+        size: "medium",
+      },
+      devonta: {
+        size: "slight",
+      },
+    };
 
-    // -----------------------------
-    // BASE PROJECTION ENGINE (2025 PPR)
-    // -----------------------------
-    function projectPpr2025Base(playerRaw) {
-      const seasons = [...playerRaw.seasons].sort((a, b) => a.year - b.year);
-      const n = seasons.length;
-      const recent = seasons[n - 1];
-      const prev   = seasons[n - 2];
-      const prev2  = seasons[n - 3];
+    // ---------- TRUE 2025 SCHEDULE SNAPSHOT (ESPN) ----------
 
-      const ppg = (s) => s ? (s.ppr / s.games) : null;
+    // coverageTier: "elite" | "good" | "average" | "soft"
+    // cbArchetype: "big" | "long" | "small" | "balanced"
+    const schedule2025 = {
+      DET: [
+        { week: 1, oppCode: "GB",  oppName: "Green Bay Packers",      homeAway: "away", coverageTier: "elite",   cbArchetype: "balanced" },
+        { week: 2, oppCode: "CHI", oppName: "Chicago Bears",          homeAway: "home", coverageTier: "average", cbArchetype: "big"      },
+        { week: 3, oppCode: "BAL", oppName: "Baltimore Ravens",       homeAway: "away", coverageTier: "good",    cbArchetype: "long"     },
+        { week: 4, oppCode: "CLE", oppName: "Cleveland Browns",       homeAway: "home", coverageTier: "elite",   cbArchetype: "big"      },
+        { week: 5, oppCode: "CIN", oppName: "Cincinnati Bengals",     homeAway: "away", coverageTier: "good",    cbArchetype: "small"    },
+        { week: 6, oppCode: "KC",  oppName: "Kansas City Chiefs",     homeAway: "away", coverageTier: "elite",   cbArchetype: "long"     },
+        { week: 7, oppCode: "TB",  oppName: "Tampa Bay Buccaneers",   homeAway: "home", coverageTier: "good",    cbArchetype: "big"      },
+        { week: 8, oppCode: null,  oppName: "BYE",                    homeAway: "bye",  isBye: true },
+        { week: 9, oppCode: "MIN", oppName: "Minnesota Vikings",      homeAway: "home", coverageTier: "average", cbArchetype: "balanced" },
+        { week:10, oppCode: "WAS", oppName: "Washington Commanders",  homeAway: "away", coverageTier: "average", cbArchetype: "balanced" },
+        { week:11, oppCode: "PHI", oppName: "Philadelphia Eagles",    homeAway: "away", coverageTier: "elite",   cbArchetype: "long"     },
+        { week:12, oppCode: "NYG", oppName: "New York Giants",        homeAway: "home", coverageTier: "good",    cbArchetype: "balanced" },
+        { week:13, oppCode: "GB",  oppName: "Green Bay Packers",      homeAway: "home", coverageTier: "elite",   cbArchetype: "balanced" },
+        { week:14, oppCode: "DAL", oppName: "Dallas Cowboys",         homeAway: "home", coverageTier: "elite",   cbArchetype: "long"     },
+        { week:15, oppCode: "LAR", oppName: "Los Angeles Rams",       homeAway: "away", coverageTier: "good",    cbArchetype: "small"    },
+        { week:16, oppCode: "PIT", oppName: "Pittsburgh Steelers",    homeAway: "home", coverageTier: "average", cbArchetype: "big"      },
+        { week:17, oppCode: "MIN", oppName: "Minnesota Vikings",      homeAway: "away", coverageTier: "average", cbArchetype: "balanced" },
+        { week:18, oppCode: "CHI", oppName: "Chicago Bears",          homeAway: "away", coverageTier: "average", cbArchetype: "big"      },
+      ],
+      SEA: [
+        { week: 1, oppCode: "SF",  oppName: "San Francisco 49ers",     homeAway: "home", coverageTier: "elite",   cbArchetype: "long"     },
+        { week: 2, oppCode: "PIT", oppName: "Pittsburgh Steelers",     homeAway: "away", coverageTier: "good",    cbArchetype: "big"      },
+        { week: 3, oppCode: "NO",  oppName: "New Orleans Saints",      homeAway: "home", coverageTier: "good",    cbArchetype: "balanced" },
+        { week: 4, oppCode: "ARI", oppName: "Arizona Cardinals",       homeAway: "away", coverageTier: "average", cbArchetype: "small"    },
+        { week: 5, oppCode: "TB",  oppName: "Tampa Bay Buccaneers",    homeAway: "home", coverageTier: "good",    cbArchetype: "big"      },
+        { week: 6, oppCode: "JAX", oppName: "Jacksonville Jaguars",    homeAway: "away", coverageTier: "good",    cbArchetype: "long"     },
+        { week: 7, oppCode: "HOU", oppName: "Houston Texans",          homeAway: "home", coverageTier: "good",    cbArchetype: "long"     },
+        { week: 8, oppCode: null,  oppName: "BYE",                     homeAway: "bye",  isBye: true },
+        { week: 9, oppCode: "WAS", oppName: "Washington Commanders",   homeAway: "away", coverageTier: "average", cbArchetype: "big"      },
+        { week:10, oppCode: "ARI", oppName: "Arizona Cardinals",       homeAway: "home", coverageTier: "average", cbArchetype: "small"    },
+        { week:11, oppCode: "LAR", oppName: "Los Angeles Rams",        homeAway: "away", coverageTier: "average", cbArchetype: "small"    },
+        { week:12, oppCode: "TEN", oppName: "Tennessee Titans",        homeAway: "away", coverageTier: "good",    cbArchetype: "big"      },
+        { week:13, oppCode: "MIN", oppName: "Minnesota Vikings",       homeAway: "home", coverageTier: "average", cbArchetype: "balanced" },
+        { week:14, oppCode: "ATL", oppName: "Atlanta Falcons",         homeAway: "away", coverageTier: "good",    cbArchetype: "balanced" },
+        { week:15, oppCode: "IND", oppName: "Indianapolis Colts",      homeAway: "home", coverageTier: "average", cbArchetype: "balanced" },
+        { week:16, oppCode: "LAR", oppName: "Los Angeles Rams",        homeAway: "home", coverageTier: "average", cbArchetype: "small"    },
+        { week:17, oppCode: "CAR", oppName: "Carolina Panthers",       homeAway: "away", coverageTier: "good",    cbArchetype: "long"     },
+        { week:18, oppCode: "SF",  oppName: "San Francisco 49ers",     homeAway: "away", coverageTier: "elite",   cbArchetype: "long"     },
+      ],
+      PHI: [
+        { week: 1, oppCode: "DAL", oppName: "Dallas Cowboys",          homeAway: "home", coverageTier: "elite",   cbArchetype: "long"     },
+        { week: 2, oppCode: "KC",  oppName: "Kansas City Chiefs",      homeAway: "away", coverageTier: "elite",   cbArchetype: "long"     },
+        { week: 3, oppCode: "LAR", oppName: "Los Angeles Rams",        homeAway: "home", coverageTier: "good",    cbArchetype: "small"    },
+        { week: 4, oppCode: "TB",  oppName: "Tampa Bay Buccaneers",    homeAway: "away", coverageTier: "average", cbArchetype: "big"      },
+        { week: 5, oppCode: "DEN", oppName: "Denver Broncos",          homeAway: "home", coverageTier: "elite",   cbArchetype: "long"     },
+        { week: 6, oppCode: "NYG", oppName: "New York Giants",         homeAway: "away", coverageTier: "average", cbArchetype: "balanced" },
+        { week: 7, oppCode: "MIN", oppName: "Minnesota Vikings",       homeAway: "away", coverageTier: "average", cbArchetype: "balanced" },
+        { week: 8, oppCode: "NYG", oppName: "New York Giants",         homeAway: "home", coverageTier: "average", cbArchetype: "balanced" },
+        { week: 9, oppCode: null,  oppName: "BYE",                     homeAway: "bye",  isBye: true },
+        { week:10, oppCode: "GB",  oppName: "Green Bay Packers",       homeAway: "away", coverageTier: "elite",   cbArchetype: "balanced" },
+        { week:11, oppCode: "DET", oppName: "Detroit Lions",           homeAway: "home", coverageTier: "average", cbArchetype: "balanced" },
+        { week:12, oppCode: "DAL", oppName: "Dallas Cowboys",          homeAway: "away", coverageTier: "elite",   cbArchetype: "long"     },
+        { week:13, oppCode: "CHI", oppName: "Chicago Bears",           homeAway: "home", coverageTier: "average", cbArchetype: "big"      },
+        { week:14, oppCode: "LAR", oppName: "Los Angeles Rams",        homeAway: "away", coverageTier: "good",    cbArchetype: "small"    },
+        { week:15, oppCode: "LV",  oppName: "Las Vegas Raiders",       homeAway: "home", coverageTier: "average", cbArchetype: "small"    },
+        { week:16, oppCode: "WAS", oppName: "Washington Commanders",   homeAway: "away", coverageTier: "average", cbArchetype: "balanced" },
+        { week:17, oppCode: "BUF", oppName: "Buffalo Bills",           homeAway: "away", coverageTier: "elite",   cbArchetype: "long"     },
+        { week:18, oppCode: "WAS", oppName: "Washington Commanders",   homeAway: "home", coverageTier: "average", cbArchetype: "balanced" },
+      ],
+    };
 
-      const ppgRecent = ppg(recent) ?? 0;
-      const ppgPrev   = ppg(prev)   ?? ppgRecent;
-      const ppgPrev2  = ppg(prev2)  ?? ppgPrev;
+    // ---------- MATCHUP / ADJUSTMENT LOGIC ----------
 
-      let basePpg =
-        0.6 * ppgRecent +
-        0.3 * ppgPrev +
-        0.1 * ppgPrev2;
-
-      if (playerRaw.age <= 25) {
-        basePpg *= 1.05;
-      } else if (playerRaw.age >= 29) {
-        basePpg *= 0.95;
-      }
-
-      const seasonPpr = basePpg * 17;
-      return { basePpg, seasonPpr };
+    function getScheduleEntryForPlayer(player, week) {
+      const sched = schedule2025[player.team];
+      if (!sched) return null;
+      return sched.find((g) => g.week === week) || null;
     }
 
-    // -----------------------------
-    // Confidence scoring
-    // -----------------------------
-    function computeConfidence(playerRaw, cbId) {
-      const seasons = playerRaw.seasons || [];
-      const nSeasons = seasons.length;
+    function estimateMatchupAdjustment(player, matchup) {
+      if (!matchup || matchup.isBye) return 0;
 
-      const baseComponent = Math.min(0.7, 0.4 + nSeasons * 0.1);
+      const profile = wrProfiles[player.id] || { size: "medium" };
+      let adj = 0;
 
-      const cbSplit = (playerRaw.cbSplits || []).find(s => s.cbId === cbId);
-      const cbGames = cbSplit ? cbSplit.games : 0;
-      const cbComponent = Math.min(0.15, cbGames * 0.025);
-
-      const cb = cornersById[cbId] || cornersById["generic_cb"];
-      const traitSplit = findMatchingTraitSplit(playerRaw, cb);
-      const traitGames = traitSplit ? traitSplit.games : 0;
-      const traitComponent = Math.min(0.15, traitGames * 0.02);
-
-      let score = baseComponent + cbComponent + traitComponent;
-      score = Math.max(0.4, Math.min(score, 0.95));
-
-      let label = "medium";
-      if (score >= 0.8) label = "high";
-      else if (score <= 0.55) label = "low";
-
-      return { score, label };
-    }
-
-    // -----------------------------
-    // Trait-based split matching
-    // -----------------------------
-    function findMatchingTraitSplit(playerRaw, cb) {
-      if (!playerRaw.traitSplits || !cb) return null;
-      const splits = playerRaw.traitSplits;
-
-      if (cb.weightLb >= 210) {
-        return splits.find(t => t.label === "heavy_over_210" || t.label === "heavy_cbs") || null;
+      // Coverage tier impact
+      switch (matchup.coverageTier) {
+        case "elite":
+          adj -= 2.5;
+          break;
+        case "good":
+          adj -= 1.5;
+          break;
+        case "average":
+          adj -= 0.3;
+          break;
+        case "soft":
+          adj += 0.8;
+          break;
+        default:
+          break;
       }
 
-      if (cb.archetype === "tall-long" && cb.playStyle.includes("press")) {
-        return splits.find(t => t.label === "tall_long_press" || t.label === "tall_long") || null;
-      }
-
-      if (cb.playStyle === "press-man" || cb.playStyle === "press-zone") {
-        return splits.find(t => t.label === "press_man") || null;
-      }
-
-      if (cb.playStyle.includes("zone") && cb.weightLb < 200) {
-        return splits.find(t => t.label === "light_zone") || null;
-      }
-
-      if (cb.archetype === "small-quick" || cb.archetype === "slot") {
-        return splits.find(t => t.label === "slot_sized") || null;
-      }
-
-      return null;
-    }
-
-    // -----------------------------
-    // CB adjustment (tier + traits + specific history + confidence)
-    // -----------------------------
-    function adjustForCorner(basePpg, playerRaw, cbId) {
-      const cb = cornersById[cbId] || cornersById["generic_cb"];
-      let adjPpg = basePpg;
-
-      let tierNote = null;
-      let traitNote = null;
-      let cbSplitNote = null;
-
-      if (cb.coverageTier === "elite") {
-        adjPpg *= 0.90;
-        tierNote = `${cb.name} is graded as an elite CB, so Chip applies a small matchup penalty.`;
-      } else if (cb.coverageTier === "good") {
-        adjPpg *= 0.95;
-        tierNote = `${cb.name} is a good CB, so Chip applies a mild penalty.`;
-      } else if (cb.coverageTier === "bad") {
-        adjPpg *= 1.05;
-        tierNote = `${cb.name} is a weaker CB, so Chip applies a mild boost.`;
-      } else {
-        tierNote = `${cb.name} is closer to an average CB tier.`;
-      }
-
-      const traitSplit = findMatchingTraitSplit(playerRaw, cb);
-      if (traitSplit && traitSplit.games >= 4) {
-        const traitPpg = traitSplit.ppr / traitSplit.games;
-        adjPpg = 0.85 * adjPpg + 0.15 * traitPpg;
-
-        let desc;
-        if (traitSplit.label === "heavy_over_210") {
-          desc = `${playerRaw.name} has historically underperformed vs heavier CBs (≥210 lb).`;
-        } else if (traitSplit.label === "light_zone") {
-          desc = `${playerRaw.name} has historically done well vs lighter zone/off-coverage CBs.`;
-        } else if (traitSplit.label === "slot_sized") {
-          desc = `${playerRaw.name} tends to win vs smaller, slot-sized CBs.`;
-        } else if (traitSplit.label === "press_man") {
-          desc = `${playerRaw.name} tends to handle press-man CBs well.`;
-        } else if (traitSplit.label === "tall_long" || traitSplit.label === "tall_long_press") {
-          desc = `${playerRaw.name} has a slightly tougher time vs tall, long press CBs.`;
-        } else {
-          desc = `${playerRaw.name} has a meaningful history vs CBs with this body type/play style.`;
+      // Body-type / physical profile interaction
+      if (matchup.cbArchetype === "big") {
+        if (profile.size === "slight") {
+          adj -= 0.8; // small WR vs big, grabby CB
+        } else if (profile.size === "sturdy") {
+          adj -= 0.2;
         }
+      } else if (matchup.cbArchetype === "long") {
+        if (player.archetype === "separator") {
+          adj -= 0.6; // long-armed CB vs finesse separator
+        }
+      } else if (matchup.cbArchetype === "small") {
+        if (player.archetype === "slot_yac" || profile.size === "sturdy") {
+          adj += 0.5; // beefy / YAC slot vs smaller CB
+        }
+      }
 
-        traitNote = {
-          description: desc,
-          games: traitSplit.games,
-          ppg: traitPpg.toFixed(1)
+      return adj;
+    }
+
+    function buildWeeklyLine(player, week) {
+      const base = player.basePpr;
+      const matchup = getScheduleEntryForPlayer(player, week);
+
+      if (!matchup) {
+        return {
+          player,
+          base,
+          adjusted: base,
+          matchup: null,
+          vsText: "TBD",
+          notes: "No schedule data wired yet.",
+          adj: 0,
         };
       }
 
-      const cbSplit = (playerRaw.cbSplits || []).find(s => s.cbId === cb.id);
-      if (cbSplit && cbSplit.games >= 2) {
-        const cbPpg = cbSplit.ppr / cbSplit.games;
-        adjPpg = 0.8 * adjPpg + 0.2 * cbPpg;
-        cbSplitNote = {
-          description: `${playerRaw.name} has ${cbSplit.games} games of direct history vs ${cb.name}.`,
-          games: cbSplit.games,
-          ppg: cbPpg.toFixed(1)
+      if (matchup.isBye) {
+        const vsText = "BYE week";
+        return {
+          player,
+          base,
+          adjusted: 0,
+          matchup,
+          vsText,
+          notes: "Bye week — 0 points by default.",
+          adj: -base,
         };
       }
 
-      const confidence = computeConfidence(playerRaw, cbId);
+      const adj = estimateMatchupAdjustment(player, matchup);
+      const adjusted = Math.max(base + adj, 0);
+
+      const homeMarker =
+        matchup.homeAway === "home"
+          ? "vs"
+          : matchup.homeAway === "away"
+          ? "@"
+          : "";
+      const oppLabel = matchup.oppName || matchup.oppCode || "TBD";
+      const vsText = `${homeMarker} ${oppLabel}`;
+
+      const tierLabelMap = {
+        elite: "Tier A secondary",
+        good: "Tier B secondary",
+        average: "League-average secondary",
+        soft: "Favorable secondary",
+      };
+
+      const bodyLabelMap = {
+        big: "Bigger, more physical CB archetype",
+        long: "Long, rangy CB archetype",
+        small: "Quicker, smaller CB archetype",
+        balanced: "Balanced CB archetype",
+      };
+
+      const bits = [];
+      if (matchup.coverageTier && tierLabelMap[matchup.coverageTier]) {
+        bits.push(tierLabelMap[matchup.coverageTier]);
+      }
+      if (matchup.cbArchetype && bodyLabelMap[matchup.cbArchetype]) {
+        bits.push(bodyLabelMap[matchup.cbArchetype]);
+      }
+      let notes = bits.join(" • ");
+      if (!notes) notes = "Neutral matchup.";
 
       return {
-        ppg: adjPpg,
-        cb,
-        tierNote,
-        traitNote,
-        cbSplitNote,
-        confidenceScore: confidence.score,
-        confidenceLabel: confidence.label
+        player,
+        base,
+        adjusted,
+        matchup,
+        vsText,
+        notes,
+        adj,
       };
     }
 
-    // -----------------------------
-    // Build a UI-ready player for a given week
-    // -----------------------------
-    function getPlayer(id, week) {
-      const meta = players.find(p => p.id === id);
-      if (!meta) return null;
-      const playerRaw = meta.raw;
-      const cbId = playerRaw.schedule[week] || "generic_cb";
+    function comparePlayersForWeek(a, b, week) {
+      if (!a || !b || a.id === b.id) return null;
+      const lineA = buildWeeklyLine(a, week);
+      const lineB = buildWeeklyLine(b, week);
 
-      const base = projectPpr2025Base(playerRaw);
-      const adj = adjustForCorner(base.basePpg, playerRaw, cbId);
+      const startLine =
+        lineA.adjusted >= lineB.adjusted ? lineA : lineB;
+      const sitLine = startLine === lineA ? lineB : lineA;
 
-      return {
-        id: meta.id,
-        name: meta.name,
-        position: meta.position,
-        team: meta.team,
-        age: meta.age,
-        volatility: meta.volatility || "medium",
-        projectedBasePpg: Number(base.basePpg.toFixed(1)),
-        projectedSeason: Number(base.seasonPpr.toFixed(1)),
-        projected: Number(adj.ppg.toFixed(1)),
-        matchupCbId: adj.cb ? adj.cb.id : null,
-        week,
-        adjustmentDetails: adj,
-        confidenceScore: adj.confidenceScore,
-        confidenceLabel: adj.confidenceLabel
-      };
+      const reason = `Week ${week}: Chip says start ${startLine.player.name} (${startLine.adjusted.toFixed(
+        1
+      )} PPR, ${startLine.vsText}) over ${sitLine.player.name} (${sitLine.adjusted.toFixed(
+        1
+      )} PPR, ${sitLine.vsText}).`;
+
+      return { startLine, sitLine, reason, lineA, lineB };
     }
 
-    // -----------------------------
-    // HELPERS & UI
-    // -----------------------------
-    function comparePlayers(a,b){
-      if(!a || !b || a.id === b.id) return null;
-      return a.projected > b.projected
-        ? { start:a, sit:b, reason:`Chip says start ${a.name} — better 2025 PPR vs this matchup.` }
-        : { start:b, sit:a, reason:`Chip says start ${b.name} — better 2025 PPR vs this matchup.` };
+    // ---------- UI HELPERS ----------
+
+    function renderSingleMatchup(line) {
+      if (!line.matchup) {
+        return `
+          <div>
+            <strong>${line.player.name}</strong>
+            <div style="font-size:12px; margin-top:2px;">
+              No matchup data for this week yet.
+            </div>
+          </div>
+        `;
+      }
+
+      const base = line.base.toFixed(1);
+      const adj = line.adjusted.toFixed(1);
+      const delta = (line.adjusted - line.base).toFixed(1);
+
+      return `
+        <div>
+          <div><strong>${line.player.name}</strong></div>
+          <div style="font-size:12px; margin-top:2px;">
+            ${line.player.position} • ${line.player.team}
+          </div>
+          <div style="font-size:12px; margin-top:4px;">
+            ${line.vsText}
+          </div>
+          <div style="font-size:12px; margin-top:4px;">
+            Projection: ${base} → ${adj} PPR (${delta >= 0 ? "+" : ""}${delta})
+          </div>
+          <div style="font-size:11px; margin-top:4px; color:#9ca3af;">
+            ${line.notes}
+          </div>
+        </div>
+      `;
     }
 
-    function populatePlayerSelects(A, B){
-      players.forEach((p,i)=>{
-        const o1 = document.createElement("option");
-        o1.value = p.id;
-        o1.textContent = `${p.name} (${p.position} • ${p.team})`;
-        if(i === 0) o1.selected = true;
-
-        const o2 = document.createElement("option");
-        o2.value = p.id;
-        o2.textContent = `${p.name} (${p.position} • ${p.team})`;
-        if(i === 1) o2.selected = true;
-
-        A.appendChild(o1);
-        B.appendChild(o2);
-      });
-    }
-
-    function renderMatchups(a,b){
+    function renderMatchups(a, b, week) {
       const el = document.getElementById("matchupGrid");
-      if(!a || !b || a.id === b.id){
-        el.textContent = "Pick two players.";
+      if (!el) return;
+
+      if (!a || !b || a.id === b.id) {
+        el.textContent = "Pick two different players and a week.";
         return;
       }
 
-      const cbName = (p) => {
-        const cb = cornersById[p.matchupCbId];
-        return cb ? cb.name : "Unknown CB";
-      };
-
-      const maxPpg = Math.max(a.projected, b.projected, 0.1);
-      const barWidth = (p) => (p.projected / maxPpg) * 100;
+      const lineA = buildWeeklyLine(a, week);
+      const lineB = buildWeeklyLine(b, week);
 
       el.innerHTML = `
-        <div style="margin-bottom:8px;">
-          <strong>${a.name}</strong> — Week ${a.week} vs ${cbName(a)}<br>
-          Base: ${a.projectedBasePpg} PPR/g → matchup: <strong>${a.projected}</strong> PPR/g
-          <div class="bar-row"><div class="bar-fill" style="width:${barWidth(a)}%;"></div></div>
+        <div style="font-size:12px; margin-bottom:6px; color:#e5e7eb;">
+          Week ${week} matchup context
         </div>
-        <div>
-          <strong>${b.name}</strong> — Week ${b.week} vs ${cbName(b)}<br>
-          Base: ${b.projectedBasePpg} PPR/g → matchup: <strong>${b.projected}</strong> PPR/g
-          <div class="bar-row"><div class="bar-fill" style="width:${barWidth(b)}%;"></div></div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          ${renderSingleMatchup(lineA)}
+          ${renderSingleMatchup(lineB)}
         </div>
       `;
     }
 
-    function buildExplanation(startPlayer, sitPlayer){
-      const cb = cornersById[startPlayer.matchupCbId];
-      const cbName = cb ? cb.name : "his matchup CB";
+    function populatePlayerSelects() {
+      const selectA = document.getElementById("playerA");
+      const selectB = document.getElementById("playerB");
+      if (!selectA || !selectB) return;
 
-      const diff = (startPlayer.projected - sitPlayer.projected).toFixed(1);
-      const baseDiff = (startPlayer.projectedBasePpg - sitPlayer.projectedBasePpg).toFixed(1);
+      players.forEach((p, idx) => {
+        const label = `${p.name} (${p.position} • ${p.team})`;
 
-      const adj = startPlayer.adjustmentDetails || {};
-      const traitNote = adj.traitNote;
-      const cbSplitNote = adj.cbSplitNote;
-      const tierNote = adj.tierNote;
+        const oA = document.createElement("option");
+        oA.value = p.id;
+        oA.textContent = label;
+        if (idx === 0) oA.selected = true;
 
-      const confLabel = startPlayer.confidenceLabel || "medium";
-      const confPct = startPlayer.confidenceScore != null
-        ? Math.round(startPlayer.confidenceScore * 100)
-        : null;
+        const oB = document.createElement("option");
+        oB.value = p.id;
+        oB.textContent = label;
+        if (idx === 1) oB.selected = true;
 
-      let extraLines = "";
-
-      if (tierNote) {
-        extraLines += `• ${tierNote}<br>`;
-      }
-
-      if (traitNote) {
-        extraLines += `• ${traitNote.description} In those games he has averaged about <strong>${traitNote.ppg} PPR/g</strong>.<br>`;
-      }
-
-      if (cbSplitNote) {
-        extraLines += `• ${cbSplitNote.description} In that sample he's around <strong>${cbSplitNote.ppg} PPR/g</strong>.<br>`;
-      }
-
-      if (!extraLines) {
-        extraLines = "• This matchup mostly reflects Chip's base projection and CB tier adjustments.<br>";
-      }
-
-      const confLine = confPct
-        ? `• Chip’s confidence in this projection is <strong>${confLabel}</strong> (~${confPct}%).<br>`
-        : `• Chip’s confidence in this projection is <strong>${confLabel}</strong>.<br>`;
-
-      return `
-        Chip is leaning <strong>${startPlayer.name}</strong> over ${sitPlayer.name}.
-        <br><br>
-        • Neutral field, ${startPlayer.name} projects at <strong>${startPlayer.projectedBasePpg}</strong> PPR/g vs ${sitPlayer.projectedBasePpg} for ${sitPlayer.name}. (Δ ${baseDiff} PPR/g)
-        <br>
-        • In Week ${startPlayer.week}, ${startPlayer.name} faces <strong>${cbName}</strong>, which adjusts him to <strong>${startPlayer.projected}</strong> PPR/g.
-        <br>
-        • ${sitPlayer.name} settles at <strong>${sitPlayer.projected}</strong> PPR/g in his matchup.
-        <br><br>
-        ${extraLines}
-        ${confLine}
-        <br>
-        Net: Chip sees about a <strong>${diff} PPR/g</strong> edge for ${startPlayer.name} in this specific matchup.
-      `;
+        selectA.appendChild(oA);
+        selectB.appendChild(oB);
+      });
     }
 
-    // Text-only report for copying
-    function buildTextReport(startPlayer, sitPlayer) {
-      const cb = cornersById[startPlayer.matchupCbId];
-      const cbName = cb ? cb.name : "his matchup CB";
+    function populateWeekSelector() {
+      const weekSelect = document.getElementById("weekSelector");
+      if (!weekSelect) return;
 
-      const diff = (startPlayer.projected - sitPlayer.projected).toFixed(1);
-      const baseDiff = (startPlayer.projectedBasePpg - sitPlayer.projectedBasePpg).toFixed(1);
-
-      const adj = startPlayer.adjustmentDetails || {};
-      const traitNote = adj.traitNote;
-      const cbSplitNote = adj.cbSplitNote;
-      const tierNote = adj.tierNote;
-
-      const confLabel = startPlayer.confidenceLabel || "medium";
-      const confPct = startPlayer.confidenceScore != null
-        ? Math.round(startPlayer.confidenceScore * 100)
-        : null;
-
-      const lines = [];
-      lines.push(`ChipChaser sit/start call for Week ${startPlayer.week}:`);
-      lines.push(`Start: ${startPlayer.name} (${startPlayer.team})`);
-      lines.push(`Sit:   ${sitPlayer.name} (${sitPlayer.team})`);
-      lines.push("");
-      lines.push(`Neutral PPR/g: ${startPlayer.name} ${startPlayer.projectedBasePpg} vs ${sitPlayer.projectedBasePpg} (Δ ${baseDiff})`);
-      lines.push(
-        `Matchup vs ${cbName}: ${startPlayer.name} ${startPlayer.projected} PPR/g vs ${sitPlayer.projected} PPR/g (edge ${diff} PPR/g)`
-      );
-      lines.push("");
-      if (tierNote) lines.push(`- ${tierNote}`);
-      if (traitNote) lines.push(`- ${traitNote.description} (~${traitNote.ppg} PPR/g in that split).`);
-      if (cbSplitNote) lines.push(`- ${cbSplitNote.description} (~${cbSplitNote.ppg} PPR/g in that sample).`);
-
-      if (!tierNote && !traitNote && !cbSplitNote) {
-        lines.push(`- Mostly driven by Chip's base projection and CB tier adjustment.`);
+      for (let w = 1; w <= 18; w++) {
+        const opt = document.createElement("option");
+        opt.value = String(w);
+        opt.textContent = `Week ${w}`;
+        if (w === 1) opt.selected = true;
+        weekSelect.appendChild(opt);
       }
-
-      if (confPct) {
-        lines.push(`Confidence: ${confLabel} (~${confPct}%).`);
-      } else {
-        lines.push(`Confidence: ${confLabel}.`);
-      }
-
-      lines.push("");
-      lines.push("Sent from ChipChaser 🟣");
-
-      return lines.join("\n");
     }
 
-    // -----------------------------
-    // INIT
-    // -----------------------------
-    const A = document.getElementById("playerA");
-    const B = document.getElementById("playerB");
-    const btn = document.getElementById("sitStartBtn");
-    const result = document.getElementById("sitStartResult");
-    const playerArt = document.getElementById("playerArt");
-    const playerArtMeta = document.getElementById("playerArtMeta");
-    const explanationEl = document.getElementById("chipExplanation");
-    const weekSelect = document.getElementById("weekSelect");
-
-    const openExplainerBtn = document.getElementById("openExplainerBtn");
-    const closeExplainerBtn = document.getElementById("closeExplainerBtn");
-    const explainerBackdrop = document.getElementById("explainerBackdrop");
-
-    const copyReportBtn = document.getElementById("copyReportBtn");
-    const copyReportStatus = document.getElementById("copyReportStatus");
-
-    let lastDecision = null;
-
-    function safeWeek() {
-      const w = Number(weekSelect.value);
-      if (!w || w < 1 || w > 18) return 1;
-      return w;
+    function getPlayerById(id) {
+      return players.find((p) => p.id === id) || null;
     }
 
-    if (A && B && btn && result && playerArt && playerArtMeta && explanationEl && weekSelect) {
-      populatePlayerSelects(A, B);
+    // ---------- INIT ----------
 
-      function recompute(){
-        const week = safeWeek();
-        const a = getPlayer(A.value, week);
-        const b = getPlayer(B.value, week);
-        const r = comparePlayers(a,b);
+    document.addEventListener("DOMContentLoaded", () => {
+      const selectA = document.getElementById("playerA");
+      const selectB = document.getElementById("playerB");
+      const weekSelect = document.getElementById("weekSelector");
+      const btn = document.getElementById("sitStartBtn");
+      const resultEl = document.getElementById("sitStartResult");
+      const playerArt = document.getElementById("playerArt");
+      const playerArtMeta = document.getElementById("playerArtMeta");
 
-        if(!r){
-          result.textContent = "Pick two players and Chip will decide.";
-          renderMatchups(a,b);
-          playerArt.src = "chip-thinking.png";
-          playerArt.alt = "Chip thinking";
-          playerArtMeta.textContent = "Chip will show who you should start here.";
-          explanationEl.innerHTML = "Run a comparison and Chip will break down the call.";
-          lastDecision = null;
-          if (copyReportStatus) copyReportStatus.textContent = "";
+      populatePlayerSelects();
+      populateWeekSelector();
+
+      if (!selectA || !selectB || !weekSelect || !btn || !resultEl) {
+        console.warn("ChipChaser: key UI elements not found, aborting init.");
+        return;
+      }
+
+      function resetPlayerArt() {
+        if (!playerArt || !playerArtMeta) return;
+        playerArt.src = "chip-thinking.png";
+        playerArt.alt = "Chip thinking";
+        playerArtMeta.textContent = "Chip will show who you should start here.";
+      }
+
+      function recompute() {
+        const a = getPlayerById(selectA.value);
+        const b = getPlayerById(selectB.value);
+        const week = parseInt(weekSelect.value, 10) || 1;
+
+        if (!a || !b || a.id === b.id) {
+          resultEl.textContent =
+            "Pick two different players and a week and Chip will decide.";
+          renderMatchups(a, b, week);
+          resetPlayerArt();
           return;
         }
 
-        const startPlayer = r.start;
-        const sitPlayer = r.sit;
+        const comparison = comparePlayersForWeek(a, b, week);
+        if (!comparison) {
+          resultEl.textContent =
+            "Pick two different players and a week and Chip will decide.";
+          renderMatchups(a, b, week);
+          resetPlayerArt();
+          return;
+        }
 
-        lastDecision = { start: startPlayer, sit: sitPlayer };
+        resultEl.textContent = comparison.reason;
+        renderMatchups(a, b, week);
 
-        result.textContent = r.reason;
-        renderMatchups(a,b);
+        // Player art for the start recommendation
+        if (playerArt && playerArtMeta) {
+          const startId = comparison.startLine.player.id;
+          playerArt.src = `player-${startId}.png`;
+          playerArt.alt = `${comparison.startLine.player.name} portrait`;
+          playerArt.onerror = function () {
+            this.onerror = null;
+            this.src = "chip-thinking.png";
+            this.alt = "Chip thinking";
+          };
 
-        playerArt.src = `player-${startPlayer.id}.png`;
-        playerArt.alt = `${startPlayer.name} portrait`;
-        playerArt.onerror = function(){
-          this.onerror = null;
-          this.src = "chip-thinking.png";
-          this.alt = "Chip thinking";
-        };
-
-        const confLabel = startPlayer.confidenceLabel || "medium";
-        const confPct = startPlayer.confidenceScore != null
-          ? Math.round(startPlayer.confidenceScore * 100)
-          : null;
-        const volatility = (startPlayer.volatility || "medium")
-          .replace(/^./, c => c.toUpperCase());
-
-        playerArtMeta.innerHTML = `
-          <div><strong>${startPlayer.name}</strong></div>
-          <div>${startPlayer.position} • ${startPlayer.team}</div>
-          <div style="margin-top:4px;">
-            Week ${startPlayer.week} projection vs matchup: ${startPlayer.projected} PPR/g
-          </div>
-          <div style="margin-top:4px;">
-            Volatility: ${volatility} • Confidence: ${confLabel}${confPct ? " (~" + confPct + "%)" : ""}
-          </div>
-        `;
-
-        explanationEl.innerHTML = buildExplanation(startPlayer, sitPlayer);
-        if (copyReportStatus) copyReportStatus.textContent = "";
+          playerArtMeta.innerHTML = `
+            <div><strong>${comparison.startLine.player.name}</strong></div>
+            <div>${comparison.startLine.player.position} • ${comparison.startLine.player.team}</div>
+            <div style="margin-top:4px;">${comparison.startLine.vsText}</div>
+            <div style="margin-top:4px; font-size:12px;">
+              ${comparison.startLine.base.toFixed(1)} → ${comparison.startLine.adjusted.toFixed(
+            1
+          )} PPR
+            </div>
+          `;
+        }
       }
 
-      A.addEventListener("change", recompute);
-      B.addEventListener("change", recompute);
-      weekSelect.addEventListener("change", recompute);
+      // Wire events
       btn.addEventListener("click", recompute);
+      selectA.addEventListener("change", recompute);
+      selectB.addEventListener("change", recompute);
+      weekSelect.addEventListener("change", recompute);
 
+      // Initial render
       recompute();
-    } else {
-      console.error("ChipChaser: key UI elements not found.");
-    }
 
-    // -----------------------------
-    // CHAT PANEL LOGIC
-    // -----------------------------
-    const chatBtn = document.getElementById("chatChipBtn");
-    const chatPanel = document.getElementById("chipChatPanel");
-    const closeChat = document.getElementById("closeChipChat");
-    const chatInput = document.getElementById("chipChatInput");
-    const chatSend = document.getElementById("chipChatSendBtn");
-    const chatLog = document.getElementById("chipChatLog");
-
-    if (chatBtn && chatPanel && closeChat) {
-      chatBtn.addEventListener("click", () => {
-        chatPanel.style.right = "0";
-      });
-      closeChat.addEventListener("click", () => {
-        chatPanel.style.right = "-380px";
-      });
-    }
-
-    function handleChipQuestion() {
-      if (!chatInput || !chatLog) return;
-      const q = chatInput.value.trim();
-      if (!q) return;
-
-      const lower = q.toLowerCase();
-      const week = safeWeek();
-
-      const a = A ? getPlayer(A.value, week) : null;
-      const b = B ? getPlayer(B.value, week) : null;
-      const r = (a && b) ? comparePlayers(a,b) : null;
-
-      let answer = "";
-
-      if (r && (lower.includes("why") || lower.includes("reason") || lower.includes("explain"))) {
-        answer = buildExplanation(r.start, r.sit);
-      } else if (a && lower.includes(a.name.toLowerCase().split(" ")[0])) {
-        const confLabel = a.confidenceLabel || "medium";
-        const confPct = a.confidenceScore != null ? Math.round(a.confidenceScore * 100) : null;
-        answer = `
-          For <strong>${a.name}</strong> in Week ${week}, Chip projects
-          <strong>${a.projectedBasePpg}</strong> PPR/g on a neutral field and
-          <strong>${a.projected}</strong> PPR/g vs this matchup.
-          <br>
-          Confidence: ${confLabel}${confPct ? " (~" + confPct + "%)" : ""}.
-        `;
-      } else if (b && lower.includes(b.name.toLowerCase().split(" ")[0])) {
-        const confLabel = b.confidenceLabel || "medium";
-        const confPct = b.confidenceScore != null ? Math.round(b.confidenceScore * 100) : null;
-        answer = `
-          For <strong>${b.name}</strong> in Week ${week}, Chip projects
-          <strong>${b.projectedBasePpg}</strong> PPR/g on a neutral field and
-          <strong>${b.projected}</strong> PPR/g vs this matchup.
-          <br>
-          Confidence: ${confLabel}${confPct ? " (~" + confPct + "%)" : ""}.
-        `;
-      } else if (r && (lower.includes("who") || lower.includes("start") || lower.includes("sit"))) {
-        answer = r.reason + "<br><br>" + buildExplanation(r.start, r.sit);
-      } else {
-        answer = `
-          Chip is currently focused on <strong>Amon-Ra St. Brown</strong>, 
-          <strong>Jaxon Smith-Njigba</strong>, and <strong>DeVonta Smith</strong>.
-          Ask something like “Why is JSN a sit vs Amon-Ra in Week ${week}?” or “What does Chip think about DeVonta this week?”
-        `;
-      }
-
-      chatLog.innerHTML = `
-        <div style="margin-bottom:6px; color:#e5e7eb;">
-          <strong>You:</strong> ${q}
-        </div>
-        <div>
-          <strong>Chip:</strong> ${answer}
-        </div>
-      `;
-
-      chatInput.value = "";
-    }
-
-    if (chatSend && chatInput && chatLog) {
-      chatSend.addEventListener("click", handleChipQuestion);
-      chatInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-          handleChipQuestion();
-        }
-      });
-    }
-
-    // -----------------------------
-    // Explainer modal logic
-    // -----------------------------
-    if (openExplainerBtn && closeExplainerBtn && explainerBackdrop) {
-      openExplainerBtn.addEventListener("click", () => {
-        explainerBackdrop.style.display = "flex";
-      });
-      closeExplainerBtn.addEventListener("click", () => {
-        explainerBackdrop.style.display = "none";
-      });
-      explainerBackdrop.addEventListener("click", (e) => {
-        if (e.target === explainerBackdrop) {
-          explainerBackdrop.style.display = "none";
-        }
-      });
-    }
-
-    // -----------------------------
-    // Copy report logic
-    // -----------------------------
-    if (copyReportBtn && copyReportStatus) {
-      copyReportBtn.addEventListener("click", async () => {
-        if (!lastDecision) {
-          copyReportStatus.textContent = "Run a sit/start comparison first.";
-          return;
-        }
-        const { start, sit } = lastDecision;
-        const text = buildTextReport(start, sit);
-        try {
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            await navigator.clipboard.writeText(text);
-            copyReportStatus.textContent = "Report copied. Paste into your league chat.";
-          } else {
-            // Fallback
-            const temp = document.createElement("textarea");
-            temp.value = text;
-            document.body.appendChild(temp);
-            temp.select();
-            document.execCommand("copy");
-            document.body.removeChild(temp);
-            copyReportStatus.textContent = "Report copied. Paste into your league chat.";
-          }
-        } catch (err) {
-          console.error("Copy failed:", err);
-          copyReportStatus.textContent = "Could not copy automatically. You can still screenshot this card.";
-        }
-      });
-    }
-  </script>
-
-</body>
-</html>
+      // CHAT PANEL LOGIC
+      const chatBtn = document.getE
