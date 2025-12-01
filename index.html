@@ -206,7 +206,6 @@
     <!-- HEADER -->
     <header>
       <div class="logo-wrap" style="display:flex; align-items:center; gap:10px;">
-        <!-- transparent logo -->
         <img src="chip-mascot-transparent.png" width="52" alt="Chip logo" />
         <div style="line-height:1.1;">
           <span style="font-weight:700; font-size:18px;">ChipChaser</span><br>
@@ -236,7 +235,6 @@
           Real-time projections, matchup analytics, sit/start calls, and an AI roadmap.
         </p>
 
-        <!-- Hero tagline -->
         <p style="
           margin-top: 28px;
           font-family: Helvetica, sans-serif;
@@ -250,7 +248,6 @@
           Start asking Chip.
         </p>
 
-        <!-- Winking Chip with football under the tagline -->
         <img
           src="chip-wink-football.png"
           alt="Chip winking with a thumbs up and a football"
@@ -261,7 +258,6 @@
       <!-- RIGHT SIDE -->
       <aside>
 
-        <!-- Odell-style Chip above Sit/Start -->
         <div class="chip-hero-wrap">
           <div class="chip-glow"></div>
           <img
@@ -271,7 +267,6 @@
           />
         </div>
 
-        <!-- SIT/START -->
         <div class="card">
           <h3 style="margin-bottom:6px;">Chip’s Sit/Start Assistant</h3>
 
@@ -293,13 +288,11 @@
           </div>
         </div>
 
-        <!-- MATCHUPS -->
         <div class="card">
           <h3 style="margin-bottom:6px;">Matchup Analytics</h3>
           <div id="matchupGrid" style="font-size:13px; color:var(--text-muted);"></div>
         </div>
 
-        <!-- PLAYER PROPS / PLAYER IMAGE -->
         <div class="card">
           <h3 style="margin-bottom:6px;">Player Props</h3>
           <div style="display:flex; align-items:center; gap:12px;">
@@ -318,19 +311,16 @@
       </aside>
     </main>
 
-    <!-- FEATURES -->
     <section id="features" style="margin-top:40px;">
       <h2>Features</h2>
       <p style="color:var(--text-muted);">Projection engine, matchup breakdowns, AI roadmap.</p>
     </section>
 
-    <!-- HOW IT WORKS -->
     <section id="how-it-works" style="margin-top:40px;">
       <h2>How it works</h2>
       <p style="color:var(--text-muted);">Connect, ask Chip questions, win more matchups.</p>
     </section>
 
-    <!-- FAQ -->
     <section id="faq" style="margin-top:40px;">
       <h2>FAQ</h2>
       <p style="color:var(--text-muted);">More coming soon.</p>
@@ -338,10 +328,8 @@
 
   </div>
 
-  <!-- CHAT BUTTON -->
   <button id="chatChipBtn">💬 Chat with Chip</button>
 
-  <!-- CHAT PANEL -->
   <div id="chipChatPanel">
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <h2>Chat with Chip</h2>
@@ -362,9 +350,8 @@
     </button>
   </div>
 
-  <!-- JAVASCRIPT -->
   <script>
-    // ---------- PLAYER + WR PROFILES ----------
+    // ---------- PLAYERS ----------
 
     const players = [
       {
@@ -373,8 +360,7 @@
         position: "WR",
         team: "DET",
         basePpr: 18.5,
-        height: 72,
-        weight: 202,
+        size: "sturdy",
         archetype: "route_technician",
       },
       {
@@ -383,8 +369,7 @@
         position: "WR",
         team: "SEA",
         basePpr: 16.1,
-        height: 72,
-        weight: 196,
+        size: "medium",
         archetype: "slot_yac",
       },
       {
@@ -393,93 +378,40 @@
         position: "WR",
         team: "PHI",
         basePpr: 15.1,
-        height: 72,
-        weight: 170,
+        size: "slight",
         archetype: "separator",
       },
     ];
 
-    // WR body-type tendencies vs CB archetypes
-    const wrProfiles = {
+    // ---------- BODY-TYPE PREFERENCES ----------
+
+    // For each WR, how they tend to do vs CB body types.
+    // cbArchetype: big (205–225), long, small, balanced
+    const bodyTypePrefs = {
       amonra: {
-        size: "sturdy",
-        bodyPref: {
-          big: {
-            tendency: "plus",
-            text:
-              "Chip sees Amon-Ra as sturdy enough to win underneath vs bigger 205–220 lb corners. Slight body-type edge here.",
-          },
-          long: {
-            tendency: "neutral",
-            text:
-              "Long, rangy corners can bother the boundary more than his slot work, so Chip treats this as mostly neutral.",
-          },
-          small: {
-            tendency: "plus",
-            text:
-              "Against smaller slot-sized CBs, Amon-Ra’s frame + route craft usually carry him.",
-          },
-          balanced: {
-            tendency: "neutral",
-            text:
-              "Balanced CB body-type — Chip mostly leans on coverage grade and volume here.",
-          },
-        },
+        big:   { tendency: "plus",  blurb: "Chip sees Amon-Ra as sturdy enough to win underneath vs bigger 205–225 lb corners." },
+        long:  { tendency: "neutral", blurb: "Long, rangy corners are mostly neutral for Amon-Ra — volume keeps him afloat." },
+        small: { tendency: "plus",  blurb: "Against smaller slot-style CBs, his frame and route craft usually carry him." },
+        balanced: { tendency: "neutral", blurb: "Balanced CB body-type — Chip mostly leans on coverage grade and raw volume here." },
       },
       jsn: {
-        size: "medium",
-        bodyPref: {
-          big: {
-            tendency: "plus",
-            text:
-              "Chip’s profile for JSN says he can actually shine vs bigger 210–225 lb CBs when he’s in the slot, using leverage and YAC.",
-          },
-          long: {
-            tendency: "minus",
-            text:
-              "Long, rangy press corners can disrupt JSN’s timing more, so Chip dials him back a bit here.",
-          },
-          small: {
-            tendency: "plus",
-            text:
-              "Smaller slot-style corners often struggle to tackle JSN cleanly after the catch — Chip gives a small bump.",
-          },
-          balanced: {
-            tendency: "neutral",
-            text:
-              "Neutral body-type matchup for JSN — coverage tier does most of the work.",
-          },
-        },
+        big:   { tendency: "plus",  blurb: "Chip’s profile for JSN says he can actually shine vs bigger 210–225 lb CBs from the slot, using leverage and YAC." },
+        long:  { tendency: "minus", blurb: "Long, rangy press corners can disrupt JSN’s timing more, so Chip dials him back a bit here." },
+        small: { tendency: "plus",  blurb: "Smaller nickel CBs often struggle to tackle JSN cleanly after the catch — Chip gives a small bump." },
+        balanced: { tendency: "neutral", blurb: "Neutral body-type matchup for JSN — coverage tier does most of the work." },
       },
       devonta: {
-        size: "slight",
-        bodyPref: {
-          big: {
-            tendency: "minus",
-            text:
-              "At around 170 lbs, DeVonta can get bodied by bigger 205–220 lb CBs in tight coverage, so Chip trims the projection slightly.",
-          },
-          long: {
-            tendency: "minus",
-            text:
-              "Long, physical CBs can ride his routes at the catch point — Chip bakes in a small penalty.",
-          },
-          small: {
-            tendency: "plus",
-            text:
-              "Versus smaller, quicker CBs, his release/route game tends to win — Chip nudges his projection up.",
-          },
-          balanced: {
-            tendency: "neutral",
-            text:
-              "Balanced CB body-type — Chip treats this as roughly neutral and leans on coverage grade.",
-          },
-        },
+        big:   { tendency: "minus", blurb: "At a lighter frame, DeVonta can get bodied by bigger 205–220 lb CBs in tight coverage, so Chip trims the projection slightly." },
+        long:  { tendency: "minus", blurb: "Long, physical CBs can ride his routes at the catch point — Chip bakes in a small penalty." },
+        small: { tendency: "plus",  blurb: "Versus smaller, quicker CBs, his release and routes tend to win — Chip nudges his projection up." },
+        balanced: { tendency: "neutral", blurb: "Balanced CB body-type — Chip treats this as roughly neutral and leans on coverage grade." },
       },
     };
 
     // ---------- 2025 SCHEDULE SNAPSHOT ----------
 
+    // coverageTier: elite | good | average | soft
+    // cbArchetype: big | long | small | balanced
     const schedule2025 = {
       DET: [
         { week: 1, oppCode: "GB",  oppName: "Green Bay Packers",      homeAway: "away", coverageTier: "elite",   cbArchetype: "balanced" },
@@ -554,7 +486,6 @@
     function estimateMatchupAdjustment(player, matchup) {
       if (!matchup || matchup.isBye) return 0;
 
-      const profile = wrProfiles[player.id] || { size: "medium" };
       let adj = 0;
 
       // Coverage tier impact
@@ -577,9 +508,9 @@
 
       // Generic size mismatch
       if (matchup.cbArchetype === "big") {
-        if (profile.size === "slight") {
+        if (player.size === "slight") {
           adj -= 0.8;
-        } else if (profile.size === "sturdy") {
+        } else if (player.size === "sturdy") {
           adj -= 0.2;
         }
       } else if (matchup.cbArchetype === "long") {
@@ -587,22 +518,18 @@
           adj -= 0.6;
         }
       } else if (matchup.cbArchetype === "small") {
-        if (player.archetype === "slot_yac" || profile.size === "sturdy") {
+        if (player.archetype === "slot_yac" || player.size === "sturdy") {
           adj += 0.5;
         }
       }
 
-      // Body-type preference from profile (explicit "shines / struggles" logic)
-      const pref =
-        profile.bodyPref && profile.bodyPref[matchup.cbArchetype]
-          ? profile.bodyPref[matchup.cbArchetype]
-          : null;
-
-      if (pref) {
-        if (pref.tendency === "plus") {
-          adj += 0.5;
-        } else if (pref.tendency === "minus") {
-          adj -= 0.5;
+      // Body-type tendency from bodyTypePrefs
+      const prefs = bodyTypePrefs[player.id];
+      if (prefs) {
+        const pref = prefs[matchup.cbArchetype];
+        if (pref) {
+          if (pref.tendency === "plus") adj += 0.5;
+          if (pref.tendency === "minus") adj -= 0.5;
         }
       }
 
@@ -626,13 +553,12 @@
       }
 
       if (matchup.isBye) {
-        const vsText = "BYE week";
         return {
           player,
           base,
           adjusted: 0,
           matchup,
-          vsText,
+          vsText: "BYE week",
           notes: "Bye week — 0 points by default.",
           adj: -base,
         };
@@ -648,7 +574,7 @@
           ? "@"
           : "";
       const oppLabel = matchup.oppName || matchup.oppCode || "TBD";
-      const vsText = `${homeMarker} ${oppLabel}`;
+      const vsText = homeMarker + " " + oppLabel;
 
       const tierLabelMap = {
         elite: "Tier A secondary",
@@ -665,6 +591,7 @@
       };
 
       const bits = [];
+
       if (matchup.coverageTier && tierLabelMap[matchup.coverageTier]) {
         bits.push(tierLabelMap[matchup.coverageTier]);
       }
@@ -672,18 +599,13 @@
         bits.push(bodyLabelMap[matchup.cbArchetype]);
       }
 
-      const profile = wrProfiles[player.id];
-      const pref =
-        profile && profile.bodyPref
-          ? profile.bodyPref[matchup.cbArchetype]
-          : null;
-
-      let notes = bits.join(" • ");
-      if (pref) {
-        // Make sure there's some spacing if we already had notes
-        notes = (notes ? notes + ". " : "") + pref.text;
+      const prefs = bodyTypePrefs[player.id];
+      const pref = prefs ? prefs[matchup.cbArchetype] : null;
+      if (pref && pref.blurb) {
+        bits.push(pref.blurb);
       }
-      if (!notes) notes = "Neutral matchup.";
+
+      const notes = bits.length > 0 ? bits.join(" • ") : "Neutral matchup.";
 
       return {
         player,
@@ -698,18 +620,29 @@
 
     function comparePlayersForWeek(a, b, week) {
       if (!a || !b || a.id === b.id) return null;
+
       const lineA = buildWeeklyLine(a, week);
       const lineB = buildWeeklyLine(b, week);
 
-      const startLine =
-        lineA.adjusted >= lineB.adjusted ? lineA : lineB;
+      const startLine = lineA.adjusted >= lineB.adjusted ? lineA : lineB;
       const sitLine = startLine === lineA ? lineB : lineA;
 
-      const reason = `Week ${week}: Chip says start ${startLine.player.name} (${startLine.adjusted.toFixed(
-        1
-      )} PPR, ${startLine.vsText}) over ${sitLine.player.name} (${sitLine.adjusted.toFixed(
-        1
-      )} PPR, ${sitLine.vsText}).`;
+      const reason =
+        "Week " +
+        week +
+        ": Chip says start " +
+        startLine.player.name +
+        " (" +
+        startLine.adjusted.toFixed(1) +
+        " PPR, " +
+        startLine.vsText +
+        ") over " +
+        sitLine.player.name +
+        " (" +
+        sitLine.adjusted.toFixed(1) +
+        " PPR, " +
+        sitLine.vsText +
+        ").";
 
       return { startLine, sitLine, reason, lineA, lineB };
     }
@@ -718,37 +651,38 @@
 
     function renderSingleMatchup(line) {
       if (!line.matchup) {
-        return `
-          <div>
-            <strong>${line.player.name}</strong>
-            <div style="font-size:12px; margin-top:2px;">
-              No matchup data for this week yet.
-            </div>
-          </div>
-        `;
+        return (
+          "<div>" +
+          "<strong>" + line.player.name + "</strong>" +
+          '<div style="font-size:12px; margin-top:2px;">' +
+          "No matchup data for this week yet." +
+          "</div>" +
+          "</div>"
+        );
       }
 
       const base = line.base.toFixed(1);
       const adj = line.adjusted.toFixed(1);
       const delta = (line.adjusted - line.base).toFixed(1);
+      const deltaLabel = (delta >= 0 ? "+" : "") + delta;
 
-      return `
-        <div>
-          <div><strong>${line.player.name}</strong></div>
-          <div style="font-size:12px; margin-top:2px;">
-            ${line.player.position} • ${line.player.team}
-          </div>
-          <div style="font-size:12px; margin-top:4px;">
-            ${line.vsText}
-          </div>
-          <div style="font-size:12px; margin-top:4px;">
-            Projection: ${base} → ${adj} PPR (${delta >= 0 ? "+" : ""}${delta})
-          </div>
-          <div style="font-size:11px; margin-top:4px; color:#9ca3af;">
-            ${line.notes}
-          </div>
-        </div>
-      `;
+      return (
+        "<div>" +
+        "<div><strong>" + line.player.name + "</strong></div>" +
+        '<div style="font-size:12px; margin-top:2px;">' +
+        line.player.position + " • " + line.player.team +
+        "</div>" +
+        '<div style="font-size:12px; margin-top:4px;">' +
+        line.vsText +
+        "</div>" +
+        '<div style="font-size:12px; margin-top:4px;">' +
+        "Projection: " + base + " → " + adj + " PPR (" + deltaLabel + ")" +
+        "</div>" +
+        '<div style="font-size:11px; margin-top:4px; color:#9ca3af;">' +
+        line.notes +
+        "</div>" +
+        "</div>"
+      );
     }
 
     function renderMatchups(a, b, week) {
@@ -763,15 +697,14 @@
       const lineA = buildWeeklyLine(a, week);
       const lineB = buildWeeklyLine(b, week);
 
-      el.innerHTML = `
-        <div style="font-size:12px; margin-bottom:6px; color:#e5e7eb;">
-          Week ${week} matchup context
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          ${renderSingleMatchup(lineA)}
-          ${renderSingleMatchup(lineB)}
-        </div>
-      `;
+      el.innerHTML =
+        '<div style="font-size:12px; margin-bottom:6px; color:#e5e7eb;">' +
+        "Week " + week + " matchup context" +
+        "</div>" +
+        '<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">' +
+        renderSingleMatchup(lineA) +
+        renderSingleMatchup(lineB) +
+        "</div>";
     }
 
     function populatePlayerSelects() {
@@ -779,8 +712,8 @@
       const selectB = document.getElementById("playerB");
       if (!selectA || !selectB) return;
 
-      players.forEach((p, idx) => {
-        const label = `${p.name} (${p.position} • ${p.team})`;
+      players.forEach(function (p, idx) {
+        const label = p.name + " (" + p.position + " • " + p.team + ")";
 
         const oA = document.createElement("option");
         oA.value = p.id;
@@ -801,22 +734,25 @@
       const weekSelect = document.getElementById("weekSelector");
       if (!weekSelect) return;
 
-      for (let w = 1; w <= 18; w++) {
-        const opt = document.createElement("option");
+      for (var w = 1; w <= 18; w++) {
+        var opt = document.createElement("option");
         opt.value = String(w);
-        opt.textContent = `Week ${w}`;
+        opt.textContent = "Week " + w;
         if (w === 1) opt.selected = true;
         weekSelect.appendChild(opt);
       }
     }
 
     function getPlayerById(id) {
-      return players.find((p) => p.id === id) || null;
+      for (var i = 0; i < players.length; i++) {
+        if (players[i].id === id) return players[i];
+      }
+      return null;
     }
 
     // ---------- INIT ----------
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", function () {
       const selectA = document.getElementById("playerA");
       const selectB = document.getElementById("playerB");
       const weekSelect = document.getElementById("weekSelector");
@@ -865,31 +801,29 @@
         resultEl.textContent = comparison.reason;
         renderMatchups(a, b, week);
 
-        // Player art for the start recommendation
         if (playerArt && playerArtMeta) {
           const startId = comparison.startLine.player.id;
-          playerArt.src = `player-${startId}.png`;
-          playerArt.alt = `${comparison.startLine.player.name} portrait`;
+          playerArt.src = "player-" + startId + ".png";
+          playerArt.alt = comparison.startLine.player.name + " portrait";
           playerArt.onerror = function () {
             this.onerror = null;
             this.src = "chip-thinking.png";
             this.alt = "Chip thinking";
           };
 
-          playerArtMeta.innerHTML = `
-            <div><strong>${comparison.startLine.player.name}</strong></div>
-            <div>${comparison.startLine.player.position} • ${comparison.startLine.player.team}</div>
-            <div style="margin-top:4px;">${comparison.startLine.vsText}</div>
-            <div style="margin-top:4px; font-size:12px;">
-              ${comparison.startLine.base.toFixed(1)} → ${comparison.startLine.adjusted.toFixed(
-            1
-          )} PPR
-            </div>
-          `;
+          playerArtMeta.innerHTML =
+            "<div><strong>" + comparison.startLine.player.name + "</strong></div>" +
+            "<div>" + comparison.startLine.player.position + " • " + comparison.startLine.player.team + "</div>" +
+            '<div style="margin-top:4px;">' + comparison.startLine.vsText + "</div>" +
+            '<div style="margin-top:4px; font-size:12px;">' +
+            comparison.startLine.base.toFixed(1) +
+            " → " +
+            comparison.startLine.adjusted.toFixed(1) +
+            " PPR" +
+            "</div>";
         }
       }
 
-      // Wire events
       btn.addEventListener("click", recompute);
       selectA.addEventListener("change", recompute);
       selectB.addEventListener("change", recompute);
@@ -904,11 +838,11 @@
       const closeChat = document.getElementById("closeChipChat");
 
       if (chatBtn && chatPanel && closeChat) {
-        chatBtn.addEventListener("click", () => {
+        chatBtn.addEventListener("click", function () {
           chatPanel.style.right = "0";
         });
 
-        closeChat.addEventListener("click", () => {
+        closeChat.addEventListener("click", function () {
           chatPanel.style.right = "-380px";
         });
       }
