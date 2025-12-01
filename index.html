@@ -168,9 +168,15 @@
         : { start:b, sit:a, reason:`Chip says start ${b.name} — better 2025 PPR vs this matchup.` };
     }
 
-    function populatePlayerSelects(){
+     function populatePlayerSelects(){
       const A = document.getElementById("playerA");
       const B = document.getElementById("playerB");
+
+      if (!A || !B) {
+        console.error("ChipChaser: player selects not found in DOM.");
+        return;
+      }
+
       players.forEach((p,i)=>{
         const o1 = document.createElement("option");
         o1.value = p.id;
@@ -186,6 +192,7 @@
         B.appendChild(o2);
       });
     }
+
 
     function renderMatchups(a,b){
       const el = document.getElementById("matchupGrid");
@@ -214,7 +221,7 @@
     // -----------------------------
     // INIT
     // -----------------------------
-    document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("DOMContentLoaded", () => {
 
       populatePlayerSelects();
 
@@ -224,6 +231,11 @@
       const result = document.getElementById("sitStartResult");
       const playerArt = document.getElementById("playerArt");
       const playerArtMeta = document.getElementById("playerArtMeta");
+
+      if (!A || !B || !btn || !result || !playerArt || !playerArtMeta) {
+        console.error("ChipChaser: key UI elements not found, aborting init.");
+        return;
+      }
 
       function recompute(){
         const a = getPlayer(A.value);
