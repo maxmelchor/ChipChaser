@@ -1,1 +1,6 @@
+data-scripts/
+   generateWrData2025.mjs
+   .env
+   package.json   (auto-created)
+   node_modules/  (auto-created)
 
