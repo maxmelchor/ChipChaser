@@ -3,4 +3,111 @@ data-scripts/
    .env
    package.json   (auto-created)
    node_modules/  (auto-created)
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+// Resolve directory
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load API key
+const API_KEY = process.env.SPORTSDATAIO_API_KEY;
+
+if (!API_KEY) {
+  console.error("ERROR: SPORTSDATAIO_API_KEY is missing in .env");
+  process.exit(1);
+}
+
+// SportsDataIO Depth Charts Endpoint
+const DEPTH_CHART_URL =
+  "https://api.sportsdata.io/v3/nfl/scores/json/DepthCharts";
+
+async function fetchDepthCharts() {
+  const url = `${DEPTH_CHART_URL}?key=${API_KEY}`;
+
+  console.log("Fetching depth charts...");
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    console.error("Failed to fetch depth charts:", res.status, res.statusText);
+    const body = await res.text().catch(() => "");
+    console.error("Response body:", body);
+    process.exit(1);
+  }
+
+  return res.json();
+}
+
+function buildWrData(depthCharts) {
+  const wrByTeam = {};
+
+  for (const row of depthCharts) {
+    const position = row.Position || row.PositionCategory;
+    const depthOrder = row.DepthOrder ?? row.Depth;
+
+    // Only WR1–WR3
+    if (position !== "WR") continue;
+    if (!depthOrder || depthOrder > 3) continue;
+
+    const team = row.Team || row.TeamKey;
+    if (!team) continue;
+
+    if (!wrByTeam[team]) {
+      wrByTeam[team] = [];
+    }
+
+    const playerName = row.Name || row.PlayerName;
+    const playerId = row.PlayerID || row.PlayerId;
+
+    const height =
+      typeof row.Height === "number"
+        ? row.Height
+        : row.HeightInches ?? null;
+
+    const weight =
+      typeof row.Weight === "number"
+        ? row.Weight
+        : row.PlayerWeight ?? null;
+
+    wrByTeam[team].push({
+      id: `${team.toLowerCase()}_wr${depthOrder}_${playerId || playerName}`,
+      name: playerName,
+      depth: depthOrder,
+      team,
+      playerId: playerId ?? null,
+      height: height,
+      weight: weight
+    });
+  }
+
+  // Sort WRs by WR1 → WR2 → WR3
+  for (const team of Object.keys(wrByTeam)) {
+    wrByTeam[team].sort((a, b) => a.depth - b.depth);
+  }
+
+  return wrByTeam;
+}
+
+async function main() {
+  try {
+    const depthCharts = await fetchDepthCharts();
+    console.log("Building WR data...");
+
+    const wrData = buildWrData(depthCharts);
+
+    const outputPath = path.join(__dirname, "../wrData2025.json");
+    fs.writeFileSync(outputPath, JSON.stringify(wrData, null, 2), "utf8");
+
+    console.log(`✔ WR dataset written to: ${outputPath}`);
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    process.exit(1);
+  }
+}
+
+main();
 
