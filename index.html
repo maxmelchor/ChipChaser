@@ -44,26 +44,6 @@
       }
     }
 
-    /* Floating Chip mascot (chip holding football) */
-
-    .chip-floating {
-      position: absolute;
-      right: 40px;
-      top: -55px;              /* higher so he hovers above the card */
-      width: 120px;
-      pointer-events: none;
-      animation: chipFloat 3.6s ease-in-out infinite;
-      opacity: 0.98;
-      filter: drop-shadow(0 10px 25px rgba(59, 130, 246, 0.55));
-      z-index: 3;              /* always above text/content */
-    }
-
-    @keyframes chipFloat {
-      0%   { transform: translateY(0px); }
-      50%  { transform: translateY(10px); }
-      100% { transform: translateY(0px); }
-    }
-
     /* LEFT: Identity / Chip intro */
 
     .chip-panel {
@@ -84,9 +64,9 @@
     }
 
     .brand-logo {
-      width: 72px;   /* bigger Chip mascot on the left */
-      height: 72px;
-      border-radius: 24px;
+      width: 96px;   /* bigger Chip */
+      height: 96px;
+      border-radius: 28px;
       overflow: hidden;
       border: 1px solid rgba(248, 250, 252, 0.9);
       background: #020617;
@@ -188,14 +168,34 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
-      padding-top: 26px;   /* pushes Ask Chip card down so text never kisses Chip's feet */
     }
 
     .controls-panel {
+      position: relative; /* floating Chip is positioned inside this card */
       background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.24), rgba(15, 23, 42, 0.98));
       border-radius: 20px;
       border: 1px solid rgba(129, 140, 248, 0.6);
-      padding: 14px 16px 16px;
+      padding: 42px 16px 16px; /* extra top padding so text sits under Chip */
+    }
+
+    /* Floating Chip mascot INSIDE the Ask Chip card */
+
+    .chip-floating {
+      position: absolute;
+      right: 18px;
+      top: -10px;           /* still inside rounded top */
+      width: 96px;
+      pointer-events: none;
+      animation: chipFloat 3.6s ease-in-out infinite;
+      opacity: 0.98;
+      filter: drop-shadow(0 10px 25px rgba(59, 130, 246, 0.55));
+      z-index: 2;
+    }
+
+    @keyframes chipFloat {
+      0%   { transform: translateY(0px); }
+      50%  { transform: translateY(10px); }
+      100% { transform: translateY(0px); }
     }
 
     .controls-title {
@@ -433,14 +433,11 @@
 
 <body>
   <div class="app-shell">
-    <!-- Floating Chip mascot (football pose) -->
-    <img src="chip-wink-football.png" alt="Chip mascot" class="chip-floating" />
-
     <!-- LEFT: Identity / Chip intro -->
     <section class="chip-panel">
       <div class="brand-row">
         <div class="brand-logo">
-          <!-- Use the mascot as the main logo -->
+          <!-- big mascot logo -->
           <img src="chip-mascot-transparent.png" alt="ChipChaser mascot logo" />
         </div>
         <div class="brand-right">
@@ -484,6 +481,9 @@
     <!-- RIGHT: Controls + Chip's response -->
     <section class="interaction-panel">
       <div class="controls-panel">
+        <!-- floating Chip inside this card -->
+        <img src="chip-wink-football.png" alt="Chip mascot floating" class="chip-floating" />
+
         <div class="controls-title">Ask Chip</div>
         <div class="controls-subtitle">
           Choose a wideout and week from the 2025 season. Chip will auto-assign a primary corner
@@ -898,7 +898,7 @@
       }
     };
 
-    const MAX_WEEKS = 4; // we can extend later with full 2025 schedule
+    const MAX_WEEKS = 4;
 
     // --- UI helpers --------------------------------------------------------
 
@@ -941,14 +941,12 @@
       const heightDiff = wr.heightIn - cb.heightIn;
       const weightDiff = wr.weightLb - cb.weightLb;
 
-      // Size effects
       if (heightDiff >= 3) score += 6;
       else if (heightDiff <= -3) score -= 6;
 
       if (weightDiff >= 15) score += 5;
       else if (weightDiff <= -15) score -= 5;
 
-      // Archetype vs CB style
       if (wr.archetype === "crafty_slot" || wr.archetype === "slippery_route_runner") {
         if (cb.weightLb >= 200) score += 4;
         if (cb.style === "physical_press") score -= 3;
@@ -1044,7 +1042,7 @@
 
     // --- Render ------------------------------------------------------------
 
-    function renderCombined(primaryWr, primaryCb, week, primaryResult, compareWr, compareCb, compareResult, compareMessage) {
+    function renderCombined(primaryWr, primaryCb, week, primaryResult, compareWr, compareCb, compareResult) {
       let html = `
         <div class="bubble-label">Chip says</div>
         <div class="result-header">
@@ -1152,7 +1150,6 @@
       let compareWr = null;
       let compareCb = null;
       let compareResult = null;
-      let compareMessage = null;
 
       if (compareId) {
         compareWr = receivers[compareId];
@@ -1162,12 +1159,10 @@
         if (compareCbId && corners[compareCbId]) {
           compareCb = corners[compareCbId];
           compareResult = evaluateMatchup(compareWr, compareCb);
-        } else {
-          compareMessage = `No mapped corner yet for ${compareWr.name} in Week ${week}.`;
         }
       }
 
-      renderCombined(primaryWr, primaryCb, week, primaryResult, compareWr, compareCb, compareResult, compareMessage);
+      renderCombined(primaryWr, primaryCb, week, primaryResult, compareWr, compareCb, compareResult);
     }
 
     // --- Init --------------------------------------------------------------
