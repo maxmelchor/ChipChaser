@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>ChipChaser – WR vs CB Matchup Intel</title>
+  <title>ChipChaser – Talk to Chip About WR vs CB Matchups</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
@@ -15,116 +15,203 @@
 
     body {
       min-height: 100vh;
-      background: radial-gradient(circle at top, #1b102b, #05030a 60%);
-      color: #f7f4ff;
+      background: radial-gradient(circle at top, #120624, #05030a 60%);
+      color: #f9f5ff;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 20px;
     }
 
     .app-shell {
       width: 100%;
-      max-width: 960px;
-      background: rgba(13, 10, 25, 0.95);
-      border-radius: 24px;
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
-      padding: 24px 24px 28px;
-      border: 1px solid rgba(163, 148, 255, 0.25);
-    }
-
-    @media (min-width: 768px) {
-      .app-shell {
-        padding: 32px 36px 40px;
-      }
-    }
-
-    .header {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 20px;
-    }
-
-    .logo-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .logo-text {
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .logo-dot {
-      color: #a855ff;
-    }
-
-    .tagline {
-      font-size: 13px;
-      color: #c3bcff;
-      opacity: 0.9;
-    }
-
-    .pill {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(88, 28, 135, 0.2);
-      border: 1px solid rgba(216, 180, 254, 0.4);
-      color: #e9d5ff;
-      white-space: nowrap;
-    }
-
-    .layout {
+      max-width: 1120px;
+      background: rgba(9, 9, 17, 0.96);
+      border-radius: 28px;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7);
+      padding: 22px;
       display: grid;
-      grid-template-columns: 1.1fr 1.4fr;
-      gap: 20px;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.4fr);
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
     }
 
-    @media (max-width: 768px) {
-      .layout {
+    @media (max-width: 900px) {
+      .app-shell {
         grid-template-columns: 1fr;
       }
     }
 
-    .panel {
-      background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.16), rgba(15, 23, 42, 0.96));
-      border-radius: 20px;
+    /* Floating Chip mascot */
+
+    .chip-floating {
+      position: absolute;
+      right: 26px;
+      top: -10px;
+      width: 90px;
+      pointer-events: none;
+      animation: chipFloat 3.6s ease-in-out infinite;
+      opacity: 0.9;
+      filter: drop-shadow(0 10px 25px rgba(59, 130, 246, 0.55));
+    }
+
+    @keyframes chipFloat {
+      0%   { transform: translateY(0px); }
+      50%  { transform: translateY(10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    /* LEFT: Chip identity */
+
+    .chip-panel {
+      background: radial-gradient(circle at top left, rgba(147, 51, 234, 0.24), rgba(15, 23, 42, 0.98));
+      border-radius: 24px;
+      border: 1px solid rgba(196, 181, 253, 0.4);
       padding: 18px 18px 20px;
-      border: 1px solid rgba(148, 163, 255, 0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .panel-title {
-      font-size: 14px;
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(248, 250, 252, 0.8);
+      background: #020617;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-text-main {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: #a5b4fc;
-      margin-bottom: 6px;
     }
 
-    .panel-subtitle {
+    .brand-dot {
+      color: #a855ff;
+    }
+
+    .brand-tagline {
       font-size: 12px;
-      color: #cbd5f5;
-      opacity: 0.85;
-      margin-bottom: 16px;
+      color: #e5e7eb;
+      opacity: 0.9;
+      margin-top: 3px;
+    }
+
+    .chip-badge {
+      margin-left: auto;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(251, 207, 232, 0.7);
+      background: rgba(255, 255, 255, 0.03);
+      color: #fce7f3;
+      white-space: nowrap;
+    }
+
+    .chip-bio-title {
+      margin-top: 6px;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #c4b5fd;
+    }
+
+    .chip-bio-text {
+      margin-top: 4px;
+      font-size: 13px;
+      color: #e5e7eb;
+      line-height: 1.55;
+    }
+
+    .chip-hint {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #a5b4fc;
+    }
+
+    .chip-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .chip-pill {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(129, 140, 248, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+    }
+
+    .chip-footnote {
+      margin-top: auto;
+      font-size: 11px;
+      color: #9ca3ff;
+      opacity: 0.8;
+    }
+
+    /* RIGHT: Controls + Chip's answer */
+
+    .interaction-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .controls-panel {
+      background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.24), rgba(15, 23, 42, 0.98));
+      border-radius: 20px;
+      border: 1px solid rgba(129, 140, 248, 0.6);
+      padding: 14px 16px 16px;
+    }
+
+    .controls-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #a5b4fc;
+      margin-bottom: 2px;
+    }
+
+    .controls-subtitle {
+      font-size: 12px;
+      color: #e5e7eb;
+      opacity: 0.88;
+      margin-bottom: 10px;
     }
 
     .form-row {
       display: flex;
       flex-direction: column;
       gap: 4px;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
 
     label {
-      font-size: 12px;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: #9ca3ff;
@@ -132,10 +219,10 @@
 
     select {
       width: 100%;
-      padding: 8px 12px;
+      padding: 7px 11px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 255, 0.6);
-      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 255, 0.8);
+      background: rgba(15, 23, 42, 0.9);
       color: #f9fafb;
       font-size: 13px;
       outline: none;
@@ -150,17 +237,17 @@
     .btn {
       margin-top: 6px;
       width: 100%;
-      padding: 9px 14px;
+      padding: 9px 13px;
       border-radius: 999px;
       border: none;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       cursor: pointer;
       background: linear-gradient(135deg, #a855ff, #6366f1);
       color: #f9fafb;
-      box-shadow: 0 12px 30px rgba(88, 28, 135, 0.55);
+      box-shadow: 0 11px 28px rgba(88, 28, 135, 0.6);
       transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.08s ease;
     }
 
@@ -176,20 +263,62 @@
       filter: brightness(0.96);
     }
 
-    .meta-row {
+    .controls-meta-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
+      gap: 6px;
+      margin-top: 8px;
     }
 
     .meta-chip {
       font-size: 11px;
       border-radius: 999px;
-      padding: 4px 9px;
+      padding: 3px 8px;
+      border: 1px solid rgba(148, 163, 255, 0.55);
       background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(148, 163, 255, 0.45);
       color: #e5e7eb;
+    }
+
+    /* Chip response bubble */
+
+    .response-wrapper {
+      margin-top: 4px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .response-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(248, 250, 252, 0.85);
+      background: #020617;
+      flex-shrink: 0;
+    }
+
+    .response-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .bubble {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: 16px 16px 16px 4px;
+      border: 1px solid rgba(148, 163, 255, 0.7);
+      padding: 10px 12px 11px;
+      position: relative;
+    }
+
+    .bubble-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #a5b4fc;
+      margin-bottom: 4px;
     }
 
     .result-header {
@@ -197,28 +326,21 @@
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .matchup-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: #a5b4fc;
+      margin-bottom: 6px;
     }
 
     .matchup-vs {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       color: #e5e7ff;
     }
 
     .score-pill {
-      min-width: 64px;
+      min-width: 60px;
       text-align: center;
       border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 13px;
+      padding: 4px 8px;
+      font-size: 12px;
       font-weight: 700;
       background: rgba(22, 163, 74, 0.15);
       border: 1px solid rgba(74, 222, 128, 0.7);
@@ -230,19 +352,19 @@
       text-transform: uppercase;
       letter-spacing: 0.18em;
       color: #a7f3d0;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .tier-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
 
     .explanation {
       font-size: 12px;
       color: #e5e7eb;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       line-height: 1.5;
     }
 
@@ -250,29 +372,29 @@
       list-style: none;
       font-size: 12px;
       color: #cbd5f5;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
 
     .bullets li {
       position: relative;
-      padding-left: 14px;
-      margin-bottom: 4px;
+      padding-left: 13px;
+      margin-bottom: 3px;
     }
 
     .bullets li::before {
       content: "•";
       position: absolute;
-      left: 2px;
+      left: 1px;
       top: 0;
       color: #a855ff;
     }
 
     .fantasy-note {
-      margin-top: 6px;
+      margin-top: 4px;
       font-size: 12px;
       color: #d1fae5;
-      padding: 8px 10px;
-      border-radius: 12px;
+      padding: 6px 8px;
+      border-radius: 10px;
       background: rgba(16, 185, 129, 0.13);
       border: 1px solid rgba(45, 212, 191, 0.35);
     }
@@ -280,121 +402,137 @@
     .empty-state {
       font-size: 12px;
       color: #9ca3af;
-      padding: 10px;
-      border-radius: 12px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px dashed rgba(148, 163, 255, 0.4);
+      padding: 6px 4px;
     }
 
-    .tiny-footnote {
-      margin-top: 8px;
-      font-size: 11px;
-      color: #9ca3ff;
-      opacity: 0.8;
-    }
   </style>
 </head>
 
 <body>
   <div class="app-shell">
-    <header class="header">
-      <div class="logo-row">
-        <div>
-          <div class="logo-text">
-            ChipChaser<span class="logo-dot">.</span>
-          </div>
-          <p class="tagline">
-            WR vs. CB matchup intel with body-type context — built for fantasy start/sit calls.
-          </p>
-        </div>
-        <div class="pill">2025 Matchup Lab</div>
-      </div>
-    </header>
+    <!-- Floating Chip Mascot -->
+    <img src="chip-mascot-transparent.png" alt="Chip mascot" class="chip-floating" />
 
-    <main class="layout">
-      <!-- LEFT: Controls -->
-      <section class="panel">
-        <h2 class="panel-title">Setup</h2>
-        <p class="panel-subtitle">
-          Pick a wide receiver and week. ChipChaser will map the primary opposing corner
-          and grade the matchup using size, play style, and coverage traits.
-        </p>
+    <!-- LEFT: Identity / Chip intro -->
+    <section class="chip-panel">
+      <div class="brand-row">
+        <div class="brand-logo">
+          <img src="chipchaser_logo.jpeg" alt="ChipChaser logo" />
+        </div>
+        <div>
+          <div class="brand-text-main">
+            ChipChaser<span class="brand-dot">.</span>
+          </div>
+          <div class="brand-tagline">
+            Let Chip read the WR vs CB tea leaves for your 2025 fantasy starts.
+          </div>
+        </div>
+        <div class="chip-badge">Chip, matchup bot</div>
+      </div>
+
+      <div>
+        <div class="chip-bio-title">How Chip thinks</div>
+        <div class="chip-bio-text">
+          Chip blends <strong>body type</strong> (height, weight, play style) and
+          <strong>coverage tendencies</strong> to grade how a WR stacks up against his
+          primary corner. It’s not projecting volume – it’s answering:
+          <em>“If these two are isolated, who has the physical edge?”</em>
+        </div>
+        <div class="chip-hint">
+          Start with a WR, pick a week, and Chip will explain the matchup like a friend who
+          actually watches DB tape.
+        </div>
+      </div>
+
+      <div class="chip-pill-row">
+        <span class="chip-pill">Top 24 fantasy WRs</span>
+        <span class="chip-pill">Body-type matchups</span>
+        <span class="chip-pill">2025 season context</span>
+        <span class="chip-pill">Built for start/sit calls</span>
+      </div>
+
+      <div class="chip-footnote">
+        Roadmap: wire every WR’s 2025 CB assignments, add more corners, and sync real schedule
+        + API data.
+      </div>
+    </section>
+
+    <!-- RIGHT: Controls + Chip's response -->
+    <section class="interaction-panel">
+      <div class="controls-panel">
+        <div class="controls-title">Ask Chip</div>
+        <div class="controls-subtitle">
+          Choose a wideout and a week from the 2025 season. Chip will auto-assign a primary
+          corner (where mapped) and give you a body-type matchup grade.
+        </div>
 
         <div class="form-row">
-          <label for="wrSelect">Wide receiver</label>
+          <label for="wrSelect">Wide receiver (Top 24)</label>
           <select id="wrSelect">
             <option value="">Select a receiver…</option>
           </select>
         </div>
 
         <div class="form-row">
-          <label for="weekSelect">Week (2025)</label>
+          <label for="weekSelect">Week</label>
           <select id="weekSelect">
             <option value="">Select week…</option>
           </select>
         </div>
 
-        <button class="btn" id="analyzeBtn">Analyze Matchup</button>
+        <button class="btn" id="analyzeBtn">Ask Chip</button>
 
-        <div class="meta-row">
+        <div class="controls-meta-row">
           <div class="meta-chip" id="autoCbChip" style="display:none;"></div>
-          <div class="meta-chip" id="buildChip">MVP • v1 (Top 24 WRs)</div>
+          <div class="meta-chip">MVP • Top 24 WRs wired</div>
         </div>
+      </div>
 
-        <p class="tiny-footnote">
-          Note: 2025 schedule + CB assignments are simplified for the MVP. New WRs will show a neutral note
-          until we wire their specific cornerback matchups.
-        </p>
-      </section>
-
-      <!-- RIGHT: Results -->
-      <section class="panel">
-        <h2 class="panel-title">Matchup grade</h2>
-        <p class="panel-subtitle">
-          Body-type matchup score (0–100) plus a quick fantasy read on how confident you should feel.
-        </p>
-
-        <div id="resultArea">
+      <div class="response-wrapper">
+        <div class="response-avatar">
+          <img src="chip-thinking.png" alt="Chip avatar" />
+        </div>
+        <div class="bubble" id="resultArea">
+          <div class="bubble-label">Chip says</div>
           <div class="empty-state">
-            Choose a receiver and week, then hit <strong>Analyze Matchup</strong> to see how the
-            body-type matchup looks for the 2025 season.
+            Pick a receiver and week, then hit <strong>Ask Chip</strong>. I’ll break down how
+            the WR’s body type and play style stack up against his corner for that matchup.
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
   </div>
 
   <script>
-    // --- Top 24 order (2025 PPR fantasy context) ---------------------------
-    // IDs here must match keys in receivers{} below.
+    // --- Top 24 order (2025 fantasy context) -------------------------------
     const top24ReceiverOrder = [
       "jamarr_chase",
       "justin_jefferson",
       "ceedee_lamb",
-      "puka_nacua",
-      "amonra",
-      "jsn",
       "tyreek_hill",
       "aj_brown",
+      "amonra",
+      "puka_nacua",
       "garrett_wilson",
+      "marvin_harrison",
       "malik_nabers",
       "nico_collins",
       "drake_london",
-      "marvin_harrison",
       "dj_moore",
       "dk_metcalf",
       "tee_higgins",
       "davante_adams",
       "mike_evans",
       "terry_mclaurin",
-      "rashee_rice",
       "jaylen_waddle",
       "brandon_aiyuk",
       "chris_olave",
+      "jsn",
+      "devonta",
       "xavier_worthy"
     ];
 
-    // --- Data model: receivers --------------------------------------------
+    // --- Receivers ---------------------------------------------------------
 
     const receivers = {
       jsn: {
@@ -598,16 +736,6 @@
         strengths: ["route_running", "speed", "sideline"],
         notes: "Well-rounded WR who can win deep, intermediate, and underneath."
       },
-      rashee_rice: {
-        id: "rashee_rice",
-        name: "Rashee Rice",
-        team: "KC",
-        heightIn: 73,
-        weightLb: 210,
-        archetype: "yak_slot",
-        strengths: ["yak", "middle_field", "broken_tackles"],
-        notes: "YAC-focused WR who does damage on crossers and in the middle."
-      },
       jaylen_waddle: {
         id: "jaylen_waddle",
         name: "Jaylen Waddle",
@@ -650,7 +778,7 @@
       }
     };
 
-    // --- Cornerbacks -------------------------------------------------------
+    // --- Corners -----------------------------------------------------------
 
     const corners = {
       sauce: {
@@ -715,8 +843,8 @@
       }
     };
 
-    // Simplified 2025-style matchups (currently just for JSN / DeVonta / Amon-Ra).
-    // Everyone else will show a neutral note until we wire their CB matchups.
+    // --- Simplified 2025-style matchups (JSN / DeVonta / Amon-Ra only) ----
+
     const schedule2025 = {
       jsn: {
         1: "sauce",
@@ -724,7 +852,7 @@
         3: "stingley",
         4: "diggs"
       },
-      devота: {
+      devonta: {
         1: "ward",
         2: "surtain",
         3: "horn",
@@ -738,9 +866,9 @@
       }
     };
 
-    const MAX_WEEKS = 4; // we can extend once real 2025 schedule wiring is in
+    const MAX_WEEKS = 4; // we can extend later with full 2025 schedule
 
-    // --- UI setup ----------------------------------------------------------
+    // --- UI helpers --------------------------------------------------------
 
     const wrSelect = document.getElementById("wrSelect");
     const weekSelect = document.getElementById("weekSelect");
@@ -771,32 +899,26 @@
     // --- Matchup engine ----------------------------------------------------
 
     function evaluateMatchup(wr, cb) {
-      let score = 70; // neutral base
+      let score = 70;
 
       const heightDiff = wr.heightIn - cb.heightIn;
       const weightDiff = wr.weightLb - cb.weightLb;
 
-      // Generic size effects
-      if (heightDiff >= 3) {
-        score += 6;
-      } else if (heightDiff <= -3) {
-        score -= 6;
-      }
+      // Size effects
+      if (heightDiff >= 3) score += 6;
+      else if (heightDiff <= -3) score -= 6;
 
-      if (weightDiff >= 15) {
-        score += 5;
-      } else if (weightDiff <= -15) {
-        score -= 5;
-      }
+      if (weightDiff >= 15) score += 5;
+      else if (weightDiff <= -15) score -= 5;
 
-      // Archetype vs CB style interactions
+      // Archetype vs CB style
       if (wr.archetype === "crafty_slot" || wr.archetype === "slippery_route_runner") {
-        if (cb.weightLb >= 200) score += 4;            // can shake heavier guys
-        if (cb.style === "physical_press") score -= 3; // press can bother lighter frames
+        if (cb.weightLb >= 200) score += 4;
+        if (cb.style === "physical_press") score -= 3;
       }
 
       if (wr.archetype === "physical_slot_alpha") {
-        if (cb.weightLb < 195) score += 5;             // Amon-Ra bullying smaller CBs
+        if (cb.weightLb < 195) score += 5;
         if (cb.style === "physical_press" && cb.weightLb >= 200) score -= 2;
       }
 
@@ -811,8 +933,7 @@
       }
 
       if (wr.archetype === "field_stretcher") {
-        if (cb.style === "ballhawk") score -= 3; // risk of picks
-        if (cb.style === "speed_corner") score -= 1;
+        if (cb.style === "ballhawk") score -= 3;
       }
 
       if (wr.archetype === "yak_slot" || wr.archetype === "explosive_yac") {
@@ -823,7 +944,6 @@
         score += 5;
       }
 
-      // clamp
       score = Math.max(0, Math.min(100, score));
 
       let tier, tierTitle;
@@ -844,7 +964,7 @@
       const bullets = [];
 
       if (heightDiff >= 3) {
-        bullets.push(`${wr.name} has a notable height edge (~${Math.abs(heightDiff)}" taller) that helps at the catch point.`);
+        bullets.push(`${wr.name} has a notable height edge (~${Math.abs(heightDiff)}" taller) at the catch point.`);
       } else if (heightDiff <= -3) {
         bullets.push(`${cb.name} brings a length advantage (~${Math.abs(heightDiff)}" taller) over ${wr.name}.`);
       }
@@ -882,65 +1002,51 @@
         fantasyNote = `If you have a comparable option in a softer matchup, ${wr.name} can be downgraded slightly this week.`;
       }
 
-      return {
-        score: Math.round(score),
-        tier,
-        tierTitle,
-        bullets,
-        fantasyNote
-      };
+      return { score: Math.round(score), tier, tierTitle, bullets, fantasyNote };
     }
 
-    // --- Rendering ---------------------------------------------------------
+    // --- Render ------------------------------------------------------------
 
     function renderResult(wr, cb, week, result) {
       const html = `
+        <div class="bubble-label">Chip says</div>
         <div class="result-header">
-          <div>
-            <div class="matchup-label">Week ${week} matchup</div>
-            <div class="matchup-vs">${wr.name} (${wr.team}) vs. ${cb.name} (${cb.team})</div>
+          <div class="matchup-vs">
+            Week ${week}: ${wr.name} (${wr.team}) vs ${cb.name} (${cb.team})
           </div>
-          <div class="score-pill">
-            ${result.score} / 100
-          </div>
+          <div class="score-pill">${result.score} / 100</div>
         </div>
-
         <div class="tier-label">${result.tier}</div>
         <div class="tier-title">${result.tierTitle}</div>
-
         <p class="explanation">
-          This score bakes in height, weight, coverage style, and how ${wr.name}'s archetype tends to perform
+          I'm looking at height, weight, coverage style, and how ${wr.name}'s archetype typically performs
           against corners built like ${cb.name}.
         </p>
-
         <ul class="bullets">
           ${result.bullets.map((b) => `<li>${b}</li>`).join("")}
         </ul>
-
         <div class="fantasy-note">
           ${result.fantasyNote}
         </div>
       `;
-
       resultArea.innerHTML = html;
     }
 
     function renderEmpty(message) {
       resultArea.innerHTML = `
-        <div class="empty-state">
-          ${message}
-        </div>
+        <div class="bubble-label">Chip says</div>
+        <div class="empty-state">${message}</div>
       `;
     }
 
-    // --- Event handlers ----------------------------------------------------
+    // --- Events ------------------------------------------------------------
 
     function handleAnalyze() {
       const wrId = wrSelect.value;
       const weekVal = weekSelect.value;
 
       if (!wrId || !weekVal) {
-        renderEmpty("Please pick both a receiver and a week before analyzing the matchup.");
+        renderEmpty("Pick a receiver and week first, then I’ll break down the matchup for you.");
         autoCbChip.style.display = "none";
         return;
       }
@@ -953,7 +1059,7 @@
 
       if (!cbId || !corners[cbId]) {
         renderEmpty(
-          `We don't have a mapped corner for ${wr.name} in Week ${week} yet. For now, treat this as a neutral matchup and rely on volume/game total.`
+          `I don't have a primary corner mapped for ${wr.name} in Week ${week} yet. For now, treat this as a neutral matchup and let volume + game total drive your decision.`
         );
         autoCbChip.style.display = "none";
         return;
