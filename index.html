@@ -63,13 +63,14 @@
       gap: 12px;
     }
 
+    /* Chip "out of the box" on the left */
     .brand-logo {
-      width: 120px;   /* bigger Chip */
-      height: 120px;
-      border-radius: 30px;
-      overflow: hidden;
-      border: 1px solid rgba(248, 250, 252, 0.9);
-      background: #020617;
+      width: 96px;
+      height: 96px;
+      border-radius: 0;
+      overflow: visible;
+      border: none;
+      background: transparent;
       flex-shrink: 0;
       display: flex;
       align-items: center;
@@ -78,8 +79,9 @@
 
     .brand-logo img {
       width: 100%;
-      height: 100%;
+      height: auto;
       object-fit: contain;
+      display: block;
     }
 
     .brand-text-main {
@@ -171,19 +173,19 @@
     }
 
     .controls-panel {
-      position: relative; /* floating Chip is positioned inside this card */
+      position: relative;
       background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.24), rgba(15, 23, 42, 0.98));
       border-radius: 20px;
       border: 1px solid rgba(129, 140, 248, 0.6);
-      padding: 42px 16px 16px; /* extra top padding so text sits under Chip */
+      /* extra right padding so text wraps before the floating Chip */
+      padding: 42px 130px 16px 16px; /* top, right, bottom, left */
     }
 
     /* Floating Chip mascot INSIDE the Ask Chip card */
-
     .chip-floating {
       position: absolute;
-      right: 18px;
-      top: -10px;           /* still inside rounded top */
+      right: 20px;
+      top: -6px;
       width: 96px;
       pointer-events: none;
       animation: chipFloat 3.6s ease-in-out infinite;
@@ -437,7 +439,7 @@
     <section class="chip-panel">
       <div class="brand-row">
         <div class="brand-logo">
-          <!-- big mascot logo -->
+          <!-- Chip mascot free-standing, not boxed -->
           <img src="chip-mascot-transparent.png" alt="ChipChaser mascot logo" />
         </div>
         <div class="brand-right">
@@ -482,7 +484,7 @@
     <section class="interaction-panel">
       <div class="controls-panel">
         <!-- floating Chip inside this card -->
-        <img src="chip-odell.png" alt="Chip mascot floating" class="chip-floating" />
+        <img src="chip-wink-football.png" alt="Chip mascot floating" class="chip-floating" />
 
         <div class="controls-title">Ask Chip</div>
         <div class="controls-subtitle">
@@ -536,371 +538,58 @@
   </div>
 
   <script>
-    // --- Top 24 order (2025 fantasy context) -------------------------------
+    /* JS is unchanged from the last version: receivers, corners, schedule, and logic */
+
     const top24ReceiverOrder = [
-      "jamarr_chase",
-      "justin_jefferson",
-      "ceedee_lamb",
-      "tyreek_hill",
-      "aj_brown",
-      "amonra",
-      "puka_nacua",
-      "garrett_wilson",
-      "marvin_harrison",
-      "malik_nabers",
-      "nico_collins",
-      "drake_london",
-      "dj_moore",
-      "dk_metcalf",
-      "tee_higgins",
-      "davante_adams",
-      "mike_evans",
-      "terry_mclaurin",
-      "jaylen_waddle",
-      "brandon_aiyuk",
-      "chris_olave",
-      "jsn",
-      "devonta",
-      "xavier_worthy"
+      "jamarr_chase","justin_jefferson","ceedee_lamb","tyreek_hill","aj_brown","amonra",
+      "puka_nacua","garrett_wilson","marvin_harrison","malik_nabers","nico_collins",
+      "drake_london","dj_moore","dk_metcalf","tee_higgins","davante_adams","mike_evans",
+      "terry_mclaurin","jaylen_waddle","brandon_aiyuk","chris_olave","jsn","devonta","xavier_worthy"
     ];
 
-    // --- Receivers ---------------------------------------------------------
-
     const receivers = {
-      jsn: {
-        id: "jsn",
-        name: "Jaxon Smith-Njigba",
-        team: "SEA",
-        heightIn: 72,
-        weightLb: 200,
-        archetype: "crafty_slot",
-        strengths: ["short_area_quickness", "separation_short", "zone_finder"],
-        notes: "Wins with leverage and short-area quickness more than pure size."
-      },
-      devonta: {
-        id: "devonta",
-        name: "DeVonta Smith",
-        team: "PHI",
-        heightIn: 72,
-        weightLb: 170,
-        archetype: "slippery_route_runner",
-        strengths: ["route_running", "sideline_ball_tracking", "double_moves"],
-        notes: "Lean frame but elite route running and ball skills."
-      },
-      amonra: {
-        id: "amonra",
-        name: "Amon-Ra St. Brown",
-        team: "DET",
-        heightIn: 73,
-        weightLb: 203,
-        archetype: "physical_slot_alpha",
-        strengths: ["tough_yac", "middle_field_domination", "leverage_beater"],
-        notes: "Physical slot alpha who wins with toughness, leverage, and precision routes."
-      },
-
-      jamarr_chase: {
-        id: "jamarr_chase",
-        name: "Ja'Marr Chase",
-        team: "CIN",
-        heightIn: 72,
-        weightLb: 201,
-        archetype: "alpha_x",
-        strengths: ["vertical_threat", "contested_catch", "yacs"],
-        notes: "True alpha X who can win deep, over the middle, and after the catch."
-      },
-      justin_jefferson: {
-        id: "justin_jefferson",
-        name: "Justin Jefferson",
-        team: "MIN",
-        heightIn: 73,
-        weightLb: 195,
-        archetype: "technician_alpha",
-        strengths: ["route_running", "ball_tracking", "space_creation"],
-        notes: "Route technician and volume monster; rarely out of phase with his QB."
-      },
-      ceedee_lamb: {
-        id: "ceedee_lamb",
-        name: "CeeDee Lamb",
-        team: "DAL",
-        heightIn: 74,
-        weightLb: 200,
-        archetype: "movement_alpha",
-        strengths: ["slot_and_perimeter", "yacs", "leverage_beater"],
-        notes: "Moves around the formation and wins from both slot and perimeter."
-      },
-      puka_nacua: {
-        id: "puka_nacua",
-        name: "Puka Nacua",
-        team: "LAR",
-        heightIn: 74,
-        weightLb: 205,
-        archetype: "physical_possession",
-        strengths: ["contested_catch", "zone_settling", "tough_yac"],
-        notes: "Physical possession WR with a strong feel for zone and tough YAC."
-      },
-      tyreek_hill: {
-        id: "tyreek_hill",
-        name: "Tyreek Hill",
-        team: "MIA",
-        heightIn: 70,
-        weightLb: 185,
-        archetype: "field_stretcher",
-        strengths: ["deep_speed", "horizontal_stretch", "yak"],
-        notes: "Unique speed threat who stresses defenses vertically and horizontally."
-      },
-      aj_brown: {
-        id: "aj_brown",
-        name: "A.J. Brown",
-        team: "PHI",
-        heightIn: 73,
-        weightLb: 226,
-        archetype: "big_body_alpha",
-        strengths: ["contested_catch", "tough_yac", "slant_go"],
-        notes: "Big-bodied bully at the catch point with elite slant/go combinations."
-      },
-      garrett_wilson: {
-        id: "garrett_wilson",
-        name: "Garrett Wilson",
-        team: "NYJ",
-        heightIn: 72,
-        weightLb: 192,
-        archetype: "technician_alpha",
-        strengths: ["separation", "body_control", "sideline"],
-        notes: "Explosive separator who wins with suddenness and body control."
-      },
-      malik_nabers: {
-        id: "malik_nabers",
-        name: "Malik Nabers",
-        team: "NYG",
-        heightIn: 72,
-        weightLb: 200,
-        archetype: "explosive_yac",
-        strengths: ["explosiveness", "after_catch", "press_beating"],
-        notes: "Explosive playmaker who can separate early and turn short targets into explosives."
-      },
-      nico_collins: {
-        id: "nico_collins",
-        name: "Nico Collins",
-        team: "HOU",
-        heightIn: 76,
-        weightLb: 215,
-        archetype: "big_body_alpha",
-        strengths: ["contested_catch", "red_zone", "intermediate"],
-        notes: "Big outside WR who wins in traffic and in the red zone."
-      },
-      drake_london: {
-        id: "drake_london",
-        name: "Drake London",
-        team: "ATL",
-        heightIn: 76,
-        weightLb: 213,
-        archetype: "big_body_alpha",
-        strengths: ["box_out", "red_zone", "intermediate_possession"],
-        notes: "Basketball-style contested catch winner with a strong intermediate game."
-      },
-      marvin_harrison: {
-        id: "marvin_harrison",
-        name: "Marvin Harrison Jr.",
-        team: "ARI",
-        heightIn: 75,
-        weightLb: 205,
-        archetype: "alpha_x",
-        strengths: ["route_running", "catch_radius", "vertical"],
-        notes: "Prototype X receiver prospect with elite traits across the board."
-      },
-      dj_moore: {
-        id: "dj_moore",
-        name: "DJ Moore",
-        team: "CHI",
-        heightIn: 71,
-        weightLb: 210,
-        archetype: "balanced_x",
-        strengths: ["yak", "strength", "intermediate_routes"],
-        notes: "Strong, compact WR who wins at all levels and after the catch."
-      },
-      dk_metcalf: {
-        id: "dk_metcalf",
-        name: "DK Metcalf",
-        team: "SEA",
-        heightIn: 75,
-        weightLb: 225,
-        archetype: "size_speed_unicorn",
-        strengths: ["deep_speed", "size", "red_zone"],
-        notes: "Rare size-speed combo who threatens deep and in the red zone."
-      },
-      tee_higgins: {
-        id: "tee_higgins",
-        name: "Tee Higgins",
-        team: "CIN",
-        heightIn: 76,
-        weightLb: 220,
-        archetype: "big_body_alpha",
-        strengths: ["contested_catch", "sideline", "red_zone"],
-        notes: "Contested-catch specialist and strong boundary target."
-      },
-      davante_adams: {
-        id: "davante_adams",
-        name: "Davante Adams",
-        team: "LAR",
-        heightIn: 73,
-        weightLb: 215,
-        archetype: "technician_alpha",
-        strengths: ["release_package", "route_running", "red_zone"],
-        notes: "Elite release and route-running technician with strong red-zone chops."
-      },
-      mike_evans: {
-        id: "mike_evans",
-        name: "Mike Evans",
-        team: "TB",
-        heightIn: 77,
-        weightLb: 231,
-        archetype: "big_body_alpha",
-        strengths: ["contested_catch", "downfield", "red_zone"],
-        notes: "Long-time contested catch and TD machine on the perimeter."
-      },
-      terry_mclaurin: {
-        id: "terry_mclaurin",
-        name: "Terry McLaurin",
-        team: "WAS",
-        heightIn: 72,
-        weightLb: 210,
-        archetype: "balanced_x",
-        strengths: ["route_running", "speed", "sideline"],
-        notes: "Well-rounded WR who can win deep, intermediate, and underneath."
-      },
-      jaylen_waddle: {
-        id: "jaylen_waddle",
-        name: "Jaylen Waddle",
-        team: "MIA",
-        heightIn: 70,
-        weightLb: 185,
-        archetype: "field_stretcher",
-        strengths: ["deep_speed", "quickness", "yak"],
-        notes: "Speed slot/field stretcher who can flip the field in one play."
-      },
-      brandon_aiyuk: {
-        id: "brandon_aiyuk",
-        name: "Brandon Aiyuk",
-        team: "SF",
-        heightIn: 72,
-        weightLb: 200,
-        archetype: "technician_x",
-        strengths: ["route_running", "yak", "sideline"],
-        notes: "Efficient technician with strong YAC and sideline work."
-      },
-      chris_olave: {
-        id: "chris_olave",
-        name: "Chris Olave",
-        team: "NO",
-        heightIn: 73,
-        weightLb: 190,
-        archetype: "smooth_separator",
-        strengths: ["route_running", "deep_routes", "space_creation"],
-        notes: "Smooth mover who creates separation at all levels of the field."
-      },
-      xavier_worthy: {
-        id: "xavier_worthy",
-        name: "Xavier Worthy",
-        team: "KC",
-        heightIn: 72,
-        weightLb: 172,
-        archetype: "field_stretcher",
-        strengths: ["deep_speed", "horizontal_stretch", "space"],
-        notes: "Ultra-fast field stretcher who forces safeties to respect the deep ball."
-      }
+      jsn:{id:"jsn",name:"Jaxon Smith-Njigba",team:"SEA",heightIn:72,weightLb:200,archetype:"crafty_slot",strengths:["short_area_quickness","separation_short","zone_finder"],notes:"Wins with leverage and short-area quickness more than pure size."},
+      devonta:{id:"devonta",name:"DeVonta Smith",team:"PHI",heightIn:72,weightLb:170,archetype:"slippery_route_runner",strengths:["route_running","sideline_ball_tracking","double_moves"],notes:"Lean frame but elite route running and ball skills."},
+      amonra:{id:"amonra",name:"Amon-Ra St. Brown",team:"DET",heightIn:73,weightLb:203,archetype:"physical_slot_alpha",strengths:["tough_yac","middle_field_domination","leverage_beater"],notes:"Physical slot alpha who wins with toughness, leverage, and precision routes."},
+      jamarr_chase:{id:"jamarr_chase",name:"Ja'Marr Chase",team:"CIN",heightIn:72,weightLb:201,archetype:"alpha_x",strengths:["vertical_threat","contested_catch","yacs"],notes:"True alpha X who can win deep, over the middle, and after the catch."},
+      justin_jefferson:{id:"justin_jefferson",name:"Justin Jefferson",team:"MIN",heightIn:73,weightLb:195,archetype:"technician_alpha",strengths:["route_running","ball_tracking","space_creation"],notes:"Route technician and volume monster; rarely out of phase with his QB."},
+      ceedee_lamb:{id:"ceedee_lamb",name:"CeeDee Lamb",team:"DAL",heightIn:74,weightLb:200,archetype:"movement_alpha",strengths:["slot_and_perimeter","yacs","leverage_beater"],notes:"Moves around the formation and wins from both slot and perimeter."},
+      puka_nacua:{id:"puka_nacua",name:"Puka Nacua",team:"LAR",heightIn:74,weightLb:205,archetype:"physical_possession",strengths:["contested_catch","zone_settling","tough_yac"],notes:"Physical possession WR with a strong feel for zone and tough YAC."},
+      tyreek_hill:{id:"tyreek_hill",name:"Tyreek Hill",team:"MIA",heightIn:70,weightLb:185,archetype:"field_stretcher",strengths:["deep_speed","horizontal_stretch","yak"],notes:"Unique speed threat who stresses defenses vertically and horizontally."},
+      aj_brown:{id:"aj_brown",name:"A.J. Brown",team:"PHI",heightIn:73,weightLb:226,archetype:"big_body_alpha",strengths:["contested_catch","tough_yac","slant_go"],notes:"Big-bodied bully at the catch point with elite slant/go combinations."},
+      garrett_wilson:{id:"garrett_wilson",name:"Garrett Wilson",team:"NYJ",heightIn:72,weightLb:192,archetype:"technician_alpha",strengths:["separation","body_control","sideline"],notes:"Explosive separator who wins with suddenness and body control."},
+      malik_nabers:{id:"malik_nabers",name:"Malik Nabers",team:"NYG",heightIn:72,weightLb:200,archetype:"explosive_yac",strengths:["explosiveness","after_catch","press_beating"],notes:"Explosive playmaker who can separate early and turn short targets into explosives."},
+      nico_collins:{id:"nico_collins",name:"Nico Collins",team:"HOU",heightIn:76,weightLb:215,archetype:"big_body_alpha",strengths:["contested_catch","red_zone","intermediate"],notes:"Big outside WR who wins in traffic and in the red zone."},
+      drake_london:{id:"drake_london",name:"Drake London",team:"ATL",heightIn:76,weightLb:213,archetype:"big_body_alpha",strengths:["box_out","red_zone","intermediate_possession"],notes:"Basketball-style contested catch winner with a strong intermediate game."},
+      marvin_harrison:{id:"marvin_harrison",name:"Marvin Harrison Jr.",team:"ARI",heightIn:75,weightLb:205,archetype:"alpha_x",strengths:["route_running","catch_radius","vertical"],notes:"Prototype X receiver prospect with elite traits across the board."},
+      dj_moore:{id:"dj_moore",name:"DJ Moore",team:"CHI",heightIn:71,weightLb:210,archetype:"balanced_x",strengths:["yak","strength","intermediate_routes"],notes:"Strong, compact WR who wins at all levels and after the catch."},
+      dk_metcalf:{id:"dk_metcalf",name:"DK Metcalf",team:"SEA",heightIn:75,weightLb:225,archetype:"size_speed_unicorn",strengths:["deep_speed","size","red_zone"],notes:"Rare size-speed combo who threatens deep and in the red zone."},
+      tee_higgins:{id:"tee_higgins",name:"Tee Higgins",team:"CIN",heightIn:76,weightLb:220,archetype:"big_body_alpha",strengths:["contested_catch","sideline","red_zone"],notes:"Contested-catch specialist and strong boundary target."},
+      davante_adams:{id:"davante_adams",name:"Davante Adams",team:"LAR",heightIn:73,weightLb:215,archetype:"technician_alpha",strengths:["release_package","route_running","red_zone"],notes:"Elite release and route-running technician with strong red-zone chops."},
+      mike_evans:{id:"mike_evans",name:"Mike Evans",team:"TB",heightIn:77,weightLb:231,archetype:"big_body_alpha",strengths:["contested_catch","downfield","red_zone"],notes:"Long-time contested catch and TD machine on the perimeter."},
+      terry_mclaurin:{id:"terry_mclaurin",name:"Terry McLaurin",team:"WAS",heightIn:72,weightLb:210,archetype:"balanced_x",strengths:["route_running","speed","sideline"],notes:"Well-rounded WR who can win deep, intermediate, and underneath."},
+      jaylen_waddle:{id:"jaylen_waddle",name:"Jaylen Waddle",team:"MIA",heightIn:70,weightLb:185,archetype:"field_stretcher",strengths:["deep_speed","quickness","yak"],notes:"Speed slot/field stretcher who can flip the field in one play."},
+      brandon_aiyuk:{id:"brandon_aiyuk",name:"Brandon Aiyuk",team:"SF",heightIn:72,weightLb:200,archetype:"technician_x",strengths:["route_running","yak","sideline"],notes:"Efficient technician with strong YAC and sideline work."},
+      chris_olave:{id:"chris_olave",name:"Chris Olave",team:"NO",heightIn:73,weightLb:190,archetype:"smooth_separator",strengths:["route_running","deep_routes","space_creation"],notes:"Smooth mover who creates separation at all levels of the field."},
+      xavier_worthy:{id:"xavier_worthy",name:"Xavier Worthy",team:"KC",heightIn:72,weightLb:172,archetype:"field_stretcher",strengths:["deep_speed","horizontal_stretch","space"],notes:"Ultra-fast field stretcher who forces safeties to respect the deep ball."}
     };
-
-    // --- Corners -----------------------------------------------------------
 
     const corners = {
-      sauce: {
-        id: "sauce",
-        name: "Sauce Gardner",
-        team: "NYJ",
-        heightIn: 75,
-        weightLb: 200,
-        style: "press_length",
-        coverage: ["press_man", "match_zone"],
-        notes: "Long, physical, erases windows on the boundary."
-      },
-      surtain: {
-        id: "surtain",
-        name: "Patrick Surtain II",
-        team: "DEN",
-        heightIn: 74,
-        weightLb: 202,
-        style: "technician",
-        coverage: ["man", "off_man", "pattern_match"],
-        notes: "Smooth technician; rarely out of phase."
-      },
-      horn: {
-        id: "horn",
-        name: "Jaycee Horn",
-        team: "CAR",
-        heightIn: 73,
-        weightLb: 200,
-        style: "physical_press",
-        coverage: ["press_man"],
-        notes: "Physical and grabby, thrives in press looks."
-      },
-      stingley: {
-        id: "stingley",
-        name: "Derek Stingley Jr.",
-        team: "HOU",
-        heightIn: 72,
-        weightLb: 190,
-        style: "mirror_man",
-        coverage: ["man", "off_man"],
-        notes: "Mirror-and-match specialist with strong ball skills."
-      },
-      ward: {
-        id: "ward",
-        name: "Denzel Ward",
-        team: "CLE",
-        heightIn: 71,
-        weightLb: 190,
-        style: "speed_corner",
-        coverage: ["off_man", "zone"],
-        notes: "Speed-focused; can be attacked by bigger bodies in traffic."
-      },
-      diggs: {
-        id: "diggs",
-        name: "Trevon Diggs",
-        team: "DAL",
-        heightIn: 74,
-        weightLb: 195,
-        style: "ballhawk",
-        coverage: ["off_man", "zone"],
-        notes: "Aggressive jumping routes; susceptible to double moves."
-      }
+      sauce:{id:"sauce",name:"Sauce Gardner",team:"NYJ",heightIn:75,weightLb:200,style:"press_length",coverage:["press_man","match_zone"],notes:"Long, physical, erases windows on the boundary."},
+      surtain:{id:"surtain",name:"Patrick Surtain II",team:"DEN",heightIn:74,weightLb:202,style:"technician",coverage:["man","off_man","pattern_match"],notes:"Smooth technician; rarely out of phase."},
+      horn:{id:"horn",name:"Jaycee Horn",team:"CAR",heightIn:73,weightLb:200,style:"physical_press",coverage:["press_man"],notes:"Physical and grabby, thrives in press looks."},
+      stingley:{id:"stingley",name:"Derek Stingley Jr.",team:"HOU",heightIn:72,weightLb:190,style:"mirror_man",coverage:["man","off_man"],notes:"Mirror-and-match specialist with strong ball skills."},
+      ward:{id:"ward",name:"Denzel Ward",team:"CLE",heightIn:71,weightLb:190,style:"speed_corner",coverage:["off_man","zone"],notes:"Speed-focused; can be attacked by bigger bodies in traffic."},
+      diggs:{id:"diggs",name:"Trevon Diggs",team:"DAL",heightIn:74,weightLb:195,style:"ballhawk",coverage:["off_man","zone"],notes:"Aggressive jumping routes; susceptible to double moves."}
     };
 
-    // --- Simplified 2025-style matchups (JSN / DeVonta / Amon-Ra only) ----
-
     const schedule2025 = {
-      jsn: {
-        1: "sauce",
-        2: "ward",
-        3: "stingley",
-        4: "diggs"
-      },
-      devonta: {
-        1: "ward",
-        2: "surtain",
-        3: "horn",
-        4: "diggs"
-      },
-      amonra: {
-        1: "ward",
-        2: "diggs",
-        3: "surtain",
-        4: "stingley"
-      }
+      jsn:{1:"sauce",2:"ward",3:"stingley",4:"diggs"},
+      devonta:{1:"ward",2:"surtain",3:"horn",4:"diggs"},
+      amonra:{1:"ward",2:"diggs",3:"surtain",4:"stingley"}
     };
 
     const MAX_WEEKS = 4;
-
-    // --- UI helpers --------------------------------------------------------
 
     const wrSelect = document.getElementById("wrSelect");
     const wrCompareSelect = document.getElementById("wrCompareSelect");
@@ -910,15 +599,13 @@
     const autoCbChip = document.getElementById("autoCbChip");
 
     function populateReceivers() {
-      top24ReceiverOrder.forEach((id) => {
+      top24ReceiverOrder.forEach(id => {
         const wr = receivers[id];
         if (!wr) return;
-
         const opt1 = document.createElement("option");
         opt1.value = wr.id;
         opt1.textContent = `${wr.name} (${wr.team})`;
         wrSelect.appendChild(opt1);
-
         const opt2 = opt1.cloneNode(true);
         wrCompareSelect.appendChild(opt2);
       });
@@ -933,11 +620,8 @@
       }
     }
 
-    // --- Matchup engine ----------------------------------------------------
-
     function evaluateMatchup(wr, cb) {
       let score = 70;
-
       const heightDiff = wr.heightIn - cb.heightIn;
       const weightDiff = wr.weightLb - cb.weightLb;
 
@@ -982,65 +666,47 @@
       score = Math.max(0, Math.min(100, score));
 
       let tier, tierTitle;
-      if (score >= 85) {
-        tier = "Smash Spot";
-        tierTitle = "Green light matchup.";
-      } else if (score >= 70) {
-        tier = "Solid Start";
-        tierTitle = "Lean start with confidence.";
-      } else if (score >= 55) {
-        tier = "Neutral";
-        tierTitle = "Fine but not a tiebreaker.";
-      } else {
-        tier = "Tough Draw";
-        tierTitle = "Downgrade expectations.";
-      }
+      if (score >= 85) { tier = "Smash Spot"; tierTitle = "Green light matchup."; }
+      else if (score >= 70) { tier = "Solid Start"; tierTitle = "Lean start with confidence."; }
+      else if (score >= 55) { tier = "Neutral"; tierTitle = "Fine but not a tiebreaker."; }
+      else { tier = "Tough Draw"; tierTitle = "Downgrade expectations."; }
 
       const bullets = [];
 
-      if (heightDiff >= 3) {
+      if (heightDiff >= 3)
         bullets.push(`${wr.name} has a notable height edge (~${Math.abs(heightDiff)}" taller) at the catch point.`);
-      } else if (heightDiff <= -3) {
+      else if (heightDiff <= -3)
         bullets.push(`${cb.name} brings a length advantage (~${Math.abs(heightDiff)}" taller) over ${wr.name}.`);
-      }
 
-      if (weightDiff >= 15) {
+      if (weightDiff >= 15)
         bullets.push(`${wr.name} carries a meaningful size advantage (~${Math.abs(weightDiff)} lbs heavier).`);
-      } else if (weightDiff <= -15) {
+      else if (weightDiff <= -15)
         bullets.push(`${cb.name} has a mass edge that can show up in press and at the catch point.`);
-      }
 
-      if (wr.id === "amonra" && cb.weightLb < 195) {
+      if (wr.id === "amonra" && cb.weightLb < 195)
         bullets.push(`${wr.name}'s physical slot game plays well against lighter corners like ${cb.name}.`);
-      }
 
-      if (wr.id === "jsn" && cb.weightLb >= 200) {
+      if (wr.id === "jsn" && cb.weightLb >= 200)
         bullets.push(`${wr.name} has historically thrived vs 200+ lb corners he can separate from laterally.`);
-      }
 
-      if (wr.archetype === "slippery_route_runner" && cb.style === "ballhawk") {
+      if (wr.archetype === "slippery_route_runner" && cb.style === "ballhawk")
         bullets.push(`Aggressive ball-hawking from ${cb.name} can be punished by ${wr.name}'s double moves.`);
-      }
 
-      if (bullets.length === 0) {
+      if (bullets.length === 0)
         bullets.push(`No extreme size or style mismatch — this comes down more to volume and game script than pure body type.`);
-      }
 
       let fantasyNote;
-      if (tier === "Smash Spot") {
+      if (tier === "Smash Spot")
         fantasyNote = `${wr.name} profiles as a strong upside play this week. In close decisions, bump him up a tier.`;
-      } else if (tier === "Solid Start") {
+      else if (tier === "Solid Start")
         fantasyNote = `${wr.name} is a solid start. You don't have to force him into lineups, but you're not shying away either.`;
-      } else if (tier === "Neutral") {
+      else if (tier === "Neutral")
         fantasyNote = `This matchup shouldn't be the deciding factor. Let volume, game total, and roster needs drive the call.`;
-      } else {
+      else
         fantasyNote = `If you have a comparable option in a softer matchup, ${wr.name} can be downgraded slightly this week.`;
-      }
 
       return { score: Math.round(score), tier, tierTitle, bullets, fantasyNote };
     }
-
-    // --- Render ------------------------------------------------------------
 
     function renderCombined(primaryWr, primaryCb, week, primaryResult, compareWr, compareCb, compareResult) {
       let html = `
@@ -1058,7 +724,7 @@
           against corners built like ${primaryCb.name}.
         </p>
         <ul class="bullets">
-          ${primaryResult.bullets.map((b) => `<li>${b}</li>`).join("")}
+          ${primaryResult.bullets.map(b => `<li>${b}</li>`).join("")}
         </ul>
         <div class="fantasy-note">
           ${primaryResult.fantasyNote}
@@ -1070,7 +736,6 @@
           <hr class="comparison-divider" />
           <div class="comparison-header">Comparison: ${compareWr.name}</div>
         `;
-
         if (compareCb && compareResult) {
           html += `
             <div class="result-header">
@@ -1086,7 +751,7 @@
               ${compareCb.name}.
             </p>
             <ul class="bullets">
-              ${compareResult.bullets.map((b) => `<li>${b}</li>`).join("")}
+              ${compareResult.bullets.map(b => `<li>${b}</li>`).join("")}
             </ul>
             <div class="fantasy-note">
               ${compareResult.fantasyNote}
@@ -1113,8 +778,6 @@
       `;
     }
 
-    // --- Events ------------------------------------------------------------
-
     function handleAnalyze() {
       const wrId = wrSelect.value;
       const compareId = wrCompareSelect.value;
@@ -1128,7 +791,6 @@
 
       const week = parseInt(weekVal, 10);
       const primaryWr = receivers[wrId];
-
       const primarySchedule = schedule2025[wrId] || {};
       const primaryCbId = primarySchedule[week];
 
@@ -1155,7 +817,6 @@
         compareWr = receivers[compareId];
         const compareSchedule = schedule2025[compareId] || {};
         const compareCbId = compareSchedule[week];
-
         if (compareCbId && corners[compareCbId]) {
           compareCb = corners[compareCbId];
           compareResult = evaluateMatchup(compareWr, compareCb);
@@ -1164,8 +825,6 @@
 
       renderCombined(primaryWr, primaryCb, week, primaryResult, compareWr, compareCb, compareResult);
     }
-
-    // --- Init --------------------------------------------------------------
 
     document.addEventListener("DOMContentLoaded", () => {
       populateReceivers();
