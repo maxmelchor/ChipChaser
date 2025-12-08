@@ -44,17 +44,18 @@
       }
     }
 
-    /* Floating Chip mascot */
+    /* Floating Chip mascot (chip holding football) */
 
     .chip-floating {
       position: absolute;
-      right: 26px;
-      top: -10px;
-      width: 90px;
+      right: 32px;
+      top: -26px;
+      width: 110px;
       pointer-events: none;
       animation: chipFloat 3.6s ease-in-out infinite;
-      opacity: 0.9;
+      opacity: 0.95;
       filter: drop-shadow(0 10px 25px rgba(59, 130, 246, 0.55));
+      z-index: 1;
     }
 
     @keyframes chipFloat {
@@ -63,7 +64,18 @@
       100% { transform: translateY(0px); }
     }
 
-    /* LEFT: Chip identity */
+    /* Make content sit below Chip so text never overlaps him */
+    .chip-panel,
+    .interaction-panel {
+      position: relative;
+      z-index: 2;
+    }
+
+    .interaction-panel {
+      padding-top: 18px; /* gives Chip headroom above Ask Chip card */
+    }
+
+    /* LEFT: Identity / Chip intro */
 
     .chip-panel {
       background: radial-gradient(circle at top left, rgba(147, 51, 234, 0.24), rgba(15, 23, 42, 0.98));
@@ -73,23 +85,23 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
-      position: relative;
       overflow: hidden;
     }
 
     .brand-row {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .brand-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
+      width: 64px;   /* bigger logo */
+      height: 64px;
+      border-radius: 16px;
       overflow: hidden;
-      border: 1px solid rgba(248, 250, 252, 0.8);
+      border: 1px solid rgba(248, 250, 252, 0.9);
       background: #020617;
+      flex-shrink: 0;
     }
 
     .brand-logo img {
@@ -99,7 +111,7 @@
     }
 
     .brand-text-main {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -114,6 +126,11 @@
       color: #e5e7eb;
       opacity: 0.9;
       margin-top: 3px;
+    }
+
+    .brand-right {
+      flex: 1;
+      min-width: 0;
     }
 
     .chip-badge {
@@ -399,32 +416,45 @@
       border: 1px solid rgba(45, 212, 191, 0.35);
     }
 
+    .comparison-header {
+      margin: 8px 0 4px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #a5b4fc;
+    }
+
+    .comparison-divider {
+      margin: 8px 0;
+      border: none;
+      border-top: 1px dashed rgba(148, 163, 255, 0.35);
+    }
+
     .empty-state {
       font-size: 12px;
       color: #9ca3af;
       padding: 6px 4px;
     }
-
   </style>
 </head>
 
 <body>
   <div class="app-shell">
-    <!-- Floating Chip Mascot -->
-    <img src="chip-odell.png" alt="Chip mascot" class="chip-floating" />
+    <!-- Floating Chip mascot (football pose) -->
+    <img src="chip-wink-football.png" alt="Chip mascot" class="chip-floating" />
 
     <!-- LEFT: Identity / Chip intro -->
     <section class="chip-panel">
       <div class="brand-row">
         <div class="brand-logo">
-          <img src="chip-mascot.png" alt="ChipChaser logo" />
+          <img src="chipchaser_logo.jpeg" alt="ChipChaser logo" />
         </div>
-        <div>
+        <div class="brand-right">
           <div class="brand-text-main">
             ChipChaser<span class="brand-dot">.</span>
           </div>
           <div class="brand-tagline">
-            Let Chip read the WR vs CB tea leaves for your fantasy starts.
+            Let Chip read the WR vs CB tea leaves for your 2025 fantasy starts.
           </div>
         </div>
         <div class="chip-badge">Chip, matchup bot</div>
@@ -440,7 +470,7 @@
         </div>
         <div class="chip-hint">
           Start with a WR, pick a week, and Chip will explain the matchup like a friend who
-          actually watches DB tape.
+          actually watches DB tape. Add a second WR to see how your options compare.
         </div>
       </div>
 
@@ -462,14 +492,21 @@
       <div class="controls-panel">
         <div class="controls-title">Ask Chip</div>
         <div class="controls-subtitle">
-          Choose a wideout and a week from the 2025 season. Chip will auto-assign a primary
-          corner and give you a body-type matchup grade.
+          Choose a wideout and week from the 2025 season. Chip will auto-assign a primary corner
+          (where mapped) and give you a body-type matchup grade. Add a second WR to compare.
         </div>
 
         <div class="form-row">
-          <label for="wrSelect">Wide receiver (Top 24)</label>
+          <label for="wrSelect">Primary wide receiver (Top 24)</label>
           <select id="wrSelect">
             <option value="">Select a receiver…</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="wrCompareSelect">Compare vs (optional)</label>
+          <select id="wrCompareSelect">
+            <option value="">No comparison</option>
           </select>
         </div>
 
@@ -495,8 +532,9 @@
         <div class="bubble" id="resultArea">
           <div class="bubble-label">Chip says</div>
           <div class="empty-state">
-            Pick a receiver and week, then hit <strong>Ask Chip</strong>. I’ll break down how
-            the WR’s body type and play style stack up against his corner for that matchup.
+            Pick at least one receiver and a week, then hit <strong>Ask Chip</strong>. I’ll break down the body-type
+            matchup for your primary WR, and if you add a second WR I’ll put their matchup right under it so you can
+            compare.
           </div>
         </div>
       </div>
@@ -871,6 +909,7 @@
     // --- UI helpers --------------------------------------------------------
 
     const wrSelect = document.getElementById("wrSelect");
+    const wrCompareSelect = document.getElementById("wrCompareSelect");
     const weekSelect = document.getElementById("weekSelect");
     const analyzeBtn = document.getElementById("analyzeBtn");
     const resultArea = document.getElementById("resultArea");
@@ -880,10 +919,14 @@
       top24ReceiverOrder.forEach((id) => {
         const wr = receivers[id];
         if (!wr) return;
-        const option = document.createElement("option");
-        option.value = wr.id;
-        option.textContent = `${wr.name} (${wr.team})`;
-        wrSelect.appendChild(option);
+
+        const opt1 = document.createElement("option");
+        opt1.value = wr.id;
+        opt1.textContent = `${wr.name} (${wr.team})`;
+        wrSelect.appendChild(opt1);
+
+        const opt2 = opt1.cloneNode(true);
+        wrCompareSelect.appendChild(opt2);
       });
     }
 
@@ -1007,28 +1050,67 @@
 
     // --- Render ------------------------------------------------------------
 
-    function renderResult(wr, cb, week, result) {
-      const html = `
+    function renderCombined(primaryWr, primaryCb, week, primaryResult, compareWr, compareCb, compareResult, compareMessage) {
+      let html = `
         <div class="bubble-label">Chip says</div>
         <div class="result-header">
           <div class="matchup-vs">
-            Week ${week}: ${wr.name} (${wr.team}) vs ${cb.name} (${cb.team})
+            Week ${week}: ${primaryWr.name} (${primaryWr.team}) vs ${primaryCb.name} (${primaryCb.team})
           </div>
-          <div class="score-pill">${result.score} / 100</div>
+          <div class="score-pill">${primaryResult.score} / 100</div>
         </div>
-        <div class="tier-label">${result.tier}</div>
-        <div class="tier-title">${result.tierTitle}</div>
+        <div class="tier-label">${primaryResult.tier}</div>
+        <div class="tier-title">${primaryResult.tierTitle}</div>
         <p class="explanation">
-          I'm looking at height, weight, coverage style, and how ${wr.name}'s archetype typically performs
-          against corners built like ${cb.name}.
+          I'm looking at height, weight, coverage style, and how ${primaryWr.name}'s archetype typically performs
+          against corners built like ${primaryCb.name}.
         </p>
         <ul class="bullets">
-          ${result.bullets.map((b) => `<li>${b}</li>`).join("")}
+          ${primaryResult.bullets.map((b) => `<li>${b}</li>`).join("")}
         </ul>
         <div class="fantasy-note">
-          ${result.fantasyNote}
+          ${primaryResult.fantasyNote}
         </div>
       `;
+
+      if (compareWr) {
+        html += `
+          <hr class="comparison-divider" />
+          <div class="comparison-header">Comparison: ${compareWr.name}</div>
+        `;
+
+        if (compareCb && compareResult) {
+          html += `
+            <div class="result-header">
+              <div class="matchup-vs">
+                Week ${week}: ${compareWr.name} (${compareWr.team}) vs ${compareCb.name} (${compareCb.team})
+              </div>
+              <div class="score-pill">${compareResult.score} / 100</div>
+            </div>
+            <div class="tier-label">${compareResult.tier}</div>
+            <div class="tier-title">${compareResult.tierTitle}</div>
+            <p class="explanation">
+              Same lens: body type and coverage. I'm checking how ${compareWr.name} stacks up physically against
+              ${compareCb.name}.
+            </p>
+            <ul class="bullets">
+              ${compareResult.bullets.map((b) => `<li>${b}</li>`).join("")}
+            </ul>
+            <div class="fantasy-note">
+              ${compareResult.fantasyNote}
+            </div>
+          `;
+        } else {
+          html += `
+            <p class="explanation">
+              I don't have a primary corner mapped for ${compareWr.name} in Week ${week} yet, so I can't give the same
+              detailed body-type score. Treat his matchup as neutral for now and lean on projected volume and game
+              environment.
+            </p>
+          `;
+        }
+      }
+
       resultArea.innerHTML = html;
     }
 
@@ -1043,34 +1125,55 @@
 
     function handleAnalyze() {
       const wrId = wrSelect.value;
+      const compareId = wrCompareSelect.value;
       const weekVal = weekSelect.value;
 
       if (!wrId || !weekVal) {
-        renderEmpty("Pick a receiver and week first, then I’ll break down the matchup for you.");
+        renderEmpty("Pick at least one receiver and a week first, then I’ll break down the matchup for you.");
         autoCbChip.style.display = "none";
         return;
       }
 
       const week = parseInt(weekVal, 10);
-      const wr = receivers[wrId];
+      const primaryWr = receivers[wrId];
 
-      const wrSchedule = schedule2025[wrId] || {};
-      const cbId = wrSchedule[week];
+      const primarySchedule = schedule2025[wrId] || {};
+      const primaryCbId = primarySchedule[week];
 
-      if (!cbId || !corners[cbId]) {
+      if (!primaryCbId || !corners[primaryCbId]) {
         renderEmpty(
-          `I don't have a primary corner mapped for ${wr.name} in Week ${week} yet. For now, treat this as a neutral matchup and let volume + game total drive your decision.`
+          `I don't have a primary corner mapped for ${primaryWr.name} in Week ${week} yet. ` +
+          `For now, treat this as a neutral matchup and let volume + game total drive your decision.`
         );
         autoCbChip.style.display = "none";
         return;
       }
 
-      const cb = corners[cbId];
-      autoCbChip.style.display = "inline-flex";
-      autoCbChip.textContent = `Auto CB (2025): ${cb.name} • ${cb.team}`;
+      const primaryCb = corners[primaryCbId];
+      const primaryResult = evaluateMatchup(primaryWr, primaryCb);
 
-      const result = evaluateMatchup(wr, cb);
-      renderResult(wr, cb, week, result);
+      autoCbChip.style.display = "inline-flex";
+      autoCbChip.textContent = `Auto CB (2025): ${primaryCb.name} • ${primaryCb.team}`;
+
+      let compareWr = null;
+      let compareCb = null;
+      let compareResult = null;
+      let compareMessage = null;
+
+      if (compareId) {
+        compareWr = receivers[compareId];
+        const compareSchedule = schedule2025[compareId] || {};
+        const compareCbId = compareSchedule[week];
+
+        if (compareCbId && corners[compareCbId]) {
+          compareCb = corners[compareCbId];
+          compareResult = evaluateMatchup(compareWr, compareCb);
+        } else {
+          compareMessage = `No mapped corner yet for ${compareWr.name} in Week ${week}.`;
+        }
+      }
+
+      renderCombined(primaryWr, primaryCb, week, primaryResult, compareWr, compareCb, compareResult, compareMessage);
     }
 
     // --- Init --------------------------------------------------------------
