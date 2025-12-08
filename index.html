@@ -2,852 +2,718 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>ChipChaser – Chase the championship. Not the news.</title>
+  <title>ChipChaser – WR vs CB Matchup Intel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta
-    name="description"
-    content="ChipChaser is a real-time fantasy football intelligence platform with projections, matchup analytics, sit/start tools, and an AI-powered roadmap."
-  />
 
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #050816;
-      --accent: #a855f7;
-      --accent-soft: rgba(168, 85, 247, 0.15);
-      --text-main: #f9fafb;
-      --text-muted: #9ca3af;
-      --danger: #f97373;
-      --success: #4ade80;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica", sans-serif;
-      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
-      color: var(--text-main);
       min-height: 100vh;
-    }
-
-    .page {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 20px 16px 60px;
-    }
-
-    header {
+      background: radial-gradient(circle at top, #1b102b, #05030a 60%);
+      color: #f7f4ff;
       display: flex;
       align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 960px;
+      background: rgba(13, 10, 25, 0.95);
+      border-radius: 24px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+      padding: 24px 24px 28px;
+      border: 1px solid rgba(163, 148, 255, 0.25);
+    }
+
+    @media (min-width: 768px) {
+      .app-shell {
+        padding: 32px 36px 40px;
+      }
+    }
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .logo-row {
+      display: flex;
+      align-items: baseline;
       justify-content: space-between;
-      padding: 10px 0 20px;
+      gap: 12px;
     }
 
-    nav { display: flex; gap: 16px; }
-
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 14px;
+    .logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
-    nav a:hover { color: var(--text-main); }
 
-    .btn {
-      padding: 8px 14px;
+    .logo-dot {
+      color: #a855ff;
+    }
+
+    .tagline {
+      font-size: 13px;
+      color: #c3bcff;
+      opacity: 0.9;
+    }
+
+    .pill {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
       border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
+      background: rgba(88, 28, 135, 0.2);
+      border: 1px solid rgba(216, 180, 254, 0.4);
+      color: #e9d5ff;
+      white-space: nowrap;
     }
 
-    .btn-primary {
-      background: var(--accent);
-      color: #0b0213;
-    }
-
-    .btn-ghost {
-      background: #111827;
-      color: var(--text-muted);
-    }
-
-    main {
+    .layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      grid-template-columns: 1.1fr 1.4fr;
+      gap: 20px;
     }
 
-    aside {
-      background: #111827;
-      border: 1px solid #1f2937;
-      padding: 14px;
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    @media (max-width: 768px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
     }
 
-    .card {
-      background: #0f172a;
-      border: 1px solid #1f2937;
-      padding: 12px;
-      border-radius: 12px;
-      margin-bottom: 10px;
+    .panel {
+      background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.16), rgba(15, 23, 42, 0.96));
+      border-radius: 20px;
+      padding: 18px 18px 20px;
+      border: 1px solid rgba(148, 163, 255, 0.3);
+    }
+
+    .panel-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #a5b4fc;
+      margin-bottom: 6px;
+    }
+
+    .panel-subtitle {
+      font-size: 12px;
+      color: #cbd5f5;
+      opacity: 0.85;
+      margin-bottom: 16px;
+    }
+
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 14px;
+    }
+
+    label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #9ca3ff;
     }
 
     select {
       width: 100%;
-      padding: 6px;
-      border-radius: 8px;
-      background: #111827;
-      border: 1px solid #1f2937;
-      color: white;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-
-    #sitStartResult {
-      margin-top: 8px;
-      background: #0f172a;
-      border: 1px solid #1f2937;
-      padding: 10px;
-      border-radius: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 255, 0.6);
+      background: rgba(15, 23, 42, 0.8);
+      color: #f9fafb;
       font-size: 13px;
+      outline: none;
+      appearance: none;
     }
 
-    /* Chat Button */
-    #chatChipBtn {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--accent);
-      color: #0b0213;
+    select:focus {
+      border-color: #a855ff;
+      box-shadow: 0 0 0 1px rgba(168, 85, 255, 0.5);
+    }
+
+    .btn {
+      margin-top: 6px;
+      width: 100%;
+      padding: 9px 14px;
+      border-radius: 999px;
       border: none;
-      padding: 14px 18px;
-      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      background: linear-gradient(135deg, #a855ff, #6366f1);
+      color: #f9fafb;
+      box-shadow: 0 12px 30px rgba(88, 28, 135, 0.55);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.08s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 40px rgba(88, 28, 135, 0.7);
+      filter: brightness(1.05);
+    }
+
+    .btn:active {
+      transform: translateY(0px);
+      box-shadow: 0 6px 18px rgba(88, 28, 135, 0.7);
+      filter: brightness(0.96);
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .meta-chip {
+      font-size: 11px;
+      border-radius: 999px;
+      padding: 4px 9px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 255, 0.45);
+      color: #e5e7eb;
+    }
+
+    /* Result panel */
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .matchup-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #a5b4fc;
+    }
+
+    .matchup-vs {
+      font-size: 15px;
+      font-weight: 600;
+      color: #e5e7ff;
+    }
+
+    .score-pill {
+      min-width: 64px;
+      text-align: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 13px;
+      font-weight: 700;
+      background: rgba(22, 163, 74, 0.15);
+      border: 1px solid rgba(74, 222, 128, 0.7);
+      color: #bbf7d0;
+    }
+
+    .tier-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #a7f3d0;
+      margin-bottom: 4px;
+    }
+
+    .tier-title {
       font-size: 14px;
       font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-      z-index: 200;
+      margin-bottom: 10px;
     }
 
-    /* Chat Panel */
-    #chipChatPanel {
-      position: fixed;
-      top: 0;
-      right: -380px;
-      width: 360px;
-      height: 100vh;
-      background: #0b0213;
-      border-left: 1px solid rgba(255,255,255,0.1);
-      box-shadow: -4px 0 20px rgba(0,0,0,0.5);
-      padding: 20px;
-      color: white;
-      transition: right 0.3s ease-out;
-      z-index: 300;
+    .explanation {
+      font-size: 12px;
+      color: #e5e7eb;
+      margin-bottom: 10px;
+      line-height: 1.5;
     }
 
-    /* Floating Chip Animation */
-    @keyframes floatChip {
-      0%   { transform: translateY(0); }
-      50%  { transform: translateY(-10px); }
-      100% { transform: translateY(0); }
+    .bullets {
+      list-style: none;
+      font-size: 12px;
+      color: #cbd5f5;
+      margin-bottom: 10px;
     }
 
-    .chip-floating {
-      animation: floatChip 3.5s ease-in-out infinite;
-      filter: drop-shadow(0 4px 14px rgba(0,0,0,0.7));
-    }
-
-    .chip-hero-wrap {
+    .bullets li {
       position: relative;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      margin-bottom: 8px;
-      margin-top: -4px;
+      padding-left: 14px;
+      margin-bottom: 4px;
     }
 
-    .chip-glow {
+    .bullets li::before {
+      content: "•";
       position: absolute;
-      bottom: 0;
-      width: 140px;
-      height: 40px;
-      background: radial-gradient(circle, rgba(168,85,247,0.65) 0, transparent 70%);
-      opacity: 0.8;
-      transform: translateY(18px);
-      filter: blur(10px);
-      z-index: 0;
+      left: 2px;
+      top: 0;
+      color: #a855ff;
     }
 
-    .chip-odell {
-      position: relative;
-      z-index: 1;
-      width: 150px;
-    }
-
-    .chip-wink-hero {
-      margin-top: 24px;
-      max-width: 220px;
-    }
-
-    .player-art {
-      width: 64px;
-      height: 64px;
+    .fantasy-note {
+      margin-top: 6px;
+      font-size: 12px;
+      color: #d1fae5;
+      padding: 8px 10px;
       border-radius: 12px;
-      background: #020617;
-      object-fit: cover;
-      border: 1px solid #1f2937;
+      background: rgba(16, 185, 129, 0.13);
+      border: 1px solid rgba(45, 212, 191, 0.35);
+    }
+
+    .empty-state {
+      font-size: 12px;
+      color: #9ca3af;
+      padding: 10px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px dashed rgba(148, 163, 255, 0.4);
+    }
+
+    .tiny-footnote {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #9ca3ff;
+      opacity: 0.8;
     }
   </style>
 </head>
 
 <body>
-  <div class="page">
-
-    <!-- HEADER -->
-    <header>
-      <div class="logo-wrap" style="display:flex; align-items:center; gap:10px;">
-        <img src="chip-mascot-transparent.png" width="52" alt="Chip logo" />
-        <div style="line-height:1.1;">
-          <span style="font-weight:700; font-size:18px;">ChipChaser</span><br>
-          <span style="font-size:11px; color:#9ca3af;">Powered by Chip</span>
+  <div class="app-shell">
+    <header class="header">
+      <div class="logo-row">
+        <div>
+          <div class="logo-text">
+            ChipChaser<span class="logo-dot">.</span>
+          </div>
+          <p class="tagline">
+            WR vs. CB matchup intel with body-type context — built for fantasy start/sit calls.
+          </p>
         </div>
+        <div class="pill">2025 Matchup Lab</div>
       </div>
-
-      <nav>
-        <a href="#features">Features</a>
-        <a href="#how-it-works">How it works</a>
-        <a href="#faq">FAQ</a>
-        <button class="btn btn-ghost" data-open-login>Log in</button>
-        <button class="btn btn-primary" data-open-login>Get started</button>
-      </nav>
     </header>
 
-    <!-- MAIN LAYOUT -->
-    <main>
-
-      <!-- LEFT SIDE -->
-      <section>
-        <h1 style="font-size:32px; line-height:1.15;">
-          Meet <strong>Chip</strong> — your fantasy co-pilot.
-        </h1>
-
-        <p style="color:var(--text-muted); margin-top:8px; font-size:15px;">
-          Real-time projections, matchup analytics, sit/start calls, and an AI roadmap.
+    <main class="layout">
+      <!-- LEFT: Controls -->
+      <section class="panel">
+        <h2 class="panel-title">Setup</h2>
+        <p class="panel-subtitle">
+          Pick a wide receiver and week. ChipChaser will map the primary opposing corner
+          and grade the matchup using size, play style, and coverage traits.
         </p>
 
-        <p style="
-          margin-top: 28px;
-          font-family: Helvetica, sans-serif;
-          font-size: 28px;
-          font-weight: 700;
-          color: var(--text-main);
-          max-width: 420px;
-          line-height: 1.2;
-        ">
-          Stop doomscrolling fantasy outlooks.<br>
-          Start asking Chip.
-        </p>
+        <div class="form-row">
+          <label for="wrSelect">Wide receiver</label>
+          <select id="wrSelect">
+            <option value="">Select a receiver…</option>
+          </select>
+        </div>
 
-        <img
-          src="chip-wink-football.png"
-          alt="Chip winking with a thumbs up and a football"
-          class="chip-wink-hero"
-        />
+        <div class="form-row">
+          <label for="weekSelect">Week (2025)</label>
+          <select id="weekSelect">
+            <option value="">Select week…</option>
+          </select>
+        </div>
+
+        <button class="btn" id="analyzeBtn">Analyze Matchup</button>
+
+        <div class="meta-row">
+          <div class="meta-chip" id="autoCbChip" style="display:none;"></div>
+          <div class="meta-chip" id="buildChip">MVP • v1 clean restart</div>
+        </div>
+
+        <p class="tiny-footnote">
+          Note: schedule + assignments are simplified for the MVP. The engine is built so we
+          can later swap in real schedule + CB data from an API.
+        </p>
       </section>
 
-      <!-- RIGHT SIDE -->
-      <aside>
+      <!-- RIGHT: Results -->
+      <section class="panel">
+        <h2 class="panel-title">Matchup grade</h2>
+        <p class="panel-subtitle">
+          Body-type matchup score (0–100) plus a quick fantasy read on how confident you should feel.
+        </p>
 
-        <div class="chip-hero-wrap">
-          <div class="chip-glow"></div>
-          <img
-            src="chip-odell.png"
-            alt="Chip making a one-handed catch"
-            class="chip-floating chip-odell"
-          />
-        </div>
-
-        <div class="card">
-          <h3 style="margin-bottom:6px;">Chip’s Sit/Start Assistant</h3>
-
-          <label for="playerA">Player A</label>
-          <select id="playerA"></select>
-
-          <label for="playerB">Player B</label>
-          <select id="playerB"></select>
-
-          <label for="weekSelector" style="margin-top:6px; display:block;">Week</label>
-          <select id="weekSelector"></select>
-
-          <button id="sitStartBtn" class="btn btn-primary" style="width:100%; margin-top:8px;">
-            Who should I start?
-          </button>
-
-          <div id="sitStartResult">
-            Pick two players and a week and Chip will decide.
+        <div id="resultArea">
+          <div class="empty-state">
+            Choose a receiver and week, then hit <strong>Analyze Matchup</strong> to see how the
+            body-type matchup looks for 2025.
           </div>
         </div>
-
-        <div class="card">
-          <h3 style="margin-bottom:6px;">Matchup Analytics</h3>
-          <div id="matchupGrid" style="font-size:13px; color:var(--text-muted);"></div>
-        </div>
-
-        <div class="card">
-          <h3 style="margin-bottom:6px;">Player Props</h3>
-          <div style="display:flex; align-items:center; gap:12px;">
-            <img
-              id="playerArt"
-              src="chip-thinking.png"
-              alt="Chip thinking"
-              class="player-art"
-            />
-            <div id="playerArtMeta" style="font-size:13px; color:#9ca3af;">
-              Chip will show who you should start here.
-            </div>
-          </div>
-        </div>
-
-      </aside>
+      </section>
     </main>
-
-    <section id="features" style="margin-top:40px;">
-      <h2>Features</h2>
-      <p style="color:var(--text-muted);">Projection engine, matchup breakdowns, AI roadmap.</p>
-    </section>
-
-    <section id="how-it-works" style="margin-top:40px;">
-      <h2>How it works</h2>
-      <p style="color:var(--text-muted);">Connect, ask Chip questions, win more matchups.</p>
-    </section>
-
-    <section id="faq" style="margin-top:40px;">
-      <h2>FAQ</h2>
-      <p style="color:var(--text-muted);">More coming soon.</p>
-    </section>
-
-  </div>
-
-  <button id="chatChipBtn">💬 Chat with Chip</button>
-
-  <div id="chipChatPanel">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h2>Chat with Chip</h2>
-      <button id="closeChipChat" style="background:none; border:none; font-size:22px; color:#aaa; cursor:pointer;">×</button>
-    </div>
-
-    <p style="color:#aaa; font-size:14px; margin-top:8px;">
-      This is a preview. Soon Chip will answer your fantasy questions.
-    </p>
-
-    <textarea
-      style="margin-top:12px; width:100%; height:120px; background:#111827; border:1px solid #1f2937; border-radius:8px; color:white; padding:10px; resize:none;"
-      placeholder="Ask Chip anything... (coming soon)"
-    ></textarea>
-
-    <button disabled style="margin-top:12px; width:100%; padding:10px; border-radius:8px; background:#444; color:#777;">
-      AI Coming Soon
-    </button>
   </div>
 
   <script>
-    // ---------- PLAYERS ----------
+    // --- Data model ---------------------------------------------------------
 
-    const players = [
-      {
-        id: "amonra",
-        name: "Amon-Ra St. Brown",
-        position: "WR",
-        team: "DET",
-        basePpr: 18.5,
-        size: "sturdy",
-        archetype: "route_technician",
-      },
-      {
+    const receivers = {
+      jsn: {
         id: "jsn",
         name: "Jaxon Smith-Njigba",
-        position: "WR",
         team: "SEA",
-        basePpr: 16.1,
-        size: "medium",
-        archetype: "slot_yac",
-      },
-      {
-        id: "devonta",
-        name: "DeVonta Smith",
-        position: "WR",
-        team: "PHI",
-        basePpr: 15.1,
-        size: "slight",
-        archetype: "separator",
-      },
-    ];
-
-    // ---------- BODY-TYPE PREFERENCES ----------
-
-    // For each WR, how they tend to do vs CB body types.
-    // cbArchetype: big (205–225), long, small, balanced
-    const bodyTypePrefs = {
-      amonra: {
-        big:   { tendency: "plus",  blurb: "Chip sees Amon-Ra as sturdy enough to win underneath vs bigger 205–225 lb corners." },
-        long:  { tendency: "neutral", blurb: "Long, rangy corners are mostly neutral for Amon-Ra — volume keeps him afloat." },
-        small: { tendency: "plus",  blurb: "Against smaller slot-style CBs, his frame and route craft usually carry him." },
-        balanced: { tendency: "neutral", blurb: "Balanced CB body-type — Chip mostly leans on coverage grade and raw volume here." },
-      },
-      jsn: {
-        big:   { tendency: "plus",  blurb: "Chip’s profile for JSN says he can actually shine vs bigger 210–225 lb CBs from the slot, using leverage and YAC." },
-        long:  { tendency: "minus", blurb: "Long, rangy press corners can disrupt JSN’s timing more, so Chip dials him back a bit here." },
-        small: { tendency: "plus",  blurb: "Smaller nickel CBs often struggle to tackle JSN cleanly after the catch — Chip gives a small bump." },
-        balanced: { tendency: "neutral", blurb: "Neutral body-type matchup for JSN — coverage tier does most of the work." },
+        heightIn: 72,   // 6'0"
+        weightLb: 200,
+        archetype: "crafty_slot",
+        strengths: ["short_area_quickness", "separation_short", "zone_finder"],
+        notes: "Wins with leverage and short-area quickness more than pure size."
       },
       devonta: {
-        big:   { tendency: "minus", blurb: "At a lighter frame, DeVonta can get bodied by bigger 205–220 lb CBs in tight coverage, so Chip trims the projection slightly." },
-        long:  { tendency: "minus", blurb: "Long, physical CBs can ride his routes at the catch point — Chip bakes in a small penalty." },
-        small: { tendency: "plus",  blurb: "Versus smaller, quicker CBs, his release and routes tend to win — Chip nudges his projection up." },
-        balanced: { tendency: "neutral", blurb: "Balanced CB body-type — Chip treats this as roughly neutral and leans on coverage grade." },
+        id: "devonta",
+        name: "DeVonta Smith",
+        team: "PHI",
+        heightIn: 72,   // 6'0"
+        weightLb: 170,
+        archetype: "slippery_route_runner",
+        strengths: ["route_running", "sideline_ball_tracking", "double_moves"],
+        notes: "Lean frame but elite route running and ball skills."
       },
+      ridley: {
+        id: "ridley",
+        name: "Calvin Ridley",
+        team: "TEN",
+        heightIn: 73,   // 6'1"
+        weightLb: 190,
+        archetype: "outside_separator",
+        strengths: ["intermediate_routes", "timing", "sideline_footwork"],
+        notes: "Outside separator with strong intermediate route tree."
+      }
     };
 
-    // ---------- 2025 SCHEDULE SNAPSHOT ----------
+    const corners = {
+      sauce: {
+        id: "sauce",
+        name: "Sauce Gardner",
+        team: "NYJ",
+        heightIn: 75,   // 6'3"
+        weightLb: 200,
+        style: "press_length",
+        coverage: ["press_man", "match_zone"],
+        notes: "Long, physical, erases windows on the boundary."
+      },
+      surtain: {
+        id: "surtain",
+        name: "Patrick Surtain II",
+        team: "DEN",
+        heightIn: 74,
+        weightLb: 202,
+        style: "technician",
+        coverage: ["man", "off_man", "pattern_match"],
+        notes: "Smooth technician; rarely out of phase."
+      },
+      horn: {
+        id: "horn",
+        name: "Jaycee Horn",
+        team: "CAR",
+        heightIn: 73,
+        weightLb: 200,
+        style: "physical_press",
+        coverage: ["press_man"],
+        notes: "Physical and grabby, thrives in press looks."
+      },
+      stingley: {
+        id: "stingley",
+        name: "Derek Stingley Jr.",
+        team: "HOU",
+        heightIn: 72,
+        weightLb: 190,
+        style: "mirror_man",
+        coverage: ["man", "off_man"],
+        notes: "Mirror-and-match specialist with strong ball skills."
+      },
+      ward: {
+        id: "ward",
+        name: "Denzel Ward",
+        team: "CLE",
+        heightIn: 71,
+        weightLb: 190,
+        style: "speed_corner",
+        coverage: ["off_man", "zone"],
+        notes: "Speed-focused; can be attacked by bigger bodies in traffic."
+      },
+      diggs: {
+        id: "diggs",
+        name: "Trevon Diggs",
+        team: "DAL",
+        heightIn: 74,
+        weightLb: 195,
+        style: "ballhawk",
+        coverage: ["off_man", "zone"],
+        notes: "Aggressive jumping routes; susceptible to double moves."
+      }
+    };
 
-    // coverageTier: elite | good | average | soft
-    // cbArchetype: big | long | small | balanced
+    // Simplified 2025-style matchups.
+    // For now this is illustrative, not the official NFL schedule.
+    // Keyed by receiverId -> week -> cornerId.
     const schedule2025 = {
-      DET: [
-        { week: 1, oppCode: "GB",  oppName: "Green Bay Packers",      homeAway: "away", coverageTier: "elite",   cbArchetype: "balanced" },
-        { week: 2, oppCode: "CHI", oppName: "Chicago Bears",          homeAway: "home", coverageTier: "average", cbArchetype: "big"      },
-        { week: 3, oppCode: "BAL", oppName: "Baltimore Ravens",       homeAway: "away", coverageTier: "good",    cbArchetype: "long"     },
-        { week: 4, oppCode: "CLE", oppName: "Cleveland Browns",       homeAway: "home", coverageTier: "elite",   cbArchetype: "big"      },
-        { week: 5, oppCode: "CIN", oppName: "Cincinnati Bengals",     homeAway: "away", coverageTier: "good",    cbArchetype: "small"    },
-        { week: 6, oppCode: "KC",  oppName: "Kansas City Chiefs",     homeAway: "away", coverageTier: "elite",   cbArchetype: "long"     },
-        { week: 7, oppCode: "TB",  oppName: "Tampa Bay Buccaneers",   homeAway: "home", coverageTier: "good",    cbArchetype: "big"      },
-        { week: 8, oppCode: null,  oppName: "BYE",                    homeAway: "bye",  isBye: true },
-        { week: 9, oppCode: "MIN", oppName: "Minnesota Vikings",      homeAway: "home", coverageTier: "average", cbArchetype: "balanced" },
-        { week:10, oppCode: "WAS", oppName: "Washington Commanders",  homeAway: "away", coverageTier: "average", cbArchetype: "balanced" },
-        { week:11, oppCode: "PHI", oppName: "Philadelphia Eagles",    homeAway: "away", coverageTier: "elite",   cbArchetype: "long"     },
-        { week:12, oppCode: "NYG", oppName: "New York Giants",        homeAway: "home", coverageTier: "good",    cbArchetype: "balanced" },
-        { week:13, oppCode: "GB",  oppName: "Green Bay Packers",      homeAway: "home", coverageTier: "elite",   cbArchetype: "balanced" },
-        { week:14, oppCode: "DAL", oppName: "Dallas Cowboys",         homeAway: "home", coverageTier: "elite",   cbArchetype: "long"     },
-        { week:15, oppCode: "LAR", oppName: "Los Angeles Rams",       homeAway: "away", coverageTier: "good",    cbArchetype: "small"    },
-        { week:16, oppCode: "PIT", oppName: "Pittsburgh Steelers",    homeAway: "home", coverageTier: "average", cbArchetype: "big"      },
-        { week:17, oppCode: "MIN", oppName: "Minnesota Vikings",      homeAway: "away", coverageTier: "average", cbArchetype: "balanced" },
-        { week:18, oppCode: "CHI", oppName: "Chicago Bears",          homeAway: "away", coverageTier: "average", cbArchetype: "big"      },
-      ],
-      SEA: [
-        { week: 1, oppCode: "SF",  oppName: "San Francisco 49ers",     homeAway: "home", coverageTier: "elite",   cbArchetype: "long"     },
-        { week: 2, oppCode: "PIT", oppName: "Pittsburgh Steelers",     homeAway: "away", coverageTier: "good",    cbArchetype: "big"      },
-        { week: 3, oppCode: "NO",  oppName: "New Orleans Saints",      homeAway: "home", coverageTier: "good",    cbArchetype: "balanced" },
-        { week: 4, oppCode: "ARI", oppName: "Arizona Cardinals",       homeAway: "away", coverageTier: "average", cbArchetype: "small"    },
-        { week: 5, oppCode: "TB",  oppName: "Tampa Bay Buccaneers",    homeAway: "home", coverageTier: "good",    cbArchetype: "big"      },
-        { week: 6, oppCode: "JAX", oppName: "Jacksonville Jaguars",    homeAway: "away", coverageTier: "good",    cbArchetype: "long"     },
-        { week: 7, oppCode: "HOU", oppName: "Houston Texans",          homeAway: "home", coverageTier: "good",    cbArchetype: "long"     },
-        { week: 8, oppCode: null,  oppName: "BYE",                     homeAway: "bye",  isBye: true },
-        { week: 9, oppCode: "WAS", oppName: "Washington Commanders",   homeAway: "away", coverageTier: "average", cbArchetype: "big"      },
-        { week:10, oppCode: "ARI", oppName: "Arizona Cardinals",       homeAway: "home", coverageTier: "average", cbArchetype: "small"    },
-        { week:11, oppCode: "LAR", oppName: "Los Angeles Rams",        homeAway: "away", coverageTier: "average", cbArchetype: "small"    },
-        { week:12, oppCode: "TEN", oppName: "Tennessee Titans",        homeAway: "away", coverageTier: "good",    cbArchetype: "big"      },
-        { week:13, oppCode: "MIN", oppName: "Minnesota Vikings",       homeAway: "home", coverageTier: "average", cbArchetype: "balanced" },
-        { week:14, oppCode: "ATL", oppName: "Atlanta Falcons",         homeAway: "away", coverageTier: "good",    cbArchetype: "balanced" },
-        { week:15, oppCode: "IND", oppName: "Indianapolis Colts",      homeAway: "home", coverageTier: "average", cbArchetype: "balanced" },
-        { week:16, oppCode: "LAR", oppName: "Los Angeles Rams",        homeAway: "home", coverageTier: "average", cbArchetype: "small"    },
-        { week:17, oppCode: "CAR", oppName: "Carolina Panthers",       homeAway: "away", coverageTier: "good",    cbArchetype: "long"     },
-        { week:18, oppCode: "SF",  oppName: "San Francisco 49ers",     homeAway: "away", coverageTier: "elite",   cbArchetype: "long"     },
-      ],
-      PHI: [
-        { week: 1, oppCode: "DAL", oppName: "Dallas Cowboys",          homeAway: "home", coverageTier: "elite",   cbArchetype: "long"     },
-        { week: 2, oppCode: "KC",  oppName: "Kansas City Chiefs",      homeAway: "away", coverageTier: "elite",   cbArchetype: "long"     },
-        { week: 3, oppCode: "LAR", oppName: "Los Angeles Rams",        homeAway: "home", coverageTier: "good",    cbArchetype: "small"    },
-        { week: 4, oppCode: "TB",  oppName: "Tampa Bay Buccaneers",    homeAway: "away", coverageTier: "average", cbArchetype: "big"      },
-        { week: 5, oppCode: "DEN", oppName: "Denver Broncos",          homeAway: "home", coverageTier: "elite",   cbArchetype: "long"     },
-        { week: 6, oppCode: "NYG", oppName: "New York Giants",         homeAway: "away", coverageTier: "average", cbArchetype: "balanced" },
-        { week: 7, oppCode: "MIN", oppName: "Minnesota Vikings",       homeAway: "away", coverageTier: "average", cbArchetype: "balanced" },
-        { week: 8, oppCode: "NYG", oppName: "New York Giants",         homeAway: "home", coverageTier: "average", cbArchetype: "balanced" },
-        { week: 9, oppCode: null,  oppName: "BYE",                     homeAway: "bye",  isBye: true },
-        { week:10, oppCode: "GB",  oppName: "Green Bay Packers",       homeAway: "away", coverageTier: "elite",   cbArchetype: "balanced" },
-        { week:11, oppCode: "DET", oppName: "Detroit Lions",           homeAway: "home", coverageTier: "average", cbArchetype: "balanced" },
-        { week:12, oppCode: "DAL", oppName: "Dallas Cowboys",          homeAway: "away", coverageTier: "elite",   cbArchetype: "long"     },
-        { week:13, oppCode: "CHI", oppName: "Chicago Bears",           homeAway: "home", coverageTier: "average", cbArchetype: "big"      },
-        { week:14, oppCode: "LAR", oppName: "Los Angeles Rams",        homeAway: "away", coverageTier: "good",    cbArchetype: "small"    },
-        { week:15, oppCode: "LV",  oppName: "Las Vegas Raiders",       homeAway: "home", coverageTier: "average", cbArchetype: "small"    },
-        { week:16, oppCode: "WAS", oppName: "Washington Commanders",   homeAway: "away", coverageTier: "average", cbArchetype: "balanced" },
-        { week:17, oppCode: "BUF", oppName: "Buffalo Bills",           homeAway: "away", coverageTier: "elite",   cbArchetype: "long"     },
-        { week:18, oppCode: "WAS", oppName: "Washington Commanders",   homeAway: "home", coverageTier: "average", cbArchetype: "balanced" },
-      ],
+      jsn: {
+        1: "sauce",    // SEA vs NYJ
+        2: "ward",     // SEA vs CLE
+        3: "stingley", // SEA vs HOU
+        4: "diggs"     // SEA vs DAL
+      },
+      devonta: {
+        1: "ward",     // PHI vs CLE
+        2: "surtain",  // PHI vs DEN
+        3: "horn",     // PHI vs CAR
+        4: "diggs"     // PHI vs DAL
+      },
+      ridley: {
+        1: "stingley", // TEN vs HOU
+        2: "horn",     // TEN vs CAR
+        3: "sauce",    // TEN vs NYJ
+        4: "surtain"   // TEN vs DEN
+      }
     };
 
-    // ---------- MATCHUP / ADJUSTMENT LOGIC ----------
+    const MAX_WEEKS = 4; // easy to extend later
 
-    function getScheduleEntryForPlayer(player, week) {
-      const sched = schedule2025[player.team];
-      if (!sched) return null;
-      return sched.find((g) => g.week === week) || null;
-    }
+    // --- UI setup ----------------------------------------------------------
 
-    function estimateMatchupAdjustment(player, matchup) {
-      if (!matchup || matchup.isBye) return 0;
+    const wrSelect = document.getElementById("wrSelect");
+    const weekSelect = document.getElementById("weekSelect");
+    const analyzeBtn = document.getElementById("analyzeBtn");
+    const resultArea = document.getElementById("resultArea");
+    const autoCbChip = document.getElementById("autoCbChip");
 
-      let adj = 0;
-
-      // Coverage tier impact
-      switch (matchup.coverageTier) {
-        case "elite":
-          adj -= 2.5;
-          break;
-        case "good":
-          adj -= 1.5;
-          break;
-        case "average":
-          adj -= 0.3;
-          break;
-        case "soft":
-          adj += 0.8;
-          break;
-        default:
-          break;
-      }
-
-      // Generic size mismatch
-      if (matchup.cbArchetype === "big") {
-        if (player.size === "slight") {
-          adj -= 0.8;
-        } else if (player.size === "sturdy") {
-          adj -= 0.2;
-        }
-      } else if (matchup.cbArchetype === "long") {
-        if (player.archetype === "separator") {
-          adj -= 0.6;
-        }
-      } else if (matchup.cbArchetype === "small") {
-        if (player.archetype === "slot_yac" || player.size === "sturdy") {
-          adj += 0.5;
-        }
-      }
-
-      // Body-type tendency from bodyTypePrefs
-      const prefs = bodyTypePrefs[player.id];
-      if (prefs) {
-        const pref = prefs[matchup.cbArchetype];
-        if (pref) {
-          if (pref.tendency === "plus") adj += 0.5;
-          if (pref.tendency === "minus") adj -= 0.5;
-        }
-      }
-
-      return adj;
-    }
-
-    function buildWeeklyLine(player, week) {
-      const base = player.basePpr;
-      const matchup = getScheduleEntryForPlayer(player, week);
-
-      if (!matchup) {
-        return {
-          player,
-          base,
-          adjusted: base,
-          matchup: null,
-          vsText: "TBD",
-          notes: "No schedule data wired yet.",
-          adj: 0,
-        };
-      }
-
-      if (matchup.isBye) {
-        return {
-          player,
-          base,
-          adjusted: 0,
-          matchup,
-          vsText: "BYE week",
-          notes: "Bye week — 0 points by default.",
-          adj: -base,
-        };
-      }
-
-      const adj = estimateMatchupAdjustment(player, matchup);
-      const adjusted = Math.max(base + adj, 0);
-
-      const homeMarker =
-        matchup.homeAway === "home"
-          ? "vs"
-          : matchup.homeAway === "away"
-          ? "@"
-          : "";
-      const oppLabel = matchup.oppName || matchup.oppCode || "TBD";
-      const vsText = homeMarker + " " + oppLabel;
-
-      const tierLabelMap = {
-        elite: "Tier A secondary",
-        good: "Tier B secondary",
-        average: "League-average secondary",
-        soft: "Favorable secondary",
-      };
-
-      const bodyLabelMap = {
-        big: "Bigger 205–225 lb CB archetype",
-        long: "Long, rangy CB archetype",
-        small: "Smaller, quicker CB archetype",
-        balanced: "Balanced CB archetype",
-      };
-
-      const bits = [];
-
-      if (matchup.coverageTier && tierLabelMap[matchup.coverageTier]) {
-        bits.push(tierLabelMap[matchup.coverageTier]);
-      }
-      if (matchup.cbArchetype && bodyLabelMap[matchup.cbArchetype]) {
-        bits.push(bodyLabelMap[matchup.cbArchetype]);
-      }
-
-      const prefs = bodyTypePrefs[player.id];
-      const pref = prefs ? prefs[matchup.cbArchetype] : null;
-      if (pref && pref.blurb) {
-        bits.push(pref.blurb);
-      }
-
-      const notes = bits.length > 0 ? bits.join(" • ") : "Neutral matchup.";
-
-      return {
-        player,
-        base,
-        adjusted,
-        matchup,
-        vsText,
-        notes,
-        adj,
-      };
-    }
-
-    function comparePlayersForWeek(a, b, week) {
-      if (!a || !b || a.id === b.id) return null;
-
-      const lineA = buildWeeklyLine(a, week);
-      const lineB = buildWeeklyLine(b, week);
-
-      const startLine = lineA.adjusted >= lineB.adjusted ? lineA : lineB;
-      const sitLine = startLine === lineA ? lineB : lineA;
-
-      const reason =
-        "Week " +
-        week +
-        ": Chip says start " +
-        startLine.player.name +
-        " (" +
-        startLine.adjusted.toFixed(1) +
-        " PPR, " +
-        startLine.vsText +
-        ") over " +
-        sitLine.player.name +
-        " (" +
-        sitLine.adjusted.toFixed(1) +
-        " PPR, " +
-        sitLine.vsText +
-        ").";
-
-      return { startLine, sitLine, reason, lineA, lineB };
-    }
-
-    // ---------- UI HELPERS ----------
-
-    function renderSingleMatchup(line) {
-      if (!line.matchup) {
-        return (
-          "<div>" +
-          "<strong>" + line.player.name + "</strong>" +
-          '<div style="font-size:12px; margin-top:2px;">' +
-          "No matchup data for this week yet." +
-          "</div>" +
-          "</div>"
-        );
-      }
-
-      const base = line.base.toFixed(1);
-      const adj = line.adjusted.toFixed(1);
-      const delta = (line.adjusted - line.base).toFixed(1);
-      const deltaLabel = (delta >= 0 ? "+" : "") + delta;
-
-      return (
-        "<div>" +
-        "<div><strong>" + line.player.name + "</strong></div>" +
-        '<div style="font-size:12px; margin-top:2px;">' +
-        line.player.position + " • " + line.player.team +
-        "</div>" +
-        '<div style="font-size:12px; margin-top:4px;">' +
-        line.vsText +
-        "</div>" +
-        '<div style="font-size:12px; margin-top:4px;">' +
-        "Projection: " + base + " → " + adj + " PPR (" + deltaLabel + ")" +
-        "</div>" +
-        '<div style="font-size:11px; margin-top:4px; color:#9ca3af;">' +
-        line.notes +
-        "</div>" +
-        "</div>"
-      );
-    }
-
-    function renderMatchups(a, b, week) {
-      const el = document.getElementById("matchupGrid");
-      if (!el) return;
-
-      if (!a || !b || a.id === b.id) {
-        el.textContent = "Pick two different players and a week.";
-        return;
-      }
-
-      const lineA = buildWeeklyLine(a, week);
-      const lineB = buildWeeklyLine(b, week);
-
-      el.innerHTML =
-        '<div style="font-size:12px; margin-bottom:6px; color:#e5e7eb;">' +
-        "Week " + week + " matchup context" +
-        "</div>" +
-        '<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">' +
-        renderSingleMatchup(lineA) +
-        renderSingleMatchup(lineB) +
-        "</div>";
-    }
-
-    function populatePlayerSelects() {
-      const selectA = document.getElementById("playerA");
-      const selectB = document.getElementById("playerB");
-      if (!selectA || !selectB) return;
-
-      players.forEach(function (p, idx) {
-        const label = p.name + " (" + p.position + " • " + p.team + ")";
-
-        const oA = document.createElement("option");
-        oA.value = p.id;
-        oA.textContent = label;
-        if (idx === 0) oA.selected = true;
-
-        const oB = document.createElement("option");
-        oB.value = p.id;
-        oB.textContent = label;
-        if (idx === 1) oB.selected = true;
-
-        selectA.appendChild(oA);
-        selectB.appendChild(oB);
+    function populateReceivers() {
+      Object.values(receivers).forEach((wr) => {
+        const option = document.createElement("option");
+        option.value = wr.id;
+        option.textContent = `${wr.name} (${wr.team})`;
+        wrSelect.appendChild(option);
       });
     }
 
-    function populateWeekSelector() {
-      const weekSelect = document.getElementById("weekSelector");
-      if (!weekSelect) return;
-
-      for (var w = 1; w <= 18; w++) {
-        var opt = document.createElement("option");
-        opt.value = String(w);
-        opt.textContent = "Week " + w;
-        if (w === 1) opt.selected = true;
-        weekSelect.appendChild(opt);
+    function populateWeeks() {
+      for (let wk = 1; wk <= MAX_WEEKS; wk++) {
+        const option = document.createElement("option");
+        option.value = wk;
+        option.textContent = `Week ${wk}`;
+        weekSelect.appendChild(option);
       }
     }
 
-    function getPlayerById(id) {
-      for (var i = 0; i < players.length; i++) {
-        if (players[i].id === id) return players[i];
+    // --- Matchup engine ----------------------------------------------------
+
+    function evaluateMatchup(wr, cb) {
+      let score = 70; // neutral base
+
+      const heightDiff = wr.heightIn - cb.heightIn;  // positive = WR taller
+      const weightDiff = wr.weightLb - cb.weightLb;  // positive = WR heavier
+
+      // Height effects
+      if (heightDiff >= 2) {
+        score += 5;
+      } else if (heightDiff <= -3) {
+        score -= 5;
       }
-      return null;
+
+      // Weight / physicality effects
+      if (wr.archetype === "crafty_slot") {
+        // JSN-type: likes heavier, slower corners he can separate from
+        if (cb.weightLb >= 200) score += 6;
+        if (cb.style === "press_length" || cb.style === "physical_press") score -= 3;
+      }
+
+      if (wr.archetype === "slippery_route_runner") {
+        // DeVonta: punishes corners who overplay routes
+        if (cb.style === "ballhawk") score += 6;
+        if (cb.weightLb >= 200 && cb.style === "physical_press") score -= 4;
+      }
+
+      if (wr.archetype === "outside_separator") {
+        // Ridley: strong vs off/zone & smaller corners
+        if (cb.style === "speed_corner") score += 4;
+        if (cb.style === "technician") score -= 3;
+      }
+
+      // Coverage style synergies
+      if (cb.coverage.includes("press_man") && wr.archetype !== "big_body") {
+        // Press can bother lighter guys
+        if (wr.weightLb < 185) score -= 4;
+      }
+
+      if (cb.coverage.includes("zone") && wr.strengths.includes("zone_finder")) {
+        score += 5;
+      }
+
+      // Make sure score is in [0, 100]
+      score = Math.max(0, Math.min(100, score));
+
+      let tier, tierTitle;
+      if (score >= 85) {
+        tier = "Smash Spot";
+        tierTitle = "Green light matchup.";
+      } else if (score >= 70) {
+        tier = "Solid Start";
+        tierTitle = "Lean start with confidence.";
+      } else if (score >= 55) {
+        tier = "Neutral";
+        tierTitle = "Fine but not a tiebreaker.";
+      } else {
+        tier = "Tough Draw";
+        tierTitle = "Downgrade expectations.";
+      }
+
+      const bullets = [];
+
+      // Bullet explanations based on key drivers
+      if (heightDiff >= 2) {
+        bullets.push(`${wr.name} has a height edge (~${Math.abs(heightDiff)}" taller) that helps on contested balls.`);
+      } else if (heightDiff <= -3) {
+        bullets.push(`${cb.name} has a notable length advantage (~${Math.abs(heightDiff)}" taller).`);
+      }
+
+      if (weightDiff >= 8) {
+        bullets.push(`${wr.name} carries a size advantage that can matter at the catch point.`);
+      } else if (weightDiff <= -8) {
+        bullets.push(`${cb.name} brings more mass, which can show up in press and at the catch point.`);
+      }
+
+      if (wr.archetype === "crafty_slot") {
+        if (cb.weightLb >= 200) {
+          bullets.push(`${wr.name} historically fares well vs 200+ lb corners he can separate from laterally.`);
+        }
+      }
+
+      if (wr.archetype === "slippery_route_runner" && cb.style === "ballhawk") {
+        bullets.push(`Aggressive ball-hawking from ${cb.name} can be punished by ${wr.name}'s double moves.`);
+      }
+
+      if (wr.archetype === "outside_separator" && cb.style === "speed_corner") {
+        bullets.push(`${wr.name}'s timing and footwork line up well against smaller speed corners like ${cb.name}.`);
+      }
+
+      if (bullets.length === 0) {
+        bullets.push(`No extreme size or style mismatch — this comes down more to volume and game script.`);
+      }
+
+      let fantasyNote;
+      if (tier === "Smash Spot") {
+        fantasyNote = `${wr.name} profiles as a strong upside play this week. In close decisions, bump him up a tier.`;
+      } else if (tier === "Solid Start") {
+        fantasyNote = `${wr.name} is a solid start. You don't have to force him into lineups, but you're not shying away either.`;
+      } else if (tier === "Neutral") {
+        fantasyNote = `This matchup shouldn't be the deciding factor. Let volume, game total, and roster needs drive the call.`;
+      } else {
+        fantasyNote = `If you have a comparable option in a softer matchup, ${wr.name} can be downgraded slightly this week.`;
+      }
+
+      return {
+        score: Math.round(score),
+        tier,
+        tierTitle,
+        bullets,
+        fantasyNote
+      };
     }
 
-    // ---------- INIT ----------
+    // --- Rendering ---------------------------------------------------------
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const selectA = document.getElementById("playerA");
-      const selectB = document.getElementById("playerB");
-      const weekSelect = document.getElementById("weekSelector");
-      const btn = document.getElementById("sitStartBtn");
-      const resultEl = document.getElementById("sitStartResult");
-      const playerArt = document.getElementById("playerArt");
-      const playerArtMeta = document.getElementById("playerArtMeta");
+    function renderResult(wr, cb, week, result) {
+      const html = `
+        <div class="result-header">
+          <div>
+            <div class="matchup-label">Week ${week} matchup</div>
+            <div class="matchup-vs">${wr.name} (${wr.team}) vs. ${cb.name} (${cb.team})</div>
+          </div>
+          <div class="score-pill">
+            ${result.score} / 100
+          </div>
+        </div>
 
-      populatePlayerSelects();
-      populateWeekSelector();
+        <div class="tier-label">${result.tier}</div>
+        <div class="tier-title">${result.tierTitle}</div>
 
-      if (!selectA || !selectB || !weekSelect || !btn || !resultEl) {
-        console.warn("ChipChaser: key UI elements not found, aborting init.");
+        <p class="explanation">
+          This score bakes in height, weight, coverage style, and how ${wr.name}'s archetype tends to perform
+          against corners built like ${cb.name}.
+        </p>
+
+        <ul class="bullets">
+          ${result.bullets.map((b) => `<li>${b}</li>`).join("")}
+        </ul>
+
+        <div class="fantasy-note">
+          ${result.fantasyNote}
+        </div>
+      `;
+
+      resultArea.innerHTML = html;
+    }
+
+    function renderEmpty(message) {
+      resultArea.innerHTML = `
+        <div class="empty-state">
+          ${message}
+        </div>
+      `;
+    }
+
+    // --- Event handlers ----------------------------------------------------
+
+    function handleAnalyze() {
+      const wrId = wrSelect.value;
+      const weekVal = weekSelect.value;
+
+      if (!wrId || !weekVal) {
+        renderEmpty("Please pick both a receiver and a week before analyzing the matchup.");
+        autoCbChip.style.display = "none";
         return;
       }
 
-      function resetPlayerArt() {
-        if (!playerArt || !playerArtMeta) return;
-        playerArt.src = "chip-thinking.png";
-        playerArt.alt = "Chip thinking";
-        playerArtMeta.textContent = "Chip will show who you should start here.";
+      const week = parseInt(weekVal, 10);
+      const wr = receivers[wrId];
+
+      const wrSchedule = schedule2025[wrId] || {};
+      const cbId = wrSchedule[week];
+
+      if (!cbId || !corners[cbId]) {
+        renderEmpty(
+          `We don't have a mapped corner for ${wr.name} in Week ${week} yet. For now, treat this as a neutral matchup and rely on volume/game total.`
+        );
+        autoCbChip.style.display = "none";
+        return;
       }
 
-      function recompute() {
-        const a = getPlayerById(selectA.value);
-        const b = getPlayerById(selectB.value);
-        const week = parseInt(weekSelect.value, 10) || 1;
+      const cb = corners[cbId];
+      autoCbChip.style.display = "inline-flex";
+      autoCbChip.textContent = `Auto CB (2025): ${cb.name} • ${cb.team}`;
 
-        if (!a || !b || a.id === b.id) {
-          resultEl.textContent =
-            "Pick two different players and a week and Chip will decide.";
-          renderMatchups(a, b, week);
-          resetPlayerArt();
-          return;
-        }
+      const result = evaluateMatchup(wr, cb);
+      renderResult(wr, cb, week, result);
+    }
 
-        const comparison = comparePlayersForWeek(a, b, week);
-        if (!comparison) {
-          resultEl.textContent =
-            "Pick two different players and a week and Chip will decide.";
-          renderMatchups(a, b, week);
-          resetPlayerArt();
-          return;
-        }
+    // --- Init --------------------------------------------------------------
 
-        resultEl.textContent = comparison.reason;
-        renderMatchups(a, b, week);
-
-        if (playerArt && playerArtMeta) {
-          const startId = comparison.startLine.player.id;
-          playerArt.src = "player-" + startId + ".png";
-          playerArt.alt = comparison.startLine.player.name + " portrait";
-          playerArt.onerror = function () {
-            this.onerror = null;
-            this.src = "chip-thinking.png";
-            this.alt = "Chip thinking";
-          };
-
-          playerArtMeta.innerHTML =
-            "<div><strong>" + comparison.startLine.player.name + "</strong></div>" +
-            "<div>" + comparison.startLine.player.position + " • " + comparison.startLine.player.team + "</div>" +
-            '<div style="margin-top:4px;">' + comparison.startLine.vsText + "</div>" +
-            '<div style="margin-top:4px; font-size:12px;">' +
-            comparison.startLine.base.toFixed(1) +
-            " → " +
-            comparison.startLine.adjusted.toFixed(1) +
-            " PPR" +
-            "</div>";
-        }
-      }
-
-      btn.addEventListener("click", recompute);
-      selectA.addEventListener("change", recompute);
-      selectB.addEventListener("change", recompute);
-      weekSelect.addEventListener("change", recompute);
-
-      // Initial render
-      recompute();
-
-      // CHAT PANEL LOGIC
-      const chatBtn = document.getElementById("chatChipBtn");
-      const chatPanel = document.getElementById("chipChatPanel");
-      const closeChat = document.getElementById("closeChipChat");
-
-      if (chatBtn && chatPanel && closeChat) {
-        chatBtn.addEventListener("click", function () {
-          chatPanel.style.right = "0";
-        });
-
-        closeChat.addEventListener("click", function () {
-          chatPanel.style.right = "-380px";
-        });
-      }
+    document.addEventListener("DOMContentLoaded", () => {
+      populateReceivers();
+      populateWeeks();
+      analyzeBtn.addEventListener("click", handleAnalyze);
     });
   </script>
-
 </body>
 </html>
