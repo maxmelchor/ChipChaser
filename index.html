@@ -389,27 +389,16 @@
         strengths: ["route_running", "sideline_ball_tracking", "double_moves"],
         notes: "Lean frame but elite route running and ball skills."
       },
-      ridley: {
-        id: "ridley",
-        name: "Calvin Ridley",
-        team: "TEN",
-        heightIn: 73,   // 6'1"
-        weightLb: 190,
-        archetype: "outside_separator",
-        strengths: ["intermediate_routes", "timing", "sideline_footwork"],
-        notes: "Outside separator with strong intermediate route tree."
-      }
       amonra: {
-    id: "amonra",
-    name: "Amon-Ra St. Brown",
-    team: "DET",
-    heightIn: 73,   // 6'1"
-    weightLb: 203,
-    archetype: "physical_slot_alpha",
-    strengths: ["tough_yac", "middle_field_domination", "leverage_beater"],
-    notes: "Physical slot alpha who wins with toughness, leverage, and precision routes."
-  }
-};
+        id: "amonra",
+        name: "Amon-Ra St. Brown",
+        team: "DET",
+        heightIn: 73,   // 6'1"
+        weightLb: 203,
+        archetype: "physical_slot_alpha",
+        strengths: ["tough_yac", "middle_field_domination", "leverage_beater"],
+        notes: "Physical slot alpha who wins with toughness, leverage, and precision routes."
+      }
     };
 
     const corners = {
@@ -475,9 +464,7 @@
       }
     };
 
-    // Simplified 2025-style matchups.
-    // For now this is illustrative, not the official NFL schedule.
-    // Keyed by receiverId -> week -> cornerId.
+    // Simplified 2025-style matchups (placeholder assignments).
     const schedule2025 = {
       jsn: {
         1: "sauce",    // SEA vs NYJ
@@ -491,11 +478,11 @@
         3: "horn",     // PHI vs CAR
         4: "diggs"     // PHI vs DAL
       },
-      ridley: {
-        1: "stingley", // TEN vs HOU
-        2: "horn",     // TEN vs CAR
-        3: "sauce",    // TEN vs NYJ
-        4: "surtain"   // TEN vs DEN
+      amonra: {
+        1: "ward",     // DET vs CLE
+        2: "diggs",    // DET vs DAL
+        3: "surtain",  // DET vs DEN
+        4: "stingley"  // DET vs HOU
       }
     };
 
@@ -549,21 +536,20 @@
         if (cb.style === "press_length" || cb.style === "physical_press") score -= 3;
       }
 
+      if (wr.archeype === "physical_slot_alpha") {
+        // Amon-Ra: doesn't mind contact, can bully smaller corners
+        if (cb.weightLb < 195) score += 5;
+        if (cb.style === "physical_press" && cb.weightLb >= 200) score -= 2;
+      }
+
       if (wr.archetype === "slippery_route_runner") {
         // DeVonta: punishes corners who overplay routes
         if (cb.style === "ballhawk") score += 6;
         if (cb.weightLb >= 200 && cb.style === "physical_press") score -= 4;
       }
 
-      if (wr.archetype === "outside_separator") {
-        // Ridley: strong vs off/zone & smaller corners
-        if (cb.style === "speed_corner") score += 4;
-        if (cb.style === "technician") score -= 3;
-      }
-
       // Coverage style synergies
       if (cb.coverage.includes("press_man") && wr.archetype !== "big_body") {
-        // Press can bother lighter guys
         if (wr.weightLb < 185) score -= 4;
       }
 
@@ -591,7 +577,6 @@
 
       const bullets = [];
 
-      // Bullet explanations based on key drivers
       if (heightDiff >= 2) {
         bullets.push(`${wr.name} has a height edge (~${Math.abs(heightDiff)}" taller) that helps on contested balls.`);
       } else if (heightDiff <= -3) {
@@ -604,18 +589,16 @@
         bullets.push(`${cb.name} brings more mass, which can show up in press and at the catch point.`);
       }
 
-      if (wr.archetype === "crafty_slot") {
-        if (cb.weightLb >= 200) {
-          bullets.push(`${wr.name} historically fares well vs 200+ lb corners he can separate from laterally.`);
-        }
+      if (wr.id === "jsn" && cb.weightLb >= 200) {
+        bullets.push(`${wr.name} has historically thrived vs 200+ lb corners he can separate from laterally.`);
+      }
+
+      if (wr.id === "amonra" && cb.weightLb < 195) {
+        bullets.push(`${wr.name}'s physical slot game plays well against lighter corners like ${cb.name}.`);
       }
 
       if (wr.archetype === "slippery_route_runner" && cb.style === "ballhawk") {
         bullets.push(`Aggressive ball-hawking from ${cb.name} can be punished by ${wr.name}'s double moves.`);
-      }
-
-      if (wr.archetype === "outside_separator" && cb.style === "speed_corner") {
-        bullets.push(`${wr.name}'s timing and footwork line up well against smaller speed corners like ${cb.name}.`);
       }
 
       if (bullets.length === 0) {
