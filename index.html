@@ -395,26 +395,24 @@
     diggs:{id:"diggs",name:"Trevon Diggs",team:"DAL",heightIn:74,weightLb:195,style:"ballhawk",coverage:["off_man","zone"]}
   };
 
-  /* ----------------- FULL 2025 SCHEDULE ----------------- */
-  const teamSchedule2025 = {
-    ARI:{1:{opponent:"NO",home:false},2:{opponent:"CAR",home:true},3:{opponent:"SF",home:false},4:{opponent:"SEA",home:false},5:{opponent:"TEN",home:true},6:{opponent:"IND",home:false},7:{opponent:"GB",home:true},8:{opponent:"BYE"},9:{opponent:"DAL",home:false},10:{opponent:"SEA",home:false},11:{opponent:"SF",home:true},12:{opponent:"JAX",home:false},13:{opponent:"TB",home:false},14:{opponent:"LAR",home:true},15:{opponent:"HOU",home:false},16:{opponent:"ATL",home:true},17:{opponent:"CIN",home:false},18:{opponent:"LAR",home:true}},
-    ATL:{1:{opponent:"TB",home:true},2:{opponent:"MIN",home:false},3:{opponent:"WSH",home:true},4:{opponent:"BYE"},5:{opponent:"BUF",home:true},6:{opponent:"SF",home:false},7:{opponent:"MIA",home:true},8:{opponent:"NE",home:false},9:{opponent:"IND",home:true},10:{opponent:"CAR",home:false},11:{opponent:"NO",home:false},12:{opponent:"NYJ",home:false},13:{opponent:"SEA",home:true},14:{opponent:"TB",home:false},15:{opponent:"ARI",home:true},16:{opponent:"LAR",home:false},17:{opponent:"NO",home>true},18:{opponent:"NO",home:false}},
-    BAL:{1:{opponent:"BUF",home:false},2:{opponent:"CLE",home:true},3:{opponent:"DET",home:true},4:{opponent:"KC",home:false},5:{opponent:"HOU",home:false},6:{opponent:"LAR",home:true},7:{opponent:"BYE"},8:{opponent:"CHI",home:true},9:{opponent:"MIA",home:false},10:{opponent:"MIN",home:true},11:{opponent:"CLE",home:false},12:{opponent:"NYJ",home:true},13:{opponent:"CIN",home:true},14:{opponent:"PIT",home:false},15:{opponent:"CIN",home:false},16:{opponent:"NE",home:true},17:{opponent:"GB",home:false},18:{opponent:"PIT",home:true}},
-    BUF:{1:{opponent:"BAL",home:true},2:{opponent:"NYJ",home:false},3:{opponent:"MIA",home:true},4:{opponent:"NO",home:false},5:{opponent:"NE",home:true},6:{opponent:"ATL",home:false},7:{opponent:"BYE"},8:{opponent:"CAR",home:true},9:{opponent:"KC",home:true},10:{opponent:"MIA",home:false},11:{opponent:"TB",home:true},12:{opponent:"HOU",home:false},13:{opponent:"PIT",home:false},14:{opponent:"CIN",home:true},15:{opponent:"NE",home:false},16:{opponent:"CLE",home:true},17:{opponent:"PHI",home:true},18:{opponent:"NYJ",home:true}},
-    CAR:{1:{opponent:"JAX",home:false},2:{opponent:"ARI",home:false},3:{opponent:"ATL",home:true},4:{opponent:"NE",home>true},5:{opponent:"MIA",home:false},6:{opponent:"DAL",home:true},7:{opponent:"NYJ",home:false},8:{opponent:"BUF",home:false},9:{opponent:"GB",home:false},10:{opponent:"NO",home:true},11:{opponent:"ATL",home:true},12:{opponent:"SF",home:false},13:{opponent:"LAR",home:true},14:{opponent:"BYE"},15:{opponent:"NO",home:false},16:{opponent:"TB",home:true},17:{opponent:"SEA",home:true},18:{opponent:"TB",home:false}},
-    CHI:{1:{opponent:"MIN",home:true},2:{opponent:"DET",home:false},3:{opponent:"DAL",home:true},4:{opponent:"LV",home:false},5:{opponent:"BYE"},6:{opponent:"WSH",home:false},7:{opponent:"NO",home>true},8:{opponent:"BAL",home:false},9:{opponent:"CIN",home:false},10:{opponent:"NYG",home:true},11:{opponent:"MIN",home:false},12:{opponent:"PIT",home:true},13:{opponent:"PHI",home:false},14:{opponent:"GB",home:true},15:{opponent:"CLE",home:true},16:{opponent:"GB",home:false},17:{opponent:"SF",home:false},18:{opponent:"DET",home:true}},
-    /* ... keep the rest of the schedule exactly as in my previous message ... */
-    WSH:{1:{opponent:"NYG",home:true},2:{opponent:"PHI",home:false},3:{opponent:"ATL",home:false},4:{opponent:"BYE"},5:{opponent:"CHI",home:true},6:{opponent:"GB",home:true},7:{opponent:"DAL",home:false},8:{opponent:"DEN",home:true},9:{opponent:"SEA",home:true},10:{opponent:"DET",home:true},11:{opponent:"PHI",home:false},12:{opponent:"LAC",home:true},13:{opponent:"BYE"},14:{opponent:"CLE",home:true},15:{opponent:"DAL",home:true},16:{opponent:"KC",home:false},17:{opponent:"NYG",home:false},18:{opponent:"PHI",home:true}}
-  };
-
-  /* which CB is CB1 for each DEF team (only mapping teams we have CBs for) */
-  const primaryCorners2025 = {
-    NYJ: "sauce",
-    DEN: "surtain",
-    CAR: "horn",
-    HOU: "stingley",
-    CLE: "ward",
-    DAL: "diggs"
+  /* ----------------- WR-BY-WEEK CB MAP (MVP) -----------------
+     This is the “schedule wiring” for now. Where a WR+week isn’t listed,
+     Chip will tell you he doesn’t have a CB mapped yet.
+  --------------------------------------------------------------*/
+  const schedule2025 = {
+    jsn: {
+      1: "sauce",    // @NYJ
+      2: "surtain"   // @DEN (example)
+    },
+    amonra: {
+      1: "ward",     // vs CLE (example)
+      2: "diggs"     // vs DAL
+    },
+    devonta: {
+      1: "horn",
+      2: "diggs"
+    }
+    // we can fill out the rest of the WRs + weeks next
   };
 
   /* ----------------- DOM HOOKS ----------------- */
@@ -432,6 +430,7 @@
     top24ReceiverOrder.forEach(id => {
       const wr = receivers[id];
       if (!wr) return;
+
       const opt = document.createElement("option");
       opt.value = wr.id;
       opt.textContent = `${wr.name} (${wr.team})`;
@@ -449,20 +448,6 @@
       opt.textContent = `Week ${wk}`;
       weekSelect.appendChild(opt);
     }
-  }
-
-  /* ----------------- HELPER: GET PRIMARY CB ----------------- */
-  function getPrimaryCornerFor(wr, week) {
-    const teamWeeks = teamSchedule2025[wr.team];
-    if (!teamWeeks) return null;
-
-    const info = teamWeeks[week];
-    if (!info || info.opponent === "BYE") return null;
-
-    const cbId = primaryCorners2025[info.opponent];
-    if (!cbId || !corners[cbId]) return null;
-
-    return corners[cbId];
   }
 
   /* ----------------- MATCHUP LOGIC ----------------- */
@@ -522,7 +507,7 @@
           <div class="tier-label">${cResult.tier}</div>
         `;
       } else {
-        html += `<div class="empty-state">No CB wired yet for that matchup.</div>`;
+        html += `<div class="empty-state">I don’t have a CB wired yet for that matchup.</div>`;
       }
     }
 
@@ -549,23 +534,33 @@
 
     const week = parseInt(weekVal, 10);
     const primaryWr = receivers[wrId];
-    const primaryCb = getPrimaryCornerFor(primaryWr, week);
+    const wrSchedule = schedule2025[wrId] || {};
+    const primaryCbId = wrSchedule[week];
 
-    if (!primaryCb) {
-      renderEmpty(`I don't have a primary CB mapped for ${primaryWr.team}'s opponent in Week ${week} yet.`);
+    if (!primaryCbId || !corners[primaryCbId]) {
+      renderEmpty(
+        `I don't have a primary CB mapped for ${primaryWr.name} in Week ${week} yet. ` +
+        `Treat it as a neutral matchup and let volume + game total drive the call.`
+      );
       autoCbChip.style.display = "none";
       return;
     }
 
+    const primaryCb = corners[primaryCbId];
     const primaryResult = evaluateMatchup(primaryWr, primaryCb);
+
     autoCbChip.style.display = "inline-flex";
     autoCbChip.textContent = `Auto CB (2025): ${primaryCb.name} • ${primaryCb.team}`;
 
     let cWr = null, cCb = null, cResult = null;
     if (compareId) {
       cWr = receivers[compareId];
-      cCb = getPrimaryCornerFor(cWr, week);
-      if (cCb) cResult = evaluateMatchup(cWr, cCb);
+      const cSchedule = schedule2025[compareId] || {};
+      const cCbId = cSchedule[week];
+      if (cCbId && corners[cCbId]) {
+        cCb = corners[cCbId];
+        cResult = evaluateMatchup(cWr, cCb);
+      }
     }
 
     renderCombined(primaryWr, primaryCb, week, primaryResult, cWr, cCb, cResult);
