@@ -826,34 +826,78 @@ const primaryCorners2025 = {
         return;
       }
 
-      const primaryCb = corners[primaryCbId];
-      const primaryResult = evaluateMatchup(primaryWr, primaryCb);
+     // helper: figure out which CB Chip should use for a WR in a given week
+// (this assumes you have teamSchedule2025 and primaryCorners2025 defined
+// either in this file or in separate data-scripts you loaded before this)
+function getPrimaryCornerFor(wr, week) {
+  const team = wr.team;
+  const teamWeeks = teamSchedule2025[team];
+  if (!teamWeeks) return null;
 
-      autoCbChip.style.display = "inline-flex";
-      autoCbChip.textContent = `Auto CB (2025): ${primaryCb.name} • ${primaryCb.team}`;
+  const weekInfo = teamWeeks[week];
+  if (!weekInfo) return null;
 
-      let compareWr = null;
-      let compareCb = null;
-      let compareResult = null;
+  const opponentTeam = weekInfo.opponent;
+  const cbId = primaryCorners2025[opponentTeam];
+  if (!cbId || !corners[cbId]) return null;
 
-      if (compareId) {
-        compareWr = receivers[compareId];
-        const compareSchedule = schedule2025[compareId] || {};
-        const compareCbId = compareSchedule[week];
-        if (compareCbId && corners[compareCbId]) {
-          compareCb = corners[compareCbId];
-          compareResult = evaluateMatchup(compareWr, compareCb);
-        }
-      }
+  return corners[cbId];
+}
 
-      renderCombined(primaryWr, primaryCb, week, primaryResult, compareWr, compareCb, compareResult);
+function handleAnalyze() {
+  const wrId = wrSelect.value;
+  const compareId = wrCompareSelect.value;
+  const weekVal = weekSelect.value;
+
+  if (!wrId || !weekVal) {
+    renderEmpty("Pick at least one receiver and a week first, then I’ll break down the matchup for you.");
+    autoCbChip.style.display = "none";
+    return;
+  }
+
+  const week = parseInt(weekVal, 10);
+  const primaryWr = receivers[wrId];
+
+  // 🔁 NEW: use team schedule + opponent CB instead of schedule2025[wrId]
+  const primaryCb = getPrimaryCornerFor(primaryWr, week);
+
+  if (!primaryCb) {
+    renderEmpty(
+      `I don't have a primary corner mapped for ${primaryWr.name} in Week ${week} yet. ` +
+      `For now, treat this as a neutral matchup and let volume + game total drive your decision.`
+    );
+    autoCbChip.style.display = "none";
+    return;
+  }
+
+  const primaryResult = evaluateMatchup(primaryWr, primaryCb);
+
+  autoCbChip.style.display = "inline-flex";
+  autoCbChip.textContent = `Auto CB (2025): ${primaryCb.name} • ${primaryCb.team}`;
+
+  let compareWr = null;
+  let compareCb = null;
+  let compareResult = null;
+
+  if (compareId) {
+    compareWr = receivers[compareId];
+
+    // 🔁 NEW: same logic for the comparison WR
+    compareCb = getPrimaryCornerFor(compareWr, week);
+
+    if (compareCb) {
+      compareResult = evaluateMatchup(compareWr, compareCb);
     }
+  }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      populateReceivers();
-      populateWeeks();
-      analyzeBtn.addEventListener("click", handleAnalyze);
-    });
-  </script>
+  renderCombined(primaryWr, primaryCb, week, primaryResult, compareWr, compareCb, compareResult);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  populateReceivers();
+  populateWeeks();
+  analyzeBtn.addEventListener("click", handleAnalyze);
+});
+
 </body>
 </html>
