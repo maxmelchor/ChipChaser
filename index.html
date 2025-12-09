@@ -298,952 +298,285 @@
 
   <!-- ============= JS ============= -->
   <script>
+  /* ----------------- TOP 24 ORDER ----------------- */
+  const top24ReceiverOrder = [
+    "jamarr_chase","justin_jefferson","ceedee_lamb","tyreek_hill","aj_brown","amonra",
+    "puka_nacua","garrett_wilson","marvin_harrison","malik_nabers","nico_collins",
+    "drake_london","dj_moore","dk_metcalf","tee_higgins","davante_adams","mike_evans",
+    "terry_mclaurin","jaylen_waddle","brandon_aiyuk","chris_olave","jsn","devonta","xavier_worthy"
+  ];
 
-    /* ----------------- TOP 24 ORDER ----------------- */
-    const top24ReceiverOrder = [
-      "jamarr_chase","justin_jefferson","ceedee_lamb","tyreek_hill","aj_brown","amonra",
-      "puka_nacua","garrett_wilson","marvin_harrison","malik_nabers","nico_collins",
-      "drake_london","dj_moore","dk_metcalf","tee_higgins","davante_adams","mike_evans",
-      "terry_mclaurin","jaylen_waddle","brandon_aiyuk","chris_olave","jsn","devonta","xavier_worthy"
-    ];
+  /* ----------------- WR DATA ----------------- */
+  const receivers = {
+    jsn:{id:"jsn",name:"Jaxon Smith-Njigba",team:"SEA",heightIn:72,weightLb:200,archetype:"crafty_slot",
+      strengths:["short_area_quickness","separation_short","zone_finder"],
+      notes:"Wins with leverage and short-area quickness."},
 
-    /* ----------------- WR DATA ----------------- */
-    const receivers = {
-      jsn:{id:"jsn",name:"Jaxon Smith-Njigba",team:"SEA",heightIn:72,weightLb:200,archetype:"crafty_slot",
-        strengths:["short_area_quickness","separation_short","zone_finder"],
-        notes:"Wins with leverage and short-area quickness."},
+    devonta:{id:"devonta",name:"DeVonta Smith",team:"PHI",heightIn:72,weightLb:170,archetype:"slippery_route_runner",
+      strengths:["route_running","sideline_ball_tracking","double_moves"],
+      notes:"Lean but elite route technician."},
 
-      devonta:{id:"devonta",name:"DeVonta Smith",team:"PHI",heightIn:72,weightLb:170,archetype:"slippery_route_runner",
-        strengths:["route_running","sideline_ball_tracking","double_moves"],
-        notes:"Lean but elite route technician."},
+    amonra:{id:"amonra",name:"Amon-Ra St. Brown",team:"DET",heightIn:73,weightLb:203,archetype:"physical_slot_alpha",
+      strengths:["tough_yac","middle_field_domination","leverage_beater"],
+      notes:"Physical slot alpha with elite leverage understanding."},
 
-      amonra:{id:"amonra",name:"Amon-Ra St. Brown",team:"DET",heightIn:73,weightLb:203,archetype:"physical_slot_alpha",
-        strengths:["tough_yac","middle_field_domination","leverage_beater"],
-        notes:"Physical slot alpha with elite leverage understanding."},
+    jamarr_chase:{id:"jamarr_chase",name:"Ja'Marr Chase",team:"CIN",heightIn:72,weightLb:201,archetype:"alpha_x",
+      strengths:["vertical_threat","contested_catch","yacs"],notes:"True X receiver."},
 
-      jamarr_chase:{id:"jamarr_chase",name:"Ja'Marr Chase",team:"CIN",heightIn:72,weightLb:201,archetype:"alpha_x",
-        strengths:["vertical_threat","contested_catch","yacs"],notes:"True X receiver."},
+    justin_jefferson:{id:"justin_jefferson",name:"Justin Jefferson",team:"MIN",heightIn:73,weightLb:195,
+      archetype:"technician_alpha",strengths:["route_running","ball_tracking","space_creation"],
+      notes:"Top-tier separator at all levels."},
 
-      justin_jefferson:{id:"justin_jefferson",name:"Justin Jefferson",team:"MIN",heightIn:73,weightLb:195,
-        archetype:"technician_alpha",strengths:["route_running","ball_tracking","space_creation"],
-        notes:"Top-tier separator at all levels."},
+    ceedee_lamb:{id:"ceedee_lamb",name:"CeeDee Lamb",team:"DAL",heightIn:74,weightLb:200,archetype:"movement_alpha",
+      strengths:["slot_and_perimeter","yacs","leverage_beater"],notes:"Moves everywhere; wins everywhere."},
 
-      ceedee_lamb:{id:"ceedee_lamb",name:"CeeDee Lamb",team:"DAL",heightIn:74,weightLb:200,archetype:"movement_alpha",
-        strengths:["slot_and_perimeter","yacs","leverage_beater"],notes:"Moves everywhere; wins everywhere."},
+    puka_nacua:{id:"puka_nacua",name:"Puka Nacua",team:"LAR",heightIn:74,weightLb:205,archetype:"physical_possession",
+      strengths:["contested_catch","zone_settling","tough_yac"],notes:"Physical, savvy zone-beater."},
 
-      puka_nacua:{id:"puka_nacua",name:"Puka Nacua",team:"LAR",heightIn:74,weightLb:205,archetype:"physical_possession",
-        strengths:["contested_catch","zone_settling","tough_yac"],notes:"Physical, savvy zone-beater."},
+    tyreek_hill:{id:"tyreek_hill",name:"Tyreek Hill",team:"MIA",heightIn:70,weightLb:185,archetype:"field_stretcher",
+      strengths:["deep_speed","horizontal_stretch","yak"],notes:"Unique speed tilt."},
 
-      tyreek_hill:{id:"tyreek_hill",name:"Tyreek Hill",team:"MIA",heightIn:70,weightLb:185,archetype:"field_stretcher",
-        strengths:["deep_speed","horizontal_stretch","yak"],notes:"Unique speed tilt."},
+    aj_brown:{id:"aj_brown",name:"A.J. Brown",team:"PHI",heightIn:73,weightLb:226,archetype:"big_body_alpha",
+      strengths:["contested_catch","tough_yac","slant_go"],notes:"Bulldozer with WR1 nuance."},
 
-      aj_brown:{id:"aj_brown",name:"A.J. Brown",team:"PHI",heightIn:73,weightLb:226,archetype:"big_body_alpha",
-        strengths:["contested_catch","tough_yac","slant_go"],notes:"Bulldozer with WR1 nuance."},
+    garrett_wilson:{id:"garrett_wilson",name:"Garrett Wilson",team:"NYJ",heightIn:72,weightLb:192,
+      archetype:"technician_alpha",strengths:["separation","body_control","sideline"],notes:"Sudden, clean release winner."},
 
-      garrett_wilson:{id:"garrett_wilson",name:"Garrett Wilson",team:"NYJ",heightIn:72,weightLb:192,
-        archetype:"technician_alpha",strengths:["separation","body_control","sideline"],notes:"Sudden, clean release winner."},
+    malik_nabers:{id:"malik_nabers",name:"Malik Nabers",team:"NYG",heightIn:72,weightLb:200,
+      archetype:"explosive_yac",strengths:["explosiveness","after_catch","press_beating"],notes:"Dangerous anywhere on the field."},
 
-      malik_nabers:{id:"malik_nabers",name:"Malik Nabers",team:"NYG",heightIn:72,weightLb:200,
-        archetype:"explosive_yac",strengths:["explosiveness","after_catch","press_beating"],notes:"Dangerous anywhere on the field."},
+    nico_collins:{id:"nico_collins",name:"Nico Collins",team:"HOU",heightIn:76,weightLb:215,
+      archetype:"big_body_alpha",strengths:["contested_catch","red_zone","intermediate"],notes:"Large target with power."},
 
-      nico_collins:{id:"nico_collins",name:"Nico Collins",team:"HOU",heightIn:76,weightLb:215,
-        archetype:"big_body_alpha",strengths:["contested_catch","red_zone","intermediate"],notes:"Large target with power."},
+    drake_london:{id:"drake_london",name:"Drake London",team:"ATL",heightIn:76,weightLb:213,
+      archetype:"big_body_alpha",strengths:["box_out","red_zone","intermediate_possession"],notes:"Size mismatch creator."},
 
-      drake_london:{id:"drake_london",name:"Drake London",team:"ATL",heightIn:76,weightLb:213,
-        archetype:"big_body_alpha",strengths:["box_out","red_zone","intermediate_possession"],notes:"Size mismatch creator."},
+    marvin_harrison:{id:"marvin_harrison",name:"Marvin Harrison Jr.",team:"ARI",heightIn:75,weightLb:205,
+      archetype:"alpha_x",strengths:["route_running","catch_radius","vertical"],notes:"Prototype X profile."},
 
-      marvin_harrison:{id:"marvin_harrison",name:"Marvin Harrison Jr.",team:"ARI",heightIn:75,weightLb:205,
-        archetype:"alpha_x",strengths:["route_running","catch_radius","vertical"],notes:"Prototype X profile."},
+    dj_moore:{id:"dj_moore",name:"DJ Moore",team:"CHI",heightIn:71,weightLb:210,
+      archetype:"balanced_x",strengths:["yak","strength","intermediate_routes"],notes:"Strong after-catch threat."},
 
-      dj_moore:{id:"dj_moore",name:"DJ Moore",team:"CHI",heightIn:71,weightLb:210,
-        archetype:"balanced_x",strengths:["yak","strength","intermediate_routes"],notes:"Strong after-catch threat."},
+    dk_metcalf:{id:"dk_metcalf",name:"DK Metcalf",team:"SEA",heightIn:75,weightLb:225,
+      archetype:"size_speed_unicorn",strengths:["deep_speed","size","red_zone"],notes:"Rare traits WR."},
 
-      dk_metcalf:{id:"dk_metcalf",name:"DK Metcalf",team:"SEA",heightIn:75,weightLb:225,
-        archetype:"size_speed_unicorn",strengths:["deep_speed","size","red_zone"],notes:"Rare traits WR."},
+    tee_higgins:{id:"tee_higgins",name:"Tee Higgins",team:"CIN",heightIn:76,weightLb:220,
+      archetype:"big_body_alpha",strengths:["contested_catch","sideline","red_zone"],notes:"Boundary specialist."},
 
-      tee_higgins:{id:"tee_higgins",name:"Tee Higgins",team:"CIN",heightIn:76,weightLb:220,
-        archetype:"big_body_alpha",strengths:["contested_catch","sideline","red_zone"],notes:"Boundary specialist."},
+    davante_adams:{id:"davante_adams",name:"Davante Adams",team:"LAR",heightIn:73,weightLb:215,
+      archetype:"technician_alpha",strengths:["release_package","route_running","red_zone"],notes:"Master technician."},
 
-      davante_adams:{id:"davante_adams",name:"Davante Adams",team:"LAR",heightIn:73,weightLb:215,
-        archetype:"technician_alpha",strengths:["release_package","route_running","red_zone"],notes:"Master technician."},
+    mike_evans:{id:"mike_evans",name:"Mike Evans",team:"TB",heightIn:77,weightLb:231,
+      archetype:"big_body_alpha",strengths:["contested_catch","downfield","red_zone"],notes:"Elite jump-ball WR."},
 
-      mike_evans:{id:"mike_evans",name:"Mike Evans",team:"TB",heightIn:77,weightLb:231,
-        archetype:"big_body_alpha",strengths:["contested_catch","downfield","red_zone"],notes:"Elite jump-ball WR."},
+    terry_mclaurin:{id:"terry_mclaurin",name:"Terry McLaurin",team:"WAS",heightIn:72,weightLb:210,
+      archetype:"balanced_x",strengths:["route_running","speed","sideline"],notes:"Smooth all-around profile."},
 
-      terry_mclaurin:{id:"terry_mclaurin",name:"Terry McLaurin",team:"WAS",heightIn:72,weightLb:210,
-        archetype:"balanced_x",strengths:["route_running","speed","sideline"],notes:"Smooth all-around profile."},
+    jaylen_waddle:{id:"jaylen_waddle",name:"Jaylen Waddle",team:"MIA",heightIn:70,weightLb:185,
+      archetype:"field_stretcher",strengths:["deep_speed","quickness","yak"],notes:"Space + speed king."},
 
-      jaylen_waddle:{id:"jaylen_waddle",name:"Jaylen Waddle",team:"MIA",heightIn:70,weightLb:185,
-        archetype:"field_stretcher",strengths:["deep_speed","quickness","yak"],notes:"Space + speed king."},
+    brandon_aiyuk:{id:"brandon_aiyuk",name:"Brandon Aiyuk",team:"SF",heightIn:72,weightLb:200,
+      archetype:"technician_x",strengths:["route_running","yak","sideline"],notes:"Efficient separator."},
 
-      brandon_aiyuk:{id:"brandon_aiyuk",name:"Brandon Aiyuk",team:"SF",heightIn:72,weightLb:200,
-        archetype:"technician_x",strengths:["route_running","yak","sideline"],notes:"Efficient separator."},
+    chris_olave:{id:"chris_olave",name:"Chris Olave",team:"NO",heightIn:73,weightLb:190,
+      archetype:"smooth_separator",strengths:["route_running","deep_routes","space_creation"],notes:"Clean mover."},
 
-      chris_olave:{id:"chris_olave",name:"Chris Olave",team:"NO",heightIn:73,weightLb:190,
-        archetype:"smooth_separator",strengths:["route_running","deep_routes","space_creation"],notes:"Clean mover."},
+    xavier_worthy:{id:"xavier_worthy",name:"Xavier Worthy",team:"KC",heightIn:72,weightLb:172,
+      archetype:"field_stretcher",strengths:["deep_speed","horizontal_stretch","space"],notes:"Elite speed threat."}
+  };
 
-      xavier_worthy:{id:"xavier_worthy",name:"Xavier Worthy",team:"KC",heightIn:72,weightLb:172,
-        archetype:"field_stretcher",strengths:["deep_speed","horizontal_stretch","space"],notes:"Elite speed threat."}
-    };
+  /* ----------------- CB DATA ----------------- */
+  const corners = {
+    sauce:{id:"sauce",name:"Sauce Gardner",team:"NYJ",heightIn:75,weightLb:200,style:"press_length",coverage:["press_man","match_zone"]},
+    surtain:{id:"surtain",name:"Patrick Surtain II",team:"DEN",heightIn:74,weightLb:202,style:"technician",coverage:["man","off_man","pattern_match"]},
+    horn:{id:"horn",name:"Jaycee Horn",team:"CAR",heightIn:73,weightLb:200,style:"physical_press",coverage:["press_man"]},
+    stingley:{id:"stingley",name:"Derek Stingley Jr.",team:"HOU",heightIn:72,weightLb:190,style:"mirror_man",coverage:["man","off_man"]},
+    ward:{id:"ward",name:"Denzel Ward",team:"CLE",heightIn:71,weightLb:190,style:"speed_corner",coverage:["off_man","zone"]},
+    diggs:{id:"diggs",name:"Trevon Diggs",team:"DAL",heightIn:74,weightLb:195,style:"ballhawk",coverage:["off_man","zone"]}
+  };
 
-    /* ----------------- CB DATA ----------------- */
-    const corners = {
-      sauce:{id:"sauce",name:"Sauce Gardner",team:"NYJ",heightIn:75,weightLb:200,style:"press_length",coverage:["press_man","match_zone"]},
-      surtain:{id:"surtain",name:"Patrick Surtain II",team:"DEN",heightIn:74,weightLb:202,style:"technician",coverage:["man","off_man","pattern_match"]},
-      horn:{id:"horn",name:"Jaycee Horn",team:"CAR",heightIn:73,weightLb:200,style:"physical_press",coverage:["press_man"]},
-      stingley:{id:"stingley",name:"Derek Stingley Jr.",team:"HOU",heightIn:72,weightLb:190,style:"mirror_man",coverage:["man","off_man"]},
-      ward:{id:"ward",name:"Denzel Ward",team:"CLE",heightIn:71,weightLb:190,style:"speed_corner",coverage:["off_man","zone"]},
-      diggs:{id:"diggs",name:"Trevon Diggs",team:"DAL",heightIn:74,weightLb:195,style:"ballhawk",coverage:["off_man","zone"]}
-    };
+  /* ----------------- FULL 2025 SCHEDULE ----------------- */
+  const teamSchedule2025 = {
+    ARI:{1:{opponent:"NO",home:false},2:{opponent:"CAR",home:true},3:{opponent:"SF",home:false},4:{opponent:"SEA",home:false},5:{opponent:"TEN",home:true},6:{opponent:"IND",home:false},7:{opponent:"GB",home:true},8:{opponent:"BYE"},9:{opponent:"DAL",home:false},10:{opponent:"SEA",home:false},11:{opponent:"SF",home:true},12:{opponent:"JAX",home:false},13:{opponent:"TB",home:false},14:{opponent:"LAR",home:true},15:{opponent:"HOU",home:false},16:{opponent:"ATL",home:true},17:{opponent:"CIN",home:false},18:{opponent:"LAR",home:true}},
+    ATL:{1:{opponent:"TB",home:true},2:{opponent:"MIN",home:false},3:{opponent:"WSH",home:true},4:{opponent:"BYE"},5:{opponent:"BUF",home:true},6:{opponent:"SF",home:false},7:{opponent:"MIA",home:true},8:{opponent:"NE",home:false},9:{opponent:"IND",home:true},10:{opponent:"CAR",home:false},11:{opponent:"NO",home:false},12:{opponent:"NYJ",home:false},13:{opponent:"SEA",home:true},14:{opponent:"TB",home:false},15:{opponent:"ARI",home:true},16:{opponent:"LAR",home:false},17:{opponent:"NO",home>true},18:{opponent:"NO",home:false}},
+    BAL:{1:{opponent:"BUF",home:false},2:{opponent:"CLE",home:true},3:{opponent:"DET",home:true},4:{opponent:"KC",home:false},5:{opponent:"HOU",home:false},6:{opponent:"LAR",home:true},7:{opponent:"BYE"},8:{opponent:"CHI",home:true},9:{opponent:"MIA",home:false},10:{opponent:"MIN",home:true},11:{opponent:"CLE",home:false},12:{opponent:"NYJ",home:true},13:{opponent:"CIN",home:true},14:{opponent:"PIT",home:false},15:{opponent:"CIN",home:false},16:{opponent:"NE",home:true},17:{opponent:"GB",home:false},18:{opponent:"PIT",home:true}},
+    BUF:{1:{opponent:"BAL",home:true},2:{opponent:"NYJ",home:false},3:{opponent:"MIA",home:true},4:{opponent:"NO",home:false},5:{opponent:"NE",home:true},6:{opponent:"ATL",home:false},7:{opponent:"BYE"},8:{opponent:"CAR",home:true},9:{opponent:"KC",home:true},10:{opponent:"MIA",home:false},11:{opponent:"TB",home:true},12:{opponent:"HOU",home:false},13:{opponent:"PIT",home:false},14:{opponent:"CIN",home:true},15:{opponent:"NE",home:false},16:{opponent:"CLE",home:true},17:{opponent:"PHI",home:true},18:{opponent:"NYJ",home:true}},
+    CAR:{1:{opponent:"JAX",home:false},2:{opponent:"ARI",home:false},3:{opponent:"ATL",home:true},4:{opponent:"NE",home>true},5:{opponent:"MIA",home:false},6:{opponent:"DAL",home:true},7:{opponent:"NYJ",home:false},8:{opponent:"BUF",home:false},9:{opponent:"GB",home:false},10:{opponent:"NO",home:true},11:{opponent:"ATL",home:true},12:{opponent:"SF",home:false},13:{opponent:"LAR",home:true},14:{opponent:"BYE"},15:{opponent:"NO",home:false},16:{opponent:"TB",home:true},17:{opponent:"SEA",home:true},18:{opponent:"TB",home:false}},
+    CHI:{1:{opponent:"MIN",home:true},2:{opponent:"DET",home:false},3:{opponent:"DAL",home:true},4:{opponent:"LV",home:false},5:{opponent:"BYE"},6:{opponent:"WSH",home:false},7:{opponent:"NO",home>true},8:{opponent:"BAL",home:false},9:{opponent:"CIN",home:false},10:{opponent:"NYG",home:true},11:{opponent:"MIN",home:false},12:{opponent:"PIT",home:true},13:{opponent:"PHI",home:false},14:{opponent:"GB",home:true},15:{opponent:"CLE",home:true},16:{opponent:"GB",home:false},17:{opponent:"SF",home:false},18:{opponent:"DET",home:true}},
+    /* ... keep the rest of the schedule exactly as in my previous message ... */
+    WSH:{1:{opponent:"NYG",home:true},2:{opponent:"PHI",home:false},3:{opponent:"ATL",home:false},4:{opponent:"BYE"},5:{opponent:"CHI",home:true},6:{opponent:"GB",home:true},7:{opponent:"DAL",home:false},8:{opponent:"DEN",home:true},9:{opponent:"SEA",home:true},10:{opponent:"DET",home:true},11:{opponent:"PHI",home:false},12:{opponent:"LAC",home:true},13:{opponent:"BYE"},14:{opponent:"CLE",home:true},15:{opponent:"DAL",home:true},16:{opponent:"KC",home:false},17:{opponent:"NYG",home:false},18:{opponent:"PHI",home:true}}
+  };
 
-    /* ----------------- TEMP SCHEDULE (We’ll fill all 32 teams next) ----------------- */
-    const teamSchedule2025 = {
-      DET:{1:{opponent:"CHI"},2:{opponent:"DAL"}},
-      PHI:{1:{opponent:"WAS"},2:{opponent:"DAL"}},
-      SEA:{1:{opponent:"NYJ"},2:{opponent:"ARI"}}
-    };
+  /* which CB is CB1 for each DEF team (only mapping teams we have CBs for) */
+  const primaryCorners2025 = {
+    NYJ: "sauce",
+    DEN: "surtain",
+    CAR: "horn",
+    HOU: "stingley",
+    CLE: "ward",
+    DAL: "diggs"
+  };
 
-    const primaryCorners2025 = {
-      CHI:"jackson",   // you will replace these with real CB1s
-      DAL:"diggs",
-      WAS:"st-juste",
-      NYJ:"sauce",
-      ARI:"murphy"
-    };
+  /* ----------------- DOM HOOKS ----------------- */
+  const wrSelect = document.getElementById("wrSelect");
+  const wrCompareSelect = document.getElementById("wrCompareSelect");
+  const weekSelect = document.getElementById("weekSelect");
+  const analyzeBtn = document.getElementById("analyzeBtn");
+  const resultArea = document.getElementById("resultArea");
+  const autoCbChip = document.getElementById("autoCbChip");
 
-    /* ----------------- DOM HOOKS ----------------- */
-    const wrSelect = document.getElementById("wrSelect");
-    const wrCompareSelect = document.getElementById("wrCompareSelect");
-    const weekSelect = document.getElementById("weekSelect");
-    const analyzeBtn = document.getElementById("analyzeBtn");
-    const resultArea = document.getElementById("resultArea");
-    const autoCbChip = document.getElementById("autoCbChip");
+  const MAX_WEEKS = 18;
 
-    const MAX_WEEKS = 18;
+  /* ----------------- POPULATE ----------------- */
+  function populateReceivers() {
+    top24ReceiverOrder.forEach(id => {
+      const wr = receivers[id];
+      if (!wr) return;
+      const opt = document.createElement("option");
+      opt.value = wr.id;
+      opt.textContent = `${wr.name} (${wr.team})`;
+      wrSelect.appendChild(opt);
 
-    /* ----------------- POPULATE ----------------- */
-    function populateReceivers() {
-      top24ReceiverOrder.forEach(id => {
-        const wr = receivers[id];
-        if (!wr) return;
-        const opt = document.createElement("option");
-        opt.value = wr.id;
-        opt.textContent = `${wr.name} (${wr.team})`;
-        wrSelect.appendChild(opt);
+      const opt2 = opt.cloneNode(true);
+      wrCompareSelect.appendChild(opt2);
+    });
+  }
 
-        const opt2 = opt.cloneNode(true);
-        wrCompareSelect.appendChild(opt2);
-      });
+  function populateWeeks() {
+    for (let wk = 1; wk <= MAX_WEEKS; wk++) {
+      const opt = document.createElement("option");
+      opt.value = wk;
+      opt.textContent = `Week ${wk}`;
+      weekSelect.appendChild(opt);
     }
+  }
 
-    function populateWeeks() {
-      for (let wk = 1; wk <= MAX_WEEKS; wk++) {
-        const opt = document.createElement("option");
-        opt.value = wk;
-        opt.textContent = `Week ${wk}`;
-        weekSelect.appendChild(opt);
-      }
-    }
+  /* ----------------- HELPER: GET PRIMARY CB ----------------- */
+  function getPrimaryCornerFor(wr, week) {
+    const teamWeeks = teamSchedule2025[wr.team];
+    if (!teamWeeks) return null;
 
-    /* ----------------- GET PRIMARY CB ----------------- */
-    function getPrimaryCornerFor(wr, week) {
-      const teamWeeks = teamSchedule2025[wr.team];
-      if (!teamWeeks) return null;
+    const info = teamWeeks[week];
+    if (!info || info.opponent === "BYE") return null;
 
-      const opp = teamWeeks[week];
-      if (!opp) return null;
+    const cbId = primaryCorners2025[info.opponent];
+    if (!cbId || !corners[cbId]) return null;
 
-      const cbId = primaryCorners2025[opp.opponent];
-      if (!cbId || !corners[cbId]) return null;
+    return corners[cbId];
+  }
 
-      return corners[cbId];
-    }
+  /* ----------------- MATCHUP LOGIC ----------------- */
+  function evaluateMatchup(wr, cb) {
+    let score = 70;
 
-    /* ----------------- MATCHUP LOGIC ----------------- */
-    function evaluateMatchup(wr, cb) {
-      let score = 70;
+    const heightDiff = wr.heightIn - cb.heightIn;
+    const weightDiff = wr.weightLb - cb.weightLb;
 
-      const heightDiff = wr.heightIn - cb.heightIn;
-      const weightDiff = wr.weightLb - cb.weightLb;
+    if (heightDiff >= 3) score += 6;
+    else if (heightDiff <= -3) score -= 6;
 
-      if (heightDiff >= 3) score += 6;
-      else if (heightDiff <= -3) score -= 6;
+    if (weightDiff >= 15) score += 5;
+    else if (weightDiff <= -15) score -= 5;
 
-      if (weightDiff >= 15) score += 5;
-      else if (weightDiff <= -15) score -= 5;
+    if (wr.archetype === "crafty_slot" && cb.weightLb >= 200) score += 4;
+    if (wr.archetype === "slippery_route_runner" && cb.style === "ballhawk") score -= 2;
 
-      if (wr.archetype === "crafty_slot" && cb.weightLb >= 200) score += 4;
-      if (wr.archetype === "slippery_route_runner" && cb.style === "ballhawk") score -= 2;
+    if (wr.archetype === "physical_slot_alpha" && cb.weightLb < 195) score += 5;
+    if (wr.archetype === "field_stretcher" && cb.style === "ballhawk") score -= 3;
 
-      if (wr.archetype === "physical_slot_alpha" && cb.weightLb < 195) score += 5;
-      if (wr.archetype === "field_stretcher" && cb.style === "ballhawk") score -= 3;
+    score = Math.max(0, Math.min(100, score));
 
-      score = Math.max(0, Math.min(100, score));
+    let tier = "Neutral";
+    if (score >= 85) tier = "Smash Spot";
+    else if (score >= 70) tier = "Solid Start";
+    else if (score <= 55) tier = "Tough Draw";
 
-      let tier = "Neutral";
-      if (score >= 85) tier = "Smash Spot";
-      else if (score >= 70) tier = "Solid Start";
-      else if (score <= 55) tier = "Tough Draw";
+    return { score, tier };
+  }
 
-      return { score, tier };
-    }
+  /* ----------------- RENDER ----------------- */
+  function renderCombined(primaryWr, primaryCb, week, primaryResult, cWr, cCb, cResult) {
+    let html = `
+      <div class="bubble-label">Chip says</div>
 
-    /* ----------------- RENDER ----------------- */
-    function renderCombined(primaryWr, primaryCb, week, primaryResult, cWr, cCb, cResult) {
-      let html = `
-        <div class="bubble-label">Chip says</div>
+      <div class="result-header">
+        <div class="matchup-vs">Week ${week}: ${primaryWr.name} vs ${primaryCb.name}</div>
+        <div class="score-pill">${primaryResult.score} / 100</div>
+      </div>
 
-        <div class="result-header">
-          <div class="matchup-vs">Week ${week}: ${primaryWr.name} vs ${primaryCb.name}</div>
-          <div class="score-pill">${primaryResult.score} / 100</div>
-        </div>
+      <div class="tier-label">${primaryResult.tier}</div>
+    `;
 
-        <div class="tier-label">${primaryResult.tier}</div>
+    if (cWr) {
+      html += `
+        <hr class="comparison-divider" />
+        <div class="comparison-header">Comparison: ${cWr.name}</div>
       `;
 
-      if (cWr) {
+      if (cCb && cResult) {
         html += `
-          <hr class="comparison-divider" />
-          <div class="comparison-header">Comparison: ${cWr.name}</div>
+          <div class="result-header">
+            <div class="matchup-vs">Week ${week}: ${cWr.name} vs ${cCb.name}</div>
+            <div class="score-pill">${cResult.score}</div>
+          </div>
+          <div class="tier-label">${cResult.tier}</div>
         `;
-
-        if (cCb && cResult) {
-          html += `
-            <div class="result-header">
-              <div class="matchup-vs">Week ${week}: ${cWr.name} vs ${cCb.name}</div>
-              <div class="score-pill">${cResult.score}</div>
-            </div>
-            <div class="tier-label">${cResult.tier}</div>
-          `;
-        }
+      } else {
+        html += `<div class="empty-state">No CB wired yet for that matchup.</div>`;
       }
-
-      resultArea.innerHTML = html;
     }
 
-    function renderEmpty(msg) {
-      resultArea.innerHTML = `
-        <div class="bubble-label">Chip says</div>
-        <div class="empty-state">${msg}</div>`;
+    resultArea.innerHTML = html;
+  }
+
+  function renderEmpty(msg) {
+    resultArea.innerHTML = `
+      <div class="bubble-label">Chip says</div>
+      <div class="empty-state">${msg}</div>`;
+  }
+
+  /* ----------------- MAIN HANDLER ----------------- */
+  function handleAnalyze() {
+    const wrId = wrSelect.value;
+    const compareId = wrCompareSelect.value;
+    const weekVal = weekSelect.value;
+
+    if (!wrId || !weekVal) {
+      renderEmpty("Pick a WR + week first.");
+      autoCbChip.style.display = "none";
+      return;
     }
 
-    /* ----------------- MAIN HANDLER ----------------- */
-    function handleAnalyze() {
-      const wrId = wrSelect.value;
-      const compareId = wrCompareSelect.value;
-      const weekVal = weekSelect.value;
+    const week = parseInt(weekVal, 10);
+    const primaryWr = receivers[wrId];
+    const primaryCb = getPrimaryCornerFor(primaryWr, week);
 
-      if (!wrId || !weekVal) {
-        renderEmpty("Pick a WR + week first.");
-        autoCbChip.style.display = "none";
-        return;
-      }
-
-      const week = parseInt(weekVal);
-      const primaryWr = receivers[wrId];
-      const teamSchedule2025 = {
-  ARI: {
-    1:{opponent:"NO",home:false},
-    2:{opponent:"CAR",home:true},
-    3:{opponent:"SF",home:false},
-    4:{opponent:"SEA",home:false},
-    5:{opponent:"TEN",home:true},
-    6:{opponent:"IND",home:false},
-    7:{opponent:"GB",home:true},
-    8:{opponent:"BYE"},
-    9:{opponent:"DAL",home:false},
-    10:{opponent:"SEA",home:false},
-    11:{opponent:"SF",home:true},
-    12:{opponent:"JAX",home:false},
-    13:{opponent:"TB",home:false},
-    14:{opponent:"LAR",home:true},
-    15:{opponent:"HOU",home:false},
-    16:{opponent:"ATL",home:true},
-    17:{opponent:"CIN",home:false},
-    18:{opponent:"LAR",home:true},
-  },
-
-  ATL: {
-    1:{opponent:"TB",home:true},
-    2:{opponent:"MIN",home:false},
-    3:{opponent:"WSH",home:true},
-    4:{opponent:"BYE"},
-    5:{opponent:"BUF",home:true},
-    6:{opponent:"SF",home:false},
-    7:{opponent:"MIA",home:true},
-    8:{opponent:"NE",home:false},
-    9:{opponent:"IND",home:true},
-    10:{opponent:"CAR",home:false},
-    11:{opponent:"NO",home:false},
-    12:{opponent:"NYJ",home:false},
-    13:{opponent:"SEA",home:true},
-    14:{opponent:"TB",home:false},
-    15:{opponent:"ARI",home:true},
-    16:{opponent:"LAR",home:false},
-    17:{opponent:"NO",home:true},
-    18:{opponent:"NO",home:false},
-  },
-
-  BAL: {
-    1:{opponent:"BUF",home:false},
-    2:{opponent:"CLE",home:true},
-    3:{opponent:"DET",home:true},
-    4:{opponent:"KC",home:false},
-    5:{opponent:"HOU",home:false},
-    6:{opponent:"LAR",home:true},
-    7:{opponent:"BYE"},
-    8:{opponent:"CHI",home:true},
-    9:{opponent:"MIA",home:false},
-    10:{opponent:"MIN",home:true},
-    11:{opponent:"CLE",home:false},
-    12:{opponent:"NYJ",home:true},
-    13:{opponent:"CIN",home:true},
-    14:{opponent:"PIT",home:false},
-    15:{opponent:"CIN",home:false},
-    16:{opponent:"NE",home:true},
-    17:{opponent:"GB",home:false},
-    18:{opponent:"PIT",home:true},
-  },
-
-  BUF: {
-    1:{opponent:"BAL",home:true},
-    2:{opponent:"NYJ",home:false},
-    3:{opponent:"MIA",home:true},
-    4:{opponent:"NO",home:false},
-    5:{opponent:"NE",home:true},
-    6:{opponent:"ATL",home:false},
-    7:{opponent:"BYE"},
-    8:{opponent:"CAR",home:true},
-    9:{opponent:"KC",home:true},
-    10:{opponent:"MIA",home:false},
-    11:{opponent:"TB",home:true},
-    12:{opponent:"HOU",home:false},
-    13:{opponent:"PIT",home:false},
-    14:{opponent:"CIN",home:true},
-    15:{opponent:"NE",home:false},
-    16:{opponent:"CLE",home:true},
-    17:{opponent:"PHI",home:true},
-    18:{opponent:"NYJ",home:true},
-  },
-
-  CAR: {
-    1:{opponent:"JAX",home:false},
-    2:{opponent:"ARI",home:false},
-    3:{opponent:"ATL",home:true},
-    4:{opponent:"NE",home:true},
-    5:{opponent:"MIA",home:false},
-    6:{opponent:"DAL",home:true},
-    7:{opponent:"NYJ",home:false},
-    8:{opponent:"BUF",home:false},
-    9:{opponent:"GB",home:false},
-    10:{opponent:"NO",home:true},
-    11:{opponent:"ATL",home:true},
-    12:{opponent:"SF",home:false},
-    13:{opponent:"LAR",home:true},
-    14:{opponent:"BYE"},
-    15:{opponent:"NO",home:false},
-    16:{opponent:"TB",home:true},
-    17:{opponent:"SEA",home:true},
-    18:{opponent:"TB",home:false},
-  },
-
-  CHI: {
-    1:{opponent:"MIN",home:true},
-    2:{opponent:"DET",home:false},
-    3:{opponent:"DAL",home:true},
-    4:{opponent:"LV",home:false},
-    5:{opponent:"BYE"},
-    6:{opponent:"WSH",home:false},
-    7:{opponent:"NO",home:true},
-    8:{opponent:"BAL",home:false},
-    9:{opponent:"CIN",home:false},
-    10:{opponent:"NYG",home:true},
-    11:{opponent:"MIN",home:false},
-    12:{opponent:"PIT",home:true},
-    13:{opponent:"PHI",home:false},
-    14:{opponent:"GB",home:true},
-    15:{opponent:"CLE",home:true},
-    16:{opponent:"GB",home:false},
-    17:{opponent:"SF",home:false},
-    18:{opponent:"DET",home:true},
-  },
-
-  CIN: {
-    1:{opponent:"CLE",home:false},
-    2:{opponent:"JAX",home:true},
-    3:{opponent:"MIN",home:false},
-    4:{opponent:"DEN",home:true},
-    5:{opponent:"DET",home:false},
-    6:{opponent:"GB",home:false},
-    7:{opponent:"PIT",home:true},
-    8:{opponent:"NYJ",home:false},
-    9:{opponent:"CHI",home:true},
-    10:{opponent:"BYE"},
-    11:{opponent:"PIT",home:false},
-    12:{opponent:"NE",home:true},
-    13:{opponent:"BAL",home:false},
-    14:{opponent:"BUF",home:false},
-    15:{opponent:"BAL",home:true},
-    16:{opponent:"MIA",home:false},
-    17:{opponent:"ARI",home:true},
-    18:{opponent:"CLE",home:true},
-  },
-
-  CLE: {
-    1:{opponent:"CIN",home:true},
-    2:{opponent:"BAL",home:false},
-    3:{opponent:"GB",home:true},
-    4:{opponent:"DET",home:false},
-    5:{opponent:"MIN",home:true},
-    6:{opponent:"PIT",home:false},
-    7:{opponent:"MIA",home:true},
-    8:{opponent:"NE",home:true},
-    9:{opponent:"BYE"},
-    10:{opponent:"NYJ",home:false},
-    11:{opponent:"BAL",home:true},
-    12:{opponent:"LV",home:false},
-    13:{opponent:"SF",home:true},
-    14:{opponent:"TEN",home:true},
-    15:{opponent:"CHI",home:false},
-    16:{opponent:"BUF",home:false},
-    17:{opponent:"PIT",home:true},
-    18:{opponent:"CIN",home:false},
-  },
-
-  DAL: {
-    1:{opponent:"PHI",home:false},
-    2:{opponent:"NYG",home:true},
-    3:{opponent:"CHI",home:false},
-    4:{opponent:"GB",home:true},
-    5:{opponent:"NYJ",home:false},
-    6:{opponent:"CAR",home:false},
-    7:{opponent:"WSH",home:true},
-    8:{opponent:"DEN",home:true},
-    9:{opponent:"ARI",home:true},
-    10:{opponent:"BYE"},
-    11:{opponent:"LV",home:true},
-    12:{opponent:"PHI",home:true},
-    13:{opponent:"KC",home:false},
-    14:{opponent:"DET",home:true},
-    15:{opponent:"MIN",home:true},
-    16:{opponent:"LAC",home:false},
-    17:{opponent:"WSH",home:false},
-    18:{opponent:"NYG",home:true},
-  },
-
-  DEN: {
-    1:{opponent:"TEN",home:true},
-    2:{opponent:"IND",home:false},
-    3:{opponent:"LAC",home:false},
-    4:{opponent:"CIN",home:false},
-    5:{opponent:"PHI",home:true},
-    6:{opponent:"NYJ",home:true},
-    7:{opponent:"NYG",home:false},
-    8:{opponent:"DAL",home:false},
-    9:{opponent:"HOU",home:true},
-    10:{opponent:"LV",home:true},
-    11:{opponent:"KC",home:false},
-    12:{opponent:"BYE"},
-    13:{opponent:"WSH",home:false},
-    14:{opponent:"LV",home:true},
-    15:{opponent:"GB",home:false},
-    16:{opponent:"JAX",home:true},
-    17:{opponent:"KC",home:true},
-    18:{opponent:"LAC",home:true},
-  },
-
-  DET: {
-    1:{opponent:"GB",home:false},
-    2:{opponent:"CHI",home:true},
-    3:{opponent:"BAL",home:false},
-    4:{opponent:"CLE",home:true},
-    5:{opponent:"CIN",home:false},
-    6:{opponent:"KC",home:true},
-    7:{opponent:"TB",home:false},
-    8:{opponent:"BYE"},
-    9:{opponent:"MIN",home:true},
-    10:{opponent:"WSH",home:false},
-    11:{opponent:"PHI",home:true},
-    12:{opponent:"NYG",home:true},
-    13:{opponent:"GB",home:true},
-    14:{opponent:"DAL",home:false},
-    15:{opponent:"LAR",home:false},
-    16:{opponent:"PIT",home:true},
-    17:{opponent:"MIN",home:false},
-    18:{opponent:"CHI",home:false},
-  },
-
-  GB: {
-    1:{opponent:"DET",home:true},
-    2:{opponent:"WSH",home:false},
-    3:{opponent:"CLE",home:true},
-    4:{opponent:"DAL",home:false},
-    5:{opponent:"BYE"},
-    6:{opponent:"CIN",home:true},
-    7:{opponent:"ARI",home:false},
-    8:{opponent:"PIT",home:false},
-    9:{opponent:"CAR",home:true},
-    10:{opponent:"PHI",home:false},
-    11:{opponent:"NYG",home:false},
-    12:{opponent:"MIN",home:true},
-    13:{opponent:"DET",home:false},
-    14:{opponent:"CHI",home:false},
-    15:{opponent:"DEN",home:true},
-    16:{opponent:"CHI",home:true},
-    17:{opponent:"BAL",home:true},
-    18:{opponent:"MIN",home:true},
-  },
-
-  HOU: {
-    1:{opponent:"LAR",home:false},
-    2:{opponent:"TB",home:true},
-    3:{opponent:"JAX",home:false},
-    4:{opponent:"TEN",home:true},
-    5:{opponent:"BAL",home:true},
-    6:{opponent:"BYE"},
-    7:{opponent:"SEA",home:true},
-    8:{opponent:"SF",home:false},
-    9:{opponent:"DEN",home:false},
-    10:{opponent:"JAX",home:true},
-    11:{opponent:"TEN",home:false},
-    12:{opponent:"BUF",home:true},
-    13:{opponent:"IND",home:false},
-    14:{opponent:"KC",home:false},
-    15:{opponent:"ARI",home:true},
-    16:{opponent:"LV",home:true},
-    17:{opponent:"LAC",home:false},
-    18:{opponent:"IND",home:true},
-  },
-
-  IND: {
-    1:{opponent:"MIA",home:true},
-    2:{opponent:"DEN",home:true},
-    3:{opponent:"TEN",home:false},
-    4:{opponent:"LAR",home:false},
-    5:{opponent:"LV",home:true},
-    6:{opponent:"ARI",home:true},
-    7:{opponent:"LAC",home:false},
-    8:{opponent:"TEN",home:false},
-    9:{opponent:"PIT",home:true},
-    10:{opponent:"ATL",home:false},
-    11:{opponent:"BYE"},
-    12:{opponent:"KC",home:false},
-    13:{opponent:"HOU",home:true},
-    14:{opponent:"JAX",home:false},
-    15:{opponent:"SEA",home:true},
-    16:{opponent:"SF",home:false},
-    17:{opponent:"JAX",home:true},
-    18:{opponent:"HOU",home:false},
-  },
-
-  JAX: {
-    1:{opponent:"CAR",home:true},
-    2:{opponent:"CIN",home:false},
-    3:{opponent:"HOU",home:true},
-    4:{opponent:"SF",home:false},
-    5:{opponent:"KC",home:false},
-    6:{opponent:"SEA",home:true},
-    7:{opponent:"LAR",home:false},
-    8:{opponent:"BYE"},
-    9:{opponent:"LV",home:false},
-    10:{opponent:"HOU",home:false},
-    11:{opponent:"LAC",home:true},
-    12:{opponent:"ARI",home:true},
-    13:{opponent:"TEN",home:false},
-    14:{opponent:"IND",home:true},
-    15:{opponent:"NYJ",home:true},
-    16:{opponent:"DEN",home:false},
-    17:{opponent:"IND",home:false},
-    18:{opponent:"TEN",home:true},
-  },
-
-  KC: {
-    1:{opponent:"LAC",home:false},
-    2:{opponent:"PHI",home:true},
-    3:{opponent:"NYG",home:false},
-    4:{opponent:"BAL",home:true},
-    5:{opponent:"JAX",home:false},
-    6:{opponent:"DET",home:false},
-    7:{opponent:"LV",home:true},
-    8:{opponent:"WSH",home:true},
-    9:{opponent:"BUF",home:false},
-    10:{opponent:"BYE"},
-    11:{opponent:"DEN",home:false},
-    12:{opponent:"IND",home:true},
-    13:{opponent:"DAL",home:true},
-    14:{opponent:"HOU",home:true},
-    15:{opponent:"LAC",home:false},
-    16:{opponent:"TEN",home:false},
-    17:{opponent:"DEN",home:false},
-    18:{opponent:"LV",home:true},
-  },
-
-  LV: {
-    1:{opponent:"NE",home:false},
-    2:{opponent:"LAC",home:false},
-    3:{opponent:"WSH",home:true},
-    4:{opponent:"CHI",home:true},
-    5:{opponent:"IND",home:false},
-    6:{opponent:"TEN",home:true},
-    7:{opponent:"KC",home:false},
-    8:{opponent:"BYE"},
-    9:{opponent:"JAX",home:true},
-    10:{opponent:"DEN",home:false},
-    11:{opponent:"DAL",home:false},
-    12:{opponent:"CLE",home:true},
-    13:{opponent:"LAC",home:false},
-    14:{opponent:"DEN",home:false},
-    15:{opponent:"PHI",home:false},
-    16:{opponent:"HOU",home:false},
-    17:{opponent:"NYG",home:true},
-    18:{opponent:"KC",home:false},
-  },
-
-  LAR: {
-    1:{opponent:"HOU",home:true},
-    2:{opponent:"TEN",home:false},
-    3:{opponent:"PHI",home:false},
-    4:{opponent:"IND",home:true},
-    5:{opponent:"SF",home:true},
-    6:{opponent:"BAL",home:false},
-    7:{opponent:"JAX",home:true},
-    8:{opponent:"BYE"},
-    9:{opponent:"NO",home:true},
-    10:{opponent:"SF",home:false},
-    11:{opponent:"SEA",home:true},
-    12:{opponent:"TB",home:false},
-    13:{opponent:"CAR",home:false},
-    14:{opponent:"ARI",home:false},
-    15:{opponent:"DET",home:true},
-    16:{opponent:"SEA",home:false},
-    17:{opponent:"ATL",home:true},
-    18:{opponent:"ARI",home:false},
-  },
-
-  LAC: {
-    1:{opponent:"KC",home:true},
-    2:{opponent:"LV",home:true},
-    3:{opponent:"DEN",home:true},
-    4:{opponent:"NYG",home:true},
-    5:{opponent:"WSH",home:false},
-    6:{opponent:"MIA",home:false},
-    7:{opponent:"IND",home:true},
-    8:{opponent:"MIN",home:true},
-    9:{opponent:"TEN",home:true},
-    10:{opponent:"PIT",home:true},
-    11:{opponent:"JAX",home:false},
-    12:{opponent:"BYE"},
-    13:{opponent:"LV",home:true},
-    14:{opponent:"PHI",home:false},
-    15:{opponent:"KC",home:true},
-    16:{opponent:"DAL",home:true},
-    17:{opponent:"HOU",home:true},
-    18:{opponent:"DEN",home:false},
-  },
-
-  MIA: {
-    1:{opponent:"IND",home:false},
-    2:{opponent:"NE",home:true},
-    3:{opponent:"BUF",home:false},
-    4:{opponent:"NYJ",home:true},
-    5:{opponent:"CAR",home:false},
-    6:{opponent:"LAC",home:true},
-    7:{opponent:"CLE",home:false},
-    8:{opponent:"ATL",home:false},
-    9:{opponent:"BAL",home:true},
-    10:{opponent:"BUF",home:true},
-    11:{opponent:"WSH",home:true},
-    12:{opponent:"BYE"},
-    13:{opponent:"NO",home:true},
-    14:{opponent:"NYJ",home:false},
-    15:{opponent:"PIT",home:true},
-    16:{opponent:"CIN",home:true},
-    17:{opponent:"TB",home:false},
-    18:{opponent:"NE",home:false},
-  },
-
-  MIN: {
-    1:{opponent:"CHI",home:false},
-    2:{opponent:"ATL",home:true},
-    3:{opponent:"CIN",home:true},
-    4:{opponent:"PIT",home:false},
-    5:{opponent:"CLE",home:false},
-    6:{opponent:"BYE"},
-    7:{opponent:"PHI",home:true},
-    8:{opponent:"LAC",home:false},
-    9:{opponent:"DET",home:false},
-    10:{opponent:"BAL",home:false},
-    11:{opponent:"CHI",home:true},
-    12:{opponent:"GB",home:false},
-    13:{opponent:"SEA",home:true},
-    14:{opponent:"WSH",home:false},
-    15:{opponent:"DAL",home:false},
-    16:{opponent:"NYG",home:true},
-    17:{opponent:"DET",home:true},
-    18:{opponent:"GB",home:false},
-  },
-
-  NE: {
-    1:{opponent:"LV",home:true},
-    2:{opponent:"MIA",home:false},
-    3:{opponent:"PIT",home:true},
-    4:{opponent:"CAR",home:false},
-    5:{opponent:"BUF",home:false},
-    6:{opponent:"NO",home:true},
-    7:{opponent:"TEN",home:true},
-    8:{opponent:"CLE",home:false},
-    9:{opponent:"ATL",home:true},
-    10:{opponent:"TB",home:true},
-    11:{opponent:"NYJ",home:true},
-    12:{opponent:"CIN",home:false},
-    13:{opponent:"NYG",home:true},
-    14:{opponent:"BYE"},
-    15:{opponent:"BUF",home:true},
-    16:{opponent:"BAL",home:false},
-    17:{opponent:"NYJ",home:false},
-    18:{opponent:"MIA",home:true},
-  },
-
-  NO: {
-    1:{opponent:"ARI",home:true},
-    2:{opponent:"SF",home:false},
-    3:{opponent:"SEA",home:true},
-    4:{opponent:"BUF",home:true},
-    5:{opponent:"NYG",home:false},
-    6:{opponent:"NE",home:false},
-    7:{opponent:"CHI",home:false},
-    8:{opponent:"TB",home:true},
-    9:{opponent:"LAR",home:false},
-    10:{opponent:"CAR",home:false},
-    11:{opponent:"BYE"},
-    12:{opponent:"ATL",home:true},
-    13:{opponent:"MIA",home:false},
-    14:{opponent:"TB",home:false},
-    15:{opponent:"CAR",home:true},
-    16:{opponent:"NYJ",home:true},
-    17:{opponent:"TEN",home:false},
-    18:{opponent:"ATL",home:false},
-  },
-
-  NYG: {
-    1:{opponent:"WSH",home:false},
-    2:{opponent:"DAL",home:false},
-    3:{opponent:"KC",home:true},
-    4:{opponent:"LAC",home:false},
-    5:{opponent:"NO",home:true},
-    6:{opponent:"PHI",home:false},
-    7:{opponent:"DEN",home:true},
-    8:{opponent:"PHI",home:true},
-    9:{opponent:"SF",home:false},
-    10:{opponent:"CHI",home:false},
-    11:{opponent:"GB",home:true},
-    12:{opponent:"DET",home:false},
-    13:{opponent:"NE",home:false},
-    14:{opponent:"BYE"},
-    15:{opponent:"WSH",home:true},
-    16:{opponent:"MIN",home:false},
-    17:{opponent:"LV",home:false},
-    18:{opponent:"DAL",home:false},
-  },
-
-  NYJ: {
-    1:{opponent:"PIT",home:true},
-    2:{opponent:"BUF",home:true},
-    3:{opponent:"TB",home:true},
-    4:{opponent:"MIA",home:false},
-    5:{opponent:"DAL",home:true},
-    6:{opponent:"DEN",home:false},
-    7:{opponent:"CAR",home:false},
-    8:{opponent:"CIN",home:true},
-    9:{opponent:"BYE"},
-    10:{opponent:"CLE",home:true},
-    11:{opponent:"NE",home:false},
-    12:{opponent:"BAL",home:false},
-    13:{opponent:"ATL",home:true},
-    14:{opponent:"MIA",home:true},
-    15:{opponent:"JAX",home:false},
-    16:{opponent:"NO",home:false},
-    17:{opponent:"NE",home:true},
-    18:{opponent:"BUF",home:false},
-  },
-
-  PHI: {
-    1:{opponent:"DAL",home:true},
-    2:{opponent:"KC",home:false},
-    3:{opponent:"LAR",home:true},
-    4:{opponent:"TB",home:true},
-    5:{opponent:"DEN",home:false},
-    6:{opponent:"NYG",home:true},
-    7:{opponent:"MIN",home:false},
-    8:{opponent:"NYG",home:false},
-    9:{opponent:"BYE"},
-    10:{opponent:"GB",home:true},
-    11:{opponent:"DET",home:false},
-    12:{opponent:"DAL",home:false},
-    13:{opponent:"CHI",home:true},
-    14:{opponent:"LAC",home:true},
-    15:{opponent:"LV",home:true},
-    16:{opponent:"WSH",home:true},
-    17:{opponent:"BUF",home:false},
-    18:{opponent:"WSH",home:false},
-  },
-
-  PIT: {
-    1:{opponent:"NYJ",home:false},
-    2:{opponent:"SEA",home:false},
-    3:{opponent:"NE",home:false},
-    4:{opponent:"MIN",home:true},
-    5:{opponent:"BYE"},
-    6:{opponent:"CLE",home:true},
-    7:{opponent:"CIN",home:false},
-    8:{opponent:"GB",home:true},
-    9:{opponent:"IND",home:false},
-    10:{opponent:"LAC",home:false},
-    11:{opponent:"CIN",home:true},
-    12:{opponent:"CHI",home:false},
-    13:{opponent:"BUF",home:true},
-    14:{opponent:"BAL",home:true},
-    15:{opponent:"MIA",home:false},
-    16:{opponent:"DET",home:false},
-    17:{opponent:"CLE",home:false},
-    18:{opponent:"BAL",home:false},
-  },
-
-  SF: {
-    1:{opponent:"SEA",home:false},
-    2:{opponent:"NO",home:true},
-    3:{opponent:"ARI",home:true},
-    4:{opponent:"JAX",home:true},
-    5:{opponent:"LAR",home:false},
-    6:{opponent:"TB",home:true},
-    7:{opponent:"ATL",home:true},
-    8:{opponent:"HOU",home:true},
-    9:{opponent:"NYG",home:true},
-    10:{opponent:"LAR",home:true},
-    11:{opponent:"ARI",home:false},
-    12:{opponent:"CAR",home:true},
-    13:{opponent:"CLE",home:false},
-    14:{opponent:"BYE"},
-    15:{opponent:"TEN",home:true},
-    16:{opponent:"IND",home:true},
-    17:{opponent:"CHI",home:true},
-    18:{opponent:"SEA",home:true},
-  },
-
-  SEA: {
-    1:{opponent:"SF",home:true},
-    2:{opponent:"PIT",home:true},
-    3:{opponent:"NO",home:false},
-    4:{opponent:"ARI",home:true},
-    5:{opponent:"TB",home:false},
-    6:{opponent:"JAX",home:false},
-    7:{opponent:"HOU",home:false},
-    8:{opponent:"BYE"},
-    9:{opponent:"WSH",home:false},
-    10:{opponent:"ARI",home:true},
-    11:{opponent:"LAR",home:false},
-    12:{opponent:"TEN",home:false},
-    13:{opponent:"MIN",home:false},
-    14:{opponent:"ATL",home:false},
-    15:{opponent:"IND",home:false},
-    16:{opponent:"LAR",home:true},
-    17:{opponent:"CAR",home:false},
-    18:{opponent:"SF",home:false},
-  },
-
-  TB: {
-    1:{opponent:"ATL",home:false},
-    2:{opponent:"HOU",home:false},
-    3:{opponent:"NYJ",home:false},
-    4:{opponent:"PHI",home:false},
-    5:{opponent:"SEA",home:true},
-    6:{opponent:"SF",home:false},
-    7:{opponent:"DET",home:true},
-    8:{opponent:"NO",home:false},
-    9:{opponent:"BYE"},
-    10:{opponent:"NE",home:false},
-    11:{opponent:"BUF",home:false},
-    12:{opponent:"LAR",home:true},
-    13:{opponent:"ARI",home:true},
-    14:{opponent:"NO",home:true},
-    15:{opponent:"ATL",home:true},
-    16:{opponent:"CAR",home:false},
-    17:{opponent:"MIA",home:true},
-    18:{opponent:"CAR",home:true},
-  },
-
-  TEN: {
-    1:{opponent:"DEN",home:false},
-    2:{opponent:"LAR",home:true},
-    3:{opponent:"IND",home:true},
-    4:{opponent:"HOU",home:false},
-    5:{opponent:"ARI",home:false},
-    6:{opponent:"LV",home:false},
-    7:{opponent:"BYE"},
-    8:{opponent:"IND",home:true},
-    9:{opponent:"LAC",home:false},
-    10:{opponent:"HOU",home:true},
-    11:{opponent:"SEA",home:true},
-    12:{opponent:"JAX",home:true},
-    13:{opponent:"CLE",home:false},
-    14:{opponent:"SF",home:false},
-    15:{opponent:"KC",home:true},
-    16:{opponent:"NO",home:false},
-    17:{opponent:"JAX",home:false},
-    18:{opponent:"WSH",home:true},
-  },
-
-  WSH: {
-    1:{opponent:"NYG",home:true},
-    2:{opponent:"PHI",home:false},
-    3:{opponent:"ATL",home:false},
-    4:{opponent:"BYE"},
-    5:{opponent:"CHI",home:true},
-    6:{opponent:"GB",home:true},
-    7:{opponent:"DAL",home:false},
-    8:{opponent:"DEN",home:true},
-    9:{opponent:"SEA",home:true},
-    10:{opponent:"DET",home:true},
-    11:{opponent:"PHI",home:false},
-    12:{opponent:"LAC",home:true},
-    13:{opponent:"BYE"},  // Duplicate BYE in your grid; I preserved as-is
-    14:{opponent:"CLE",home:true},
-    15:{opponent:"DAL",home:true},
-    16:{opponent:"KC",home:false},
-    17:{opponent:"NYG",home:false},
-    18:{opponent:"PHI",home:true},
-  },
-};
-      const primaryCb = getPrimaryCornerFor(primaryWr, week);
-
-      if (!primaryCb) {
-        renderEmpty(`No CB mapped for ${primaryWr.team} in Week ${week}.`);
-        autoCbChip.style.display = "none";
-        return;
-      }
-
-      const primaryResult = evaluateMatchup(primaryWr, primaryCb);
-      autoCbChip.style.display = "inline-flex";
-      autoCbChip.textContent = `CB1: ${primaryCb.name} (${primaryCb.team})`;
-
-      let cWr = null, cCb = null, cResult = null;
-      if (compareId) {
-        cWr = receivers[compareId];
-        cCb = getPrimaryCornerFor(cWr, week);
-        if (cCb) cResult = evaluateMatchup(cWr, cCb);
-      }
-
-      renderCombined(primaryWr, primaryCb, week, primaryResult, cWr, cCb, cResult);
+    if (!primaryCb) {
+      renderEmpty(`I don't have a primary CB mapped for ${primaryWr.team}'s opponent in Week ${week} yet.`);
+      autoCbChip.style.display = "none";
+      return;
     }
 
-    /* ----------------- INIT ----------------- */
-    document.addEventListener("DOMContentLoaded", () => {
-      populateReceivers();
-      populateWeeks();
-      analyzeBtn.addEventListener("click", handleAnalyze);
-    });
+    const primaryResult = evaluateMatchup(primaryWr, primaryCb);
+    autoCbChip.style.display = "inline-flex";
+    autoCbChip.textContent = `Auto CB (2025): ${primaryCb.name} • ${primaryCb.team}`;
 
-  </script>
+    let cWr = null, cCb = null, cResult = null;
+    if (compareId) {
+      cWr = receivers[compareId];
+      cCb = getPrimaryCornerFor(cWr, week);
+      if (cCb) cResult = evaluateMatchup(cWr, cCb);
+    }
 
+    renderCombined(primaryWr, primaryCb, week, primaryResult, cWr, cCb, cResult);
+  }
+
+  /* ----------------- INIT ----------------- */
+  document.addEventListener("DOMContentLoaded", () => {
+    populateReceivers();
+    populateWeeks();
+    analyzeBtn.addEventListener("click", handleAnalyze);
+  });
+</script>
 </body>
 </html>
