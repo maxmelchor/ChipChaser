@@ -6,12 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
 
     body {
       min-height: 100vh;
@@ -38,14 +33,9 @@
       overflow: hidden;
     }
 
-    @media (max-width: 900px) {
-      .app-shell {
-        grid-template-columns: 1fr;
-      }
-    }
+    @media (max-width: 900px) { .app-shell { grid-template-columns: 1fr; } }
 
-    /* LEFT: Identity / Chip intro */
-
+    /* LEFT PANEL */
     .chip-panel {
       background: radial-gradient(circle at top left, rgba(147, 51, 234, 0.24), rgba(15, 23, 42, 0.98));
       border-radius: 24px;
@@ -57,131 +47,55 @@
       overflow: hidden;
     }
 
-    .brand-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .brand-row { display: flex; align-items: center; gap: 12px; }
 
-    /* Chip "out of the box" on the left */
     .brand-logo {
       width: 96px;
       height: 96px;
-      border-radius: 0;
       overflow: visible;
-      border: none;
       background: transparent;
-      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
     }
+    .brand-logo img { width: 100%; height: auto; object-fit: contain; }
 
-    .brand-logo img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      display: block;
-    }
+    .brand-text-main { font-size: 22px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    .brand-dot { color: #a855ff; }
+    .brand-tagline { font-size: 12px; color: #e5e7eb; opacity: 0.9; margin-top: 3px; }
 
-    .brand-text-main {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .brand-dot {
-      color: #a855ff;
-    }
-
-    .brand-tagline {
-      font-size: 12px;
-      color: #e5e7eb;
-      opacity: 0.9;
-      margin-top: 3px;
-    }
-
-    .brand-right {
-      flex: 1;
-      min-width: 0;
-    }
+    .brand-right { flex: 1; min-width: 0; }
 
     .chip-badge {
-      margin-left: auto;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(251, 207, 232, 0.7);
-      background: rgba(255, 255, 255, 0.03);
-      color: #fce7f3;
-      white-space: nowrap;
+      margin-left: auto; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+      padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(251, 207, 232, 0.7);
+      background: rgba(255, 255, 255, 0.03); color: #fce7f3; white-space: nowrap;
     }
 
-    .chip-bio-title {
-      margin-top: 6px;
-      font-size: 13px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #c4b5fd;
-    }
+    .chip-bio-title { margin-top: 6px; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #c4b5fd; }
+    .chip-bio-text { margin-top: 4px; font-size: 13px; color: #e5e7eb; line-height: 1.55; }
+    .chip-hint { margin-top: 8px; font-size: 11px; color: #a5b4fc; }
 
-    .chip-bio-text {
-      margin-top: 4px;
-      font-size: 13px;
-      color: #e5e7eb;
-      line-height: 1.55;
-    }
-
-    .chip-hint {
-      margin-top: 8px;
-      font-size: 11px;
-      color: #a5b4fc;
-    }
-
-    .chip-pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
-    }
-
+    .chip-pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
     .chip-pill {
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
+      font-size: 11px; padding: 4px 8px; border-radius: 999px;
       border: 1px solid rgba(129, 140, 248, 0.6);
-      background: rgba(15, 23, 42, 0.9);
-      color: #e5e7eb;
+      background: rgba(15, 23, 42, 0.9); color: #e5e7eb;
     }
 
-    .chip-footnote {
-      margin-top: auto;
-      font-size: 11px;
-      color: #9ca3ff;
-      opacity: 0.8;
-    }
+    .chip-footnote { margin-top: auto; font-size: 11px; color: #9ca3ff; opacity: 0.8; }
 
-    /* RIGHT: Controls + Chip's answer */
-
-    .interaction-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
+    /* RIGHT PANEL */
+    .interaction-panel { display: flex; flex-direction: column; gap: 14px; }
 
     .controls-panel {
       position: relative;
       background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.24), rgba(15, 23, 42, 0.98));
       border-radius: 20px;
       border: 1px solid rgba(129, 140, 248, 0.6);
-      /* extra right padding so text wraps before the floating Chip */
-      padding: 42px 130px 16px 16px; /* top, right, bottom, left */
+      padding: 42px 130px 16px 16px;
     }
 
-    /* Floating Chip mascot INSIDE the Ask Chip card */
     .chip-floating {
       position: absolute;
       right: 20px;
@@ -195,351 +109,197 @@
     }
 
     @keyframes chipFloat {
-      0%   { transform: translateY(0px); }
-      50%  { transform: translateY(10px); }
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(10px); }
       100% { transform: translateY(0px); }
     }
 
-    .controls-title {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: #a5b4fc;
-      margin-bottom: 2px;
-    }
+    .controls-title { font-size: 12px; text-transform: uppercase; letter-spacing: 0.16em; color: #a5b4fc; margin-bottom: 2px; }
+    .controls-subtitle { font-size: 12px; color: #e5e7eb; opacity: 0.88; margin-bottom: 10px; }
 
-    .controls-subtitle {
-      font-size: 12px;
-      color: #e5e7eb;
-      opacity: 0.88;
-      margin-bottom: 10px;
-    }
-
-    .form-row {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-bottom: 10px;
-    }
-
-    label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #9ca3ff;
-    }
+    .form-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+    label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #9ca3ff; }
 
     select {
-      width: 100%;
-      padding: 7px 11px;
-      border-radius: 999px;
+      width: 100%; padding: 7px 11px; border-radius: 999px;
       border: 1px solid rgba(148, 163, 255, 0.8);
-      background: rgba(15, 23, 42, 0.9);
-      color: #f9fafb;
-      font-size: 13px;
-      outline: none;
-      appearance: none;
+      background: rgba(15, 23, 42, 0.9); color: #f9fafb;
+      font-size: 13px; outline: none; appearance: none;
     }
-
-    select:focus {
-      border-color: #a855ff;
-      box-shadow: 0 0 0 1px rgba(168, 85, 255, 0.5);
-    }
+    select:focus { border-color: #a855ff; box-shadow: 0 0 0 1px rgba(168, 85, 255, 0.5); }
 
     .btn {
-      margin-top: 6px;
-      width: 100%;
-      padding: 9px 13px;
-      border-radius: 999px;
-      border: none;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      cursor: pointer;
+      margin-top: 6px; width: 100%; padding: 9px 13px;
+      border-radius: 999px; border: none;
+      font-size: 12px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.14em; cursor: pointer;
       background: linear-gradient(135deg, #a855ff, #6366f1);
       color: #f9fafb;
       box-shadow: 0 11px 28px rgba(88, 28, 135, 0.6);
-      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.08s ease;
     }
 
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 16px 40px rgba(88, 28, 135, 0.7);
-      filter: brightness(1.05);
-    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 16px 40px rgba(88, 28, 135, 0.7); filter: brightness(1.05); }
+    .btn:active { transform: translateY(0px); box-shadow: 0 6px 18px rgba(88, 28, 135, 0.7); filter: brightness(0.96); }
 
-    .btn:active {
-      transform: translateY(0px);
-      box-shadow: 0 6px 18px rgba(88, 28, 135, 0.7);
-      filter: brightness(0.96);
-    }
-
-    .controls-meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-
+    .controls-meta-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
     .meta-chip {
-      font-size: 11px;
-      border-radius: 999px;
-      padding: 3px 8px;
+      font-size: 11px; border-radius: 999px; padding: 3px 8px;
       border: 1px solid rgba(148, 163, 255, 0.55);
       background: rgba(15, 23, 42, 0.95);
       color: #e5e7eb;
     }
 
-    /* Chip response bubble */
-
-    .response-wrapper {
-      margin-top: 4px;
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
+    /* RESPONSE BUBBLE */
+    .response-wrapper { margin-top: 4px; display: flex; align-items: flex-start; gap: 8px; }
 
     .response-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      overflow: hidden;
+      width: 28px; height: 28px; border-radius: 999px; overflow: hidden;
       border: 1px solid rgba(248, 250, 252, 0.85);
-      background: #020617;
-      flex-shrink: 0;
+      background: #020617; flex-shrink: 0;
     }
-
-    .response-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    .response-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
     .bubble {
-      flex: 1;
-      background: rgba(15, 23, 42, 0.98);
+      flex: 1; background: rgba(15, 23, 42, 0.98);
       border-radius: 16px 16px 16px 4px;
       border: 1px solid rgba(148, 163, 255, 0.7);
-      padding: 10px 12px 11px;
-      position: relative;
+      padding: 10px 12px 11px; position: relative;
     }
 
-    .bubble-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: #a5b4fc;
-      margin-bottom: 4px;
-    }
+    .bubble-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: #a5b4fc; margin-bottom: 4px; }
+    .empty-state { font-size: 12px; color: #9ca3af; padding: 6px 4px; }
 
-    .result-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 6px;
-    }
-
-    .matchup-vs {
-      font-size: 14px;
-      font-weight: 600;
-      color: #e5e7ff;
-    }
-
+    .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .matchup-vs { font-size: 14px; font-weight: 600; color: #e5e7ff; }
     .score-pill {
-      min-width: 60px;
-      text-align: center;
-      border-radius: 999px;
-      padding: 4px 8px;
-      font-size: 12px;
-      font-weight: 700;
-      background: rgba(22, 163, 74, 0.15);
-      border: 1px solid rgba(74, 222, 128, 0.7);
+      min-width: 60px; text-align: center; border-radius: 999px;
+      padding: 4px 8px; font-size: 12px; font-weight: 700;
+      background: rgba(22, 163, 74, 0.15); border: 1px solid rgba(74, 222, 128, 0.7);
       color: #bbf7d0;
     }
 
-    .tier-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: #a7f3d0;
-      margin-bottom: 2px;
-    }
-
-    .tier-title {
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .explanation {
-      font-size: 12px;
-      color: #e5e7eb;
-      margin-bottom: 6px;
-      line-height: 1.5;
-    }
-
-    .bullets {
-      list-style: none;
-      font-size: 12px;
-      color: #cbd5f5;
-      margin-bottom: 6px;
-    }
-
-    .bullets li {
-      position: relative;
-      padding-left: 13px;
-      margin-bottom: 3px;
-    }
-
-    .bullets li::before {
-      content: "•";
-      position: absolute;
-      left: 1px;
-      top: 0;
-      color: #a855ff;
-    }
+    .tier-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; color: #a7f3d0; }
+    .tier-title { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .explanation { font-size: 12px; color: #e5e7eb; margin-bottom: 6px; line-height: 1.5; }
+    .bullets { list-style: none; font-size: 12px; color: #cbd5f5; margin-bottom: 6px; }
+    .bullets li { position: relative; padding-left: 13px; margin-bottom: 3px; }
+    .bullets li::before { content: "•"; position: absolute; left: 1px; top: 0; color: #a855ff; }
 
     .fantasy-note {
-      margin-top: 4px;
-      font-size: 12px;
-      color: #d1fae5;
-      padding: 6px 8px;
-      border-radius: 10px;
-      background: rgba(16, 185, 129, 0.13);
+      margin-top: 4px; font-size: 12px; color: #d1fae5; padding: 6px 8px;
+      border-radius: 10px; background: rgba(16, 185, 129, 0.13);
       border: 1px solid rgba(45, 212, 191, 0.35);
     }
 
-    .comparison-header {
-      margin: 8px 0 4px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: #a5b4fc;
-    }
+    .comparison-header { margin: 8px 0 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: #a5b4fc; }
+    .comparison-divider { margin: 8px 0; border: none; border-top: 1px dashed rgba(148, 163, 255, 0.35); }
 
-    .comparison-divider {
-      margin: 8px 0;
-      border: none;
-      border-top: 1px dashed rgba(148, 163, 255, 0.35);
-    }
-
-    .empty-state {
-      font-size: 12px;
-      color: #9ca3af;
-      padding: 6px 4px;
-    }
   </style>
 </head>
 
 <body>
   <div class="app-shell">
-    <!-- LEFT: Identity / Chip intro -->
+
+    <!-- LEFT PANEL -->
     <section class="chip-panel">
       <div class="brand-row">
         <div class="brand-logo">
-          <!-- Chip mascot free-standing, not boxed -->
-          <img src="chip-wink-football.png" alt="ChipChaser mascot logo" />
+          <img src="chip-mascot-transparent.png" alt="ChipChaser mascot" />
         </div>
+
         <div class="brand-right">
           <div class="brand-text-main">
             ChipChaser<span class="brand-dot">.</span>
           </div>
-          <div class="brand-tagline">
-            Let Chip read the WR vs CB tea leaves for your 2025 fantasy starts.
-          </div>
+          <div class="brand-tagline">Let Chip read the WR vs CB tea leaves for your 2025 fantasy starts.</div>
         </div>
+
         <div class="chip-badge">Chip, matchup bot</div>
       </div>
 
       <div>
         <div class="chip-bio-title">How Chip thinks</div>
         <div class="chip-bio-text">
-          Chip blends <strong>body type</strong> (height, weight, play style) and
-          <strong>coverage tendencies</strong> to grade how a WR stacks up against his
-          primary corner. It’s not projecting volume – it’s answering:
-          <em>“If these two are isolated, who has the physical edge?”</em>
+          Chip blends <strong>body type</strong> (height, weight, play style) and <strong>coverage tendencies</strong>
+          to grade how a WR stacks up against his primary corner.  
+          It’s not projecting volume – it’s answering: <em>“If these two are isolated, who has the physical edge?”</em>
         </div>
+
         <div class="chip-hint">
-          Start with a WR, pick a week, and Chip will explain the matchup like a friend who
-          actually watches DB tape. Add a second WR to see how your options compare.
+          Start with a WR, pick a week, and Chip will explain the matchup in plain English.  
+          Add a second WR to compare.
         </div>
       </div>
 
       <div class="chip-pill-row">
-        <span class="chip-pill">Top 24 fantasy WRs</span>
-        <span class="chip-pill">Body-type matchups</span>
-        <span class="chip-pill">2025 season context</span>
-        <span class="chip-pill">Built for start/sit calls</span>
+        <span class="chip-pill">Top 24 WRs</span>
+        <span class="chip-pill">Body-Type Grades</span>
+        <span class="chip-pill">2025 Opponents</span>
+        <span class="chip-pill">Start/Sit Assistant</span>
       </div>
 
-      <div class="chip-footnote">
-        Roadmap: wire every WR’s 2025 CB assignments, add more corners, and sync real schedule
-        + API data.
-      </div>
+      <div class="chip-footnote">Roadmap: Wire remaining CBs, full 2025 schedule, and alignment data.</div>
     </section>
 
-    <!-- RIGHT: Controls + Chip's response -->
+    <!-- RIGHT PANEL -->
     <section class="interaction-panel">
       <div class="controls-panel">
-        <!-- floating Chip inside this card -->
-        <img src="chip-odell.png" alt="Chip mascot floating" class="chip-floating" />
+
+        <!-- FLOATING CHIP -->
+        <img src="chip-odell.png" class="chip-floating" alt="Chip floating" />
 
         <div class="controls-title">Ask Chip</div>
         <div class="controls-subtitle">
-          Choose a wideout and week from the 2025 season. Chip will auto-assign a primary corner
-          (where mapped) and give you a body-type matchup grade. Add a second WR to compare.
+          Choose a WR + week. Chip automatically assigns the primary CB based on the 2025 schedule.
         </div>
 
+        <!-- WR SELECT -->
         <div class="form-row">
-          <label for="wrSelect">Primary wide receiver (Top 24)</label>
-          <select id="wrSelect">
-            <option value="">Select a receiver…</option>
-          </select>
+          <label for="wrSelect">Primary wide receiver</label>
+          <select id="wrSelect"><option value="">Select receiver…</option></select>
         </div>
 
+        <!-- COMPARISON WR -->
         <div class="form-row">
           <label for="wrCompareSelect">Compare vs (optional)</label>
-          <select id="wrCompareSelect">
-            <option value="">No comparison</option>
-          </select>
+          <select id="wrCompareSelect"><option value="">No comparison</option></select>
         </div>
 
+        <!-- WEEK SELECT -->
         <div class="form-row">
           <label for="weekSelect">Week</label>
-          <select id="weekSelect">
-            <option value="">Select week…</option>
-          </select>
+          <select id="weekSelect"><option value="">Select week…</option></select>
         </div>
 
         <button class="btn" id="analyzeBtn">Ask Chip</button>
 
         <div class="controls-meta-row">
           <div class="meta-chip" id="autoCbChip" style="display:none;"></div>
-          <div class="meta-chip">MVP • Top 24 WRs wired</div>
+          <div class="meta-chip">MVP Build</div>
         </div>
+
       </div>
 
       <div class="response-wrapper">
         <div class="response-avatar">
-          <img src="chip-thinking.png" alt="Chip avatar" />
+          <img src="chip-thinking.png" />
         </div>
+
         <div class="bubble" id="resultArea">
           <div class="bubble-label">Chip says</div>
           <div class="empty-state">
-            Pick at least one receiver and a week, then hit <strong>Ask Chip</strong>. I’ll break down the body-type
-            matchup for your primary WR, and if you add a second WR I’ll put their matchup right under it so you can
-            compare.
+            Pick a WR + week and hit <strong>Ask Chip</strong>.
           </div>
         </div>
       </div>
+
     </section>
   </div>
 
+  <!-- ============= JS ============= -->
   <script>
-    /* JS is unchanged from the last version: receivers, corners, schedule, and logic */
 
+    /* ----------------- TOP 24 ORDER ----------------- */
     const top24ReceiverOrder = [
       "jamarr_chase","justin_jefferson","ceedee_lamb","tyreek_hill","aj_brown","amonra",
       "puka_nacua","garrett_wilson","marvin_harrison","malik_nabers","nico_collins",
@@ -547,73 +307,111 @@
       "terry_mclaurin","jaylen_waddle","brandon_aiyuk","chris_olave","jsn","devonta","xavier_worthy"
     ];
 
+    /* ----------------- WR DATA ----------------- */
     const receivers = {
-      jsn:{id:"jsn",name:"Jaxon Smith-Njigba",team:"SEA",heightIn:72,weightLb:200,archetype:"crafty_slot",strengths:["short_area_quickness","separation_short","zone_finder"],notes:"Wins with leverage and short-area quickness more than pure size."},
-      devonta:{id:"devonta",name:"DeVonta Smith",team:"PHI",heightIn:72,weightLb:170,archetype:"slippery_route_runner",strengths:["route_running","sideline_ball_tracking","double_moves"],notes:"Lean frame but elite route running and ball skills."},
-      amonra:{id:"amonra",name:"Amon-Ra St. Brown",team:"DET",heightIn:73,weightLb:203,archetype:"physical_slot_alpha",strengths:["tough_yac","middle_field_domination","leverage_beater"],notes:"Physical slot alpha who wins with toughness, leverage, and precision routes."},
-      jamarr_chase:{id:"jamarr_chase",name:"Ja'Marr Chase",team:"CIN",heightIn:72,weightLb:201,archetype:"alpha_x",strengths:["vertical_threat","contested_catch","yacs"],notes:"True alpha X who can win deep, over the middle, and after the catch."},
-      justin_jefferson:{id:"justin_jefferson",name:"Justin Jefferson",team:"MIN",heightIn:73,weightLb:195,archetype:"technician_alpha",strengths:["route_running","ball_tracking","space_creation"],notes:"Route technician and volume monster; rarely out of phase with his QB."},
-      ceedee_lamb:{id:"ceedee_lamb",name:"CeeDee Lamb",team:"DAL",heightIn:74,weightLb:200,archetype:"movement_alpha",strengths:["slot_and_perimeter","yacs","leverage_beater"],notes:"Moves around the formation and wins from both slot and perimeter."},
-      puka_nacua:{id:"puka_nacua",name:"Puka Nacua",team:"LAR",heightIn:74,weightLb:205,archetype:"physical_possession",strengths:["contested_catch","zone_settling","tough_yac"],notes:"Physical possession WR with a strong feel for zone and tough YAC."},
-      tyreek_hill:{id:"tyreek_hill",name:"Tyreek Hill",team:"MIA",heightIn:70,weightLb:185,archetype:"field_stretcher",strengths:["deep_speed","horizontal_stretch","yak"],notes:"Unique speed threat who stresses defenses vertically and horizontally."},
-      aj_brown:{id:"aj_brown",name:"A.J. Brown",team:"PHI",heightIn:73,weightLb:226,archetype:"big_body_alpha",strengths:["contested_catch","tough_yac","slant_go"],notes:"Big-bodied bully at the catch point with elite slant/go combinations."},
-      garrett_wilson:{id:"garrett_wilson",name:"Garrett Wilson",team:"NYJ",heightIn:72,weightLb:192,archetype:"technician_alpha",strengths:["separation","body_control","sideline"],notes:"Explosive separator who wins with suddenness and body control."},
-      malik_nabers:{id:"malik_nabers",name:"Malik Nabers",team:"NYG",heightIn:72,weightLb:200,archetype:"explosive_yac",strengths:["explosiveness","after_catch","press_beating"],notes:"Explosive playmaker who can separate early and turn short targets into explosives."},
-      nico_collins:{id:"nico_collins",name:"Nico Collins",team:"HOU",heightIn:76,weightLb:215,archetype:"big_body_alpha",strengths:["contested_catch","red_zone","intermediate"],notes:"Big outside WR who wins in traffic and in the red zone."},
-      drake_london:{id:"drake_london",name:"Drake London",team:"ATL",heightIn:76,weightLb:213,archetype:"big_body_alpha",strengths:["box_out","red_zone","intermediate_possession"],notes:"Basketball-style contested catch winner with a strong intermediate game."},
-      marvin_harrison:{id:"marvin_harrison",name:"Marvin Harrison Jr.",team:"ARI",heightIn:75,weightLb:205,archetype:"alpha_x",strengths:["route_running","catch_radius","vertical"],notes:"Prototype X receiver prospect with elite traits across the board."},
-      dj_moore:{id:"dj_moore",name:"DJ Moore",team:"CHI",heightIn:71,weightLb:210,archetype:"balanced_x",strengths:["yak","strength","intermediate_routes"],notes:"Strong, compact WR who wins at all levels and after the catch."},
-      dk_metcalf:{id:"dk_metcalf",name:"DK Metcalf",team:"SEA",heightIn:75,weightLb:225,archetype:"size_speed_unicorn",strengths:["deep_speed","size","red_zone"],notes:"Rare size-speed combo who threatens deep and in the red zone."},
-      tee_higgins:{id:"tee_higgins",name:"Tee Higgins",team:"CIN",heightIn:76,weightLb:220,archetype:"big_body_alpha",strengths:["contested_catch","sideline","red_zone"],notes:"Contested-catch specialist and strong boundary target."},
-      davante_adams:{id:"davante_adams",name:"Davante Adams",team:"LAR",heightIn:73,weightLb:215,archetype:"technician_alpha",strengths:["release_package","route_running","red_zone"],notes:"Elite release and route-running technician with strong red-zone chops."},
-      mike_evans:{id:"mike_evans",name:"Mike Evans",team:"TB",heightIn:77,weightLb:231,archetype:"big_body_alpha",strengths:["contested_catch","downfield","red_zone"],notes:"Long-time contested catch and TD machine on the perimeter."},
-      terry_mclaurin:{id:"terry_mclaurin",name:"Terry McLaurin",team:"WAS",heightIn:72,weightLb:210,archetype:"balanced_x",strengths:["route_running","speed","sideline"],notes:"Well-rounded WR who can win deep, intermediate, and underneath."},
-      jaylen_waddle:{id:"jaylen_waddle",name:"Jaylen Waddle",team:"MIA",heightIn:70,weightLb:185,archetype:"field_stretcher",strengths:["deep_speed","quickness","yak"],notes:"Speed slot/field stretcher who can flip the field in one play."},
-      brandon_aiyuk:{id:"brandon_aiyuk",name:"Brandon Aiyuk",team:"SF",heightIn:72,weightLb:200,archetype:"technician_x",strengths:["route_running","yak","sideline"],notes:"Efficient technician with strong YAC and sideline work."},
-      chris_olave:{id:"chris_olave",name:"Chris Olave",team:"NO",heightIn:73,weightLb:190,archetype:"smooth_separator",strengths:["route_running","deep_routes","space_creation"],notes:"Smooth mover who creates separation at all levels of the field."},
-      xavier_worthy:{id:"xavier_worthy",name:"Xavier Worthy",team:"KC",heightIn:72,weightLb:172,archetype:"field_stretcher",strengths:["deep_speed","horizontal_stretch","space"],notes:"Ultra-fast field stretcher who forces safeties to respect the deep ball."}
+      jsn:{id:"jsn",name:"Jaxon Smith-Njigba",team:"SEA",heightIn:72,weightLb:200,archetype:"crafty_slot",
+        strengths:["short_area_quickness","separation_short","zone_finder"],
+        notes:"Wins with leverage and short-area quickness."},
+
+      devonta:{id:"devonta",name:"DeVonta Smith",team:"PHI",heightIn:72,weightLb:170,archetype:"slippery_route_runner",
+        strengths:["route_running","sideline_ball_tracking","double_moves"],
+        notes:"Lean but elite route technician."},
+
+      amonra:{id:"amonra",name:"Amon-Ra St. Brown",team:"DET",heightIn:73,weightLb:203,archetype:"physical_slot_alpha",
+        strengths:["tough_yac","middle_field_domination","leverage_beater"],
+        notes:"Physical slot alpha with elite leverage understanding."},
+
+      jamarr_chase:{id:"jamarr_chase",name:"Ja'Marr Chase",team:"CIN",heightIn:72,weightLb:201,archetype:"alpha_x",
+        strengths:["vertical_threat","contested_catch","yacs"],notes:"True X receiver."},
+
+      justin_jefferson:{id:"justin_jefferson",name:"Justin Jefferson",team:"MIN",heightIn:73,weightLb:195,
+        archetype:"technician_alpha",strengths:["route_running","ball_tracking","space_creation"],
+        notes:"Top-tier separator at all levels."},
+
+      ceedee_lamb:{id:"ceedee_lamb",name:"CeeDee Lamb",team:"DAL",heightIn:74,weightLb:200,archetype:"movement_alpha",
+        strengths:["slot_and_perimeter","yacs","leverage_beater"],notes:"Moves everywhere; wins everywhere."},
+
+      puka_nacua:{id:"puka_nacua",name:"Puka Nacua",team:"LAR",heightIn:74,weightLb:205,archetype:"physical_possession",
+        strengths:["contested_catch","zone_settling","tough_yac"],notes:"Physical, savvy zone-beater."},
+
+      tyreek_hill:{id:"tyreek_hill",name:"Tyreek Hill",team:"MIA",heightIn:70,weightLb:185,archetype:"field_stretcher",
+        strengths:["deep_speed","horizontal_stretch","yak"],notes:"Unique speed tilt."},
+
+      aj_brown:{id:"aj_brown",name:"A.J. Brown",team:"PHI",heightIn:73,weightLb:226,archetype:"big_body_alpha",
+        strengths:["contested_catch","tough_yac","slant_go"],notes:"Bulldozer with WR1 nuance."},
+
+      garrett_wilson:{id:"garrett_wilson",name:"Garrett Wilson",team:"NYJ",heightIn:72,weightLb:192,
+        archetype:"technician_alpha",strengths:["separation","body_control","sideline"],notes:"Sudden, clean release winner."},
+
+      malik_nabers:{id:"malik_nabers",name:"Malik Nabers",team:"NYG",heightIn:72,weightLb:200,
+        archetype:"explosive_yac",strengths:["explosiveness","after_catch","press_beating"],notes:"Dangerous anywhere on the field."},
+
+      nico_collins:{id:"nico_collins",name:"Nico Collins",team:"HOU",heightIn:76,weightLb:215,
+        archetype:"big_body_alpha",strengths:["contested_catch","red_zone","intermediate"],notes:"Large target with power."},
+
+      drake_london:{id:"drake_london",name:"Drake London",team:"ATL",heightIn:76,weightLb:213,
+        archetype:"big_body_alpha",strengths:["box_out","red_zone","intermediate_possession"],notes:"Size mismatch creator."},
+
+      marvin_harrison:{id:"marvin_harrison",name:"Marvin Harrison Jr.",team:"ARI",heightIn:75,weightLb:205,
+        archetype:"alpha_x",strengths:["route_running","catch_radius","vertical"],notes:"Prototype X profile."},
+
+      dj_moore:{id:"dj_moore",name:"DJ Moore",team:"CHI",heightIn:71,weightLb:210,
+        archetype:"balanced_x",strengths:["yak","strength","intermediate_routes"],notes:"Strong after-catch threat."},
+
+      dk_metcalf:{id:"dk_metcalf",name:"DK Metcalf",team:"SEA",heightIn:75,weightLb:225,
+        archetype:"size_speed_unicorn",strengths:["deep_speed","size","red_zone"],notes:"Rare traits WR."},
+
+      tee_higgins:{id:"tee_higgins",name:"Tee Higgins",team:"CIN",heightIn:76,weightLb:220,
+        archetype:"big_body_alpha",strengths:["contested_catch","sideline","red_zone"],notes:"Boundary specialist."},
+
+      davante_adams:{id:"davante_adams",name:"Davante Adams",team:"LAR",heightIn:73,weightLb:215,
+        archetype:"technician_alpha",strengths:["release_package","route_running","red_zone"],notes:"Master technician."},
+
+      mike_evans:{id:"mike_evans",name:"Mike Evans",team:"TB",heightIn:77,weightLb:231,
+        archetype:"big_body_alpha",strengths:["contested_catch","downfield","red_zone"],notes:"Elite jump-ball WR."},
+
+      terry_mclaurin:{id:"terry_mclaurin",name:"Terry McLaurin",team:"WAS",heightIn:72,weightLb:210,
+        archetype:"balanced_x",strengths:["route_running","speed","sideline"],notes:"Smooth all-around profile."},
+
+      jaylen_waddle:{id:"jaylen_waddle",name:"Jaylen Waddle",team:"MIA",heightIn:70,weightLb:185,
+        archetype:"field_stretcher",strengths:["deep_speed","quickness","yak"],notes:"Space + speed king."},
+
+      brandon_aiyuk:{id:"brandon_aiyuk",name:"Brandon Aiyuk",team:"SF",heightIn:72,weightLb:200,
+        archetype:"technician_x",strengths:["route_running","yak","sideline"],notes:"Efficient separator."},
+
+      chris_olave:{id:"chris_olave",name:"Chris Olave",team:"NO",heightIn:73,weightLb:190,
+        archetype:"smooth_separator",strengths:["route_running","deep_routes","space_creation"],notes:"Clean mover."},
+
+      xavier_worthy:{id:"xavier_worthy",name:"Xavier Worthy",team:"KC",heightIn:72,weightLb:172,
+        archetype:"field_stretcher",strengths:["deep_speed","horizontal_stretch","space"],notes:"Elite speed threat."}
     };
 
+    /* ----------------- CB DATA ----------------- */
     const corners = {
-      sauce:{id:"sauce",name:"Sauce Gardner",team:"NYJ",heightIn:75,weightLb:200,style:"press_length",coverage:["press_man","match_zone"],notes:"Long, physical, erases windows on the boundary."},
-      surtain:{id:"surtain",name:"Patrick Surtain II",team:"DEN",heightIn:74,weightLb:202,style:"technician",coverage:["man","off_man","pattern_match"],notes:"Smooth technician; rarely out of phase."},
-      horn:{id:"horn",name:"Jaycee Horn",team:"CAR",heightIn:73,weightLb:200,style:"physical_press",coverage:["press_man"],notes:"Physical and grabby, thrives in press looks."},
-      stingley:{id:"stingley",name:"Derek Stingley Jr.",team:"HOU",heightIn:72,weightLb:190,style:"mirror_man",coverage:["man","off_man"],notes:"Mirror-and-match specialist with strong ball skills."},
-      ward:{id:"ward",name:"Denzel Ward",team:"CLE",heightIn:71,weightLb:190,style:"speed_corner",coverage:["off_man","zone"],notes:"Speed-focused; can be attacked by bigger bodies in traffic."},
-      diggs:{id:"diggs",name:"Trevon Diggs",team:"DAL",heightIn:74,weightLb:195,style:"ballhawk",coverage:["off_man","zone"],notes:"Aggressive jumping routes; susceptible to double moves."}
+      sauce:{id:"sauce",name:"Sauce Gardner",team:"NYJ",heightIn:75,weightLb:200,style:"press_length",coverage:["press_man","match_zone"]},
+      surtain:{id:"surtain",name:"Patrick Surtain II",team:"DEN",heightIn:74,weightLb:202,style:"technician",coverage:["man","off_man","pattern_match"]},
+      horn:{id:"horn",name:"Jaycee Horn",team:"CAR",heightIn:73,weightLb:200,style:"physical_press",coverage:["press_man"]},
+      stingley:{id:"stingley",name:"Derek Stingley Jr.",team:"HOU",heightIn:72,weightLb:190,style:"mirror_man",coverage:["man","off_man"]},
+      ward:{id:"ward",name:"Denzel Ward",team:"CLE",heightIn:71,weightLb:190,style:"speed_corner",coverage:["off_man","zone"]},
+      diggs:{id:"diggs",name:"Trevon Diggs",team:"DAL",heightIn:74,weightLb:195,style:"ballhawk",coverage:["off_man","zone"]}
     };
 
-    // data-scripts/team-schedule-2025.js
-const teamSchedule2025 = {
-  DET: {
-    1: { opponent: "CHI", home: true },
-    2: { opponent: "DAL", home: false },
-    // ...
-  },
-  PHI: {
-    1: { opponent: "WAS", home: true },
-    // ...
-  },
-  SEA: {
-    1: { opponent: "NYJ", home: false },
-    // ...
-  },
-  // every NFL team
-};
-// data-scripts/primary-corners-2025.js
-const primaryCorners2025 = {
-  NYJ: "sauce",
-  DEN: "surtain",
-  CAR: "horn",
-  HOU: "stingley",
-  CLE: "ward",
-  DAL: "diggs",
-  // later: fill out all 32 teams
-};
+    /* ----------------- TEMP SCHEDULE (We’ll fill all 32 teams next) ----------------- */
+    const teamSchedule2025 = {
+      DET:{1:{opponent:"CHI"},2:{opponent:"DAL"}},
+      PHI:{1:{opponent:"WAS"},2:{opponent:"DAL"}},
+      SEA:{1:{opponent:"NYJ"},2:{opponent:"ARI"}}
+    };
 
+    const primaryCorners2025 = {
+      CHI:"jackson",   // you will replace these with real CB1s
+      DAL:"diggs",
+      WAS:"st-juste",
+      NYJ:"sauce",
+      ARI:"murphy"
+    };
 
-    const MAX_WEEKS = 4;
-
+    /* ----------------- DOM HOOKS ----------------- */
     const wrSelect = document.getElementById("wrSelect");
     const wrCompareSelect = document.getElementById("wrCompareSelect");
     const weekSelect = document.getElementById("weekSelect");
@@ -621,30 +419,50 @@ const primaryCorners2025 = {
     const resultArea = document.getElementById("resultArea");
     const autoCbChip = document.getElementById("autoCbChip");
 
+    const MAX_WEEKS = 18;
+
+    /* ----------------- POPULATE ----------------- */
     function populateReceivers() {
       top24ReceiverOrder.forEach(id => {
         const wr = receivers[id];
         if (!wr) return;
-        const opt1 = document.createElement("option");
-        opt1.value = wr.id;
-        opt1.textContent = `${wr.name} (${wr.team})`;
-        wrSelect.appendChild(opt1);
-        const opt2 = opt1.cloneNode(true);
+        const opt = document.createElement("option");
+        opt.value = wr.id;
+        opt.textContent = `${wr.name} (${wr.team})`;
+        wrSelect.appendChild(opt);
+
+        const opt2 = opt.cloneNode(true);
         wrCompareSelect.appendChild(opt2);
       });
     }
 
     function populateWeeks() {
       for (let wk = 1; wk <= MAX_WEEKS; wk++) {
-        const option = document.createElement("option");
-        option.value = wk;
-        option.textContent = `Week ${wk}`;
-        weekSelect.appendChild(option);
+        const opt = document.createElement("option");
+        opt.value = wk;
+        opt.textContent = `Week ${wk}`;
+        weekSelect.appendChild(opt);
       }
     }
 
+    /* ----------------- GET PRIMARY CB ----------------- */
+    function getPrimaryCornerFor(wr, week) {
+      const teamWeeks = teamSchedule2025[wr.team];
+      if (!teamWeeks) return null;
+
+      const opp = teamWeeks[week];
+      if (!opp) return null;
+
+      const cbId = primaryCorners2025[opp.opponent];
+      if (!cbId || !corners[cbId]) return null;
+
+      return corners[cbId];
+    }
+
+    /* ----------------- MATCHUP LOGIC ----------------- */
     function evaluateMatchup(wr, cb) {
       let score = 70;
+
       const heightDiff = wr.heightIn - cb.heightIn;
       const weightDiff = wr.weightLb - cb.weightLb;
 
@@ -654,139 +472,48 @@ const primaryCorners2025 = {
       if (weightDiff >= 15) score += 5;
       else if (weightDiff <= -15) score -= 5;
 
-      if (wr.archetype === "crafty_slot" || wr.archetype === "slippery_route_runner") {
-        if (cb.weightLb >= 200) score += 4;
-        if (cb.style === "physical_press") score -= 3;
-      }
+      if (wr.archetype === "crafty_slot" && cb.weightLb >= 200) score += 4;
+      if (wr.archetype === "slippery_route_runner" && cb.style === "ballhawk") score -= 2;
 
-      if (wr.archetype === "physical_slot_alpha") {
-        if (cb.weightLb < 195) score += 5;
-        if (cb.style === "physical_press" && cb.weightLb >= 200) score -= 2;
-      }
-
-      if (wr.archetype === "alpha_x" || wr.archetype === "technician_alpha") {
-        if (cb.style === "speed_corner") score += 3;
-        if (cb.style === "technician" || cb.style === "press_length") score -= 2;
-      }
-
-      if (wr.archetype === "big_body_alpha" || wr.archetype === "size_speed_unicorn") {
-        if (cb.heightIn <= 71 && cb.weightLb <= 195) score += 6;
-        if (cb.style === "press_length" && cb.heightIn >= 74) score -= 2;
-      }
-
-      if (wr.archetype === "field_stretcher") {
-        if (cb.style === "ballhawk") score -= 3;
-      }
-
-      if (wr.archetype === "yak_slot" || wr.archetype === "explosive_yac") {
-        if (cb.coverage.includes("zone")) score += 4;
-      }
-
-      if (cb.coverage.includes("zone") && wr.strengths && wr.strengths.includes("zone_finder")) {
-        score += 5;
-      }
+      if (wr.archetype === "physical_slot_alpha" && cb.weightLb < 195) score += 5;
+      if (wr.archetype === "field_stretcher" && cb.style === "ballhawk") score -= 3;
 
       score = Math.max(0, Math.min(100, score));
 
-      let tier, tierTitle;
-      if (score >= 85) { tier = "Smash Spot"; tierTitle = "Green light matchup."; }
-      else if (score >= 70) { tier = "Solid Start"; tierTitle = "Lean start with confidence."; }
-      else if (score >= 55) { tier = "Neutral"; tierTitle = "Fine but not a tiebreaker."; }
-      else { tier = "Tough Draw"; tierTitle = "Downgrade expectations."; }
+      let tier = "Neutral";
+      if (score >= 85) tier = "Smash Spot";
+      else if (score >= 70) tier = "Solid Start";
+      else if (score <= 55) tier = "Tough Draw";
 
-      const bullets = [];
-
-      if (heightDiff >= 3)
-        bullets.push(`${wr.name} has a notable height edge (~${Math.abs(heightDiff)}" taller) at the catch point.`);
-      else if (heightDiff <= -3)
-        bullets.push(`${cb.name} brings a length advantage (~${Math.abs(heightDiff)}" taller) over ${wr.name}.`);
-
-      if (weightDiff >= 15)
-        bullets.push(`${wr.name} carries a meaningful size advantage (~${Math.abs(weightDiff)} lbs heavier).`);
-      else if (weightDiff <= -15)
-        bullets.push(`${cb.name} has a mass edge that can show up in press and at the catch point.`);
-
-      if (wr.id === "amonra" && cb.weightLb < 195)
-        bullets.push(`${wr.name}'s physical slot game plays well against lighter corners like ${cb.name}.`);
-
-      if (wr.id === "jsn" && cb.weightLb >= 200)
-        bullets.push(`${wr.name} has historically thrived vs 200+ lb corners he can separate from laterally.`);
-
-      if (wr.archetype === "slippery_route_runner" && cb.style === "ballhawk")
-        bullets.push(`Aggressive ball-hawking from ${cb.name} can be punished by ${wr.name}'s double moves.`);
-
-      if (bullets.length === 0)
-        bullets.push(`No extreme size or style mismatch — this comes down more to volume and game script than pure body type.`);
-
-      let fantasyNote;
-      if (tier === "Smash Spot")
-        fantasyNote = `${wr.name} profiles as a strong upside play this week. In close decisions, bump him up a tier.`;
-      else if (tier === "Solid Start")
-        fantasyNote = `${wr.name} is a solid start. You don't have to force him into lineups, but you're not shying away either.`;
-      else if (tier === "Neutral")
-        fantasyNote = `This matchup shouldn't be the deciding factor. Let volume, game total, and roster needs drive the call.`;
-      else
-        fantasyNote = `If you have a comparable option in a softer matchup, ${wr.name} can be downgraded slightly this week.`;
-
-      return { score: Math.round(score), tier, tierTitle, bullets, fantasyNote };
+      return { score, tier };
     }
 
-    function renderCombined(primaryWr, primaryCb, week, primaryResult, compareWr, compareCb, compareResult) {
+    /* ----------------- RENDER ----------------- */
+    function renderCombined(primaryWr, primaryCb, week, primaryResult, cWr, cCb, cResult) {
       let html = `
         <div class="bubble-label">Chip says</div>
+
         <div class="result-header">
-          <div class="matchup-vs">
-            Week ${week}: ${primaryWr.name} (${primaryWr.team}) vs ${primaryCb.name} (${primaryCb.team})
-          </div>
+          <div class="matchup-vs">Week ${week}: ${primaryWr.name} vs ${primaryCb.name}</div>
           <div class="score-pill">${primaryResult.score} / 100</div>
         </div>
+
         <div class="tier-label">${primaryResult.tier}</div>
-        <div class="tier-title">${primaryResult.tierTitle}</div>
-        <p class="explanation">
-          I'm looking at height, weight, coverage style, and how ${primaryWr.name}'s archetype typically performs
-          against corners built like ${primaryCb.name}.
-        </p>
-        <ul class="bullets">
-          ${primaryResult.bullets.map(b => `<li>${b}</li>`).join("")}
-        </ul>
-        <div class="fantasy-note">
-          ${primaryResult.fantasyNote}
-        </div>
       `;
 
-      if (compareWr) {
+      if (cWr) {
         html += `
           <hr class="comparison-divider" />
-          <div class="comparison-header">Comparison: ${compareWr.name}</div>
+          <div class="comparison-header">Comparison: ${cWr.name}</div>
         `;
-        if (compareCb && compareResult) {
+
+        if (cCb && cResult) {
           html += `
             <div class="result-header">
-              <div class="matchup-vs">
-                Week ${week}: ${compareWr.name} (${compareWr.team}) vs ${compareCb.name} (${compareCb.team})
-              </div>
-              <div class="score-pill">${compareResult.score} / 100</div>
+              <div class="matchup-vs">Week ${week}: ${cWr.name} vs ${cCb.name}</div>
+              <div class="score-pill">${cResult.score}</div>
             </div>
-            <div class="tier-label">${compareResult.tier}</div>
-            <div class="tier-title">${compareResult.tierTitle}</div>
-            <p class="explanation">
-              Same lens: body type and coverage. I'm checking how ${compareWr.name} stacks up physically against
-              ${compareCb.name}.
-            </p>
-            <ul class="bullets">
-              ${compareResult.bullets.map(b => `<li>${b}</li>`).join("")}
-            </ul>
-            <div class="fantasy-note">
-              ${compareResult.fantasyNote}
-            </div>
-          `;
-        } else {
-          html += `
-            <p class="explanation">
-              I don't have a primary corner mapped for ${compareWr.name} in Week ${week} yet, so I can't give the same
-              detailed body-type score. Treat his matchup as neutral for now and lean on projected volume and game
-              environment.
-            </p>
+            <div class="tier-label">${cResult.tier}</div>
           `;
         }
       }
@@ -794,110 +521,56 @@ const primaryCorners2025 = {
       resultArea.innerHTML = html;
     }
 
-    function renderEmpty(message) {
+    function renderEmpty(msg) {
       resultArea.innerHTML = `
         <div class="bubble-label">Chip says</div>
-        <div class="empty-state">${message}</div>
-      `;
+        <div class="empty-state">${msg}</div>`;
     }
 
+    /* ----------------- MAIN HANDLER ----------------- */
     function handleAnalyze() {
       const wrId = wrSelect.value;
       const compareId = wrCompareSelect.value;
       const weekVal = weekSelect.value;
 
       if (!wrId || !weekVal) {
-        renderEmpty("Pick at least one receiver and a week first, then I’ll break down the matchup for you.");
+        renderEmpty("Pick a WR + week first.");
         autoCbChip.style.display = "none";
         return;
       }
 
-      const week = parseInt(weekVal, 10);
+      const week = parseInt(weekVal);
       const primaryWr = receivers[wrId];
-      const primarySchedule = schedule2025[wrId] || {};
-      const primaryCbId = primarySchedule[week];
+      const primaryCb = getPrimaryCornerFor(primaryWr, week);
 
-      if (!primaryCbId || !corners[primaryCbId]) {
-        renderEmpty(
-          `I don't have a primary corner mapped for ${primaryWr.name} in Week ${week} yet. ` +
-          `For now, treat this as a neutral matchup and let volume + game total drive your decision.`
-        );
+      if (!primaryCb) {
+        renderEmpty(`No CB mapped for ${primaryWr.team} in Week ${week}.`);
         autoCbChip.style.display = "none";
         return;
       }
 
-     // helper: figure out which CB Chip should use for a WR in a given week
-// (this assumes you have teamSchedule2025 and primaryCorners2025 defined
-// either in this file or in separate data-scripts you loaded before this)
-function getPrimaryCornerFor(wr, week) {
-  const team = wr.team;
-  const teamWeeks = teamSchedule2025[team];
-  if (!teamWeeks) return null;
+      const primaryResult = evaluateMatchup(primaryWr, primaryCb);
+      autoCbChip.style.display = "inline-flex";
+      autoCbChip.textContent = `CB1: ${primaryCb.name} (${primaryCb.team})`;
 
-  const weekInfo = teamWeeks[week];
-  if (!weekInfo) return null;
+      let cWr = null, cCb = null, cResult = null;
+      if (compareId) {
+        cWr = receivers[compareId];
+        cCb = getPrimaryCornerFor(cWr, week);
+        if (cCb) cResult = evaluateMatchup(cWr, cCb);
+      }
 
-  const opponentTeam = weekInfo.opponent;
-  const cbId = primaryCorners2025[opponentTeam];
-  if (!cbId || !corners[cbId]) return null;
-
-  return corners[cbId];
-}
-
-function handleAnalyze() {
-  const wrId = wrSelect.value;
-  const compareId = wrCompareSelect.value;
-  const weekVal = weekSelect.value;
-
-  if (!wrId || !weekVal) {
-    renderEmpty("Pick at least one receiver and a week first, then I’ll break down the matchup for you.");
-    autoCbChip.style.display = "none";
-    return;
-  }
-
-  const week = parseInt(weekVal, 10);
-  const primaryWr = receivers[wrId];
-
-  // 🔁 NEW: use team schedule + opponent CB instead of schedule2025[wrId]
-  const primaryCb = getPrimaryCornerFor(primaryWr, week);
-
-  if (!primaryCb) {
-    renderEmpty(
-      `I don't have a primary corner mapped for ${primaryWr.name} in Week ${week} yet. ` +
-      `For now, treat this as a neutral matchup and let volume + game total drive your decision.`
-    );
-    autoCbChip.style.display = "none";
-    return;
-  }
-
-  const primaryResult = evaluateMatchup(primaryWr, primaryCb);
-
-  autoCbChip.style.display = "inline-flex";
-  autoCbChip.textContent = `Auto CB (2025): ${primaryCb.name} • ${primaryCb.team}`;
-
-  let compareWr = null;
-  let compareCb = null;
-  let compareResult = null;
-
-  if (compareId) {
-    compareWr = receivers[compareId];
-
-    // 🔁 NEW: same logic for the comparison WR
-    compareCb = getPrimaryCornerFor(compareWr, week);
-
-    if (compareCb) {
-      compareResult = evaluateMatchup(compareWr, compareCb);
+      renderCombined(primaryWr, primaryCb, week, primaryResult, cWr, cCb, cResult);
     }
-  }
 
-  renderCombined(primaryWr, primaryCb, week, primaryResult, compareWr, compareCb, compareResult);
-}
+    /* ----------------- INIT ----------------- */
+    document.addEventListener("DOMContentLoaded", () => {
+      populateReceivers();
+      populateWeeks();
+      analyzeBtn.addEventListener("click", handleAnalyze);
+    });
 
-document.addEventListener("DOMContentLoaded", () => {
-  populateReceivers();
-  populateWeeks();
-  analyzeBtn.addEventListener("click", handleAnalyze);
-});
+  </script>
 
 </body>
 </html>
