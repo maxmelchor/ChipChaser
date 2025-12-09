@@ -416,12 +416,12 @@
       <div class="chip-pill-row">
         <span class="chip-pill">Top 24 WRs</span>
         <span class="chip-pill">Body-Type Grades</span>
-        <span class="chip-pill">2025 Opponents (MVP)</span>
+        <span class="chip-pill">2025 Opponents</span>
         <span class="chip-pill">Start/Sit Assistant</span>
       </div>
 
       <div class="chip-footnote">
-        Roadmap: replace MVP CB archetype rotation with full team-level 2025 schedule + CB1s.
+        Roadmap: expand CB1 coverage for all 32 teams and layer in alignment data.
       </div>
     </section>
 
@@ -434,7 +434,8 @@
 
         <div class="controls-title">Ask Chip</div>
         <div class="controls-subtitle">
-          Choose a WR + week. Chip automatically assigns a primary CB archetype for a body-type matchup grade.
+          Choose a WR + week. Chip looks at the 2025 schedule, pulls the primary CB (or archetype) for that opponent,
+          and gives you a body-type matchup grade.
         </div>
 
         <!-- WR SELECT -->
@@ -465,7 +466,7 @@
 
         <div class="controls-meta-row">
           <div class="meta-chip" id="autoCbChip" style="display:none;"></div>
-          <div class="meta-chip">MVP Build</div>
+          <div class="meta-chip">MVP • Real 2025 schedule wired</div>
         </div>
       </div>
 
@@ -598,22 +599,697 @@
       diggs:{id:"diggs",name:"Trevon Diggs",team:"DAL",heightIn:74,weightLb:195,style:"ballhawk",coverage:["off_man","zone"]}
     };
 
-    /* ----------------- MVP WR→CB SCHEDULE -----------------
-       For now we rotate through CB archetypes so that every WR
-       has a mapped CB for every week 1–18.
-       Later: swap this for real team schedule + CB1 mapping.
-    -------------------------------------------------------- */
+    /* ----------------- REAL 2025 TEAM SCHEDULE (from your sheet) -----------------
+       For brevity this is the same structure we used earlier: team -> week -> { opponent, home }.
+       Opponent is the *team code* Chip will use to look up the CB1.
+    ------------------------------------------------------------------------------- */
+    const teamSchedule2025 = {
+      ARI: {
+        1:{opponent:"NO",home:false},
+        2:{opponent:"CAR",home:true},
+        3:{opponent:"SF",home:false},
+        4:{opponent:"SEA",home:false},
+        5:{opponent:"TEN",home:true},
+        6:{opponent:"IND",home:false},
+        7:{opponent:"GB",home:true},
+        8:{opponent:"BYE"},
+        9:{opponent:"DAL",home:false},
+        10:{opponent:"SEA",home:false},
+        11:{opponent:"SF",home:true},
+        12:{opponent:"JAX",home:false},
+        13:{opponent:"TB",home:false},
+        14:{opponent:"LAR",home:true},
+        15:{opponent:"HOU",home:false},
+        16:{opponent:"ATL",home:true},
+        17:{opponent:"CIN",home:false},
+        18:{opponent:"LAR",home:true},
+      },
+
+      ATL: {
+        1:{opponent:"TB",home:true},
+        2:{opponent:"MIN",home:false},
+        3:{opponent:"WSH",home:true},
+        4:{opponent:"BYE"},
+        5:{opponent:"BUF",home:true},
+        6:{opponent:"SF",home:false},
+        7:{opponent:"MIA",home:true},
+        8:{opponent:"NE",home:false},
+        9:{opponent:"IND",home:true},
+        10:{opponent:"CAR",home:false},
+        11:{opponent:"NO",home:false},
+        12:{opponent:"NYJ",home:false},
+        13:{opponent:"SEA",home:true},
+        14:{opponent:"TB",home:false},
+        15:{opponent:"ARI",home:true},
+        16:{opponent:"LAR",home:false},
+        17:{opponent:"NO",home:true},
+        18:{opponent:"NO",home:false},
+      },
+
+      BAL: {
+        1:{opponent:"BUF",home:false},
+        2:{opponent:"CLE",home:true},
+        3:{opponent:"DET",home:true},
+        4:{opponent:"KC",home:false},
+        5:{opponent:"HOU",home:false},
+        6:{opponent:"LAR",home:true},
+        7:{opponent:"BYE"},
+        8:{opponent:"CHI",home:true},
+        9:{opponent:"MIA",home:false},
+        10:{opponent:"MIN",home:true},
+        11:{opponent:"CLE",home:false},
+        12:{opponent:"NYJ",home:true},
+        13:{opponent:"CIN",home:true},
+        14:{opponent:"PIT",home:false},
+        15:{opponent:"CIN",home:false},
+        16:{opponent:"NE",home>true},
+        17:{opponent:"GB",home:false},
+        18:{opponent:"PIT",home:true},
+      },
+
+      BUF: {
+        1:{opponent:"BAL",home:true},
+        2:{opponent:"NYJ",home:false},
+        3:{opponent:"MIA",home:true},
+        4:{opponent:"NO",home:false},
+        5:{opponent:"NE",home:true},
+        6:{opponent:"ATL",home:false},
+        7:{opponent:"BYE"},
+        8:{opponent:"CAR",home:true},
+        9:{opponent:"KC",home:true},
+        10:{opponent:"MIA",home:false},
+        11:{opponent:"TB",home:true},
+        12:{opponent:"HOU",home:false},
+        13:{opponent:"PIT",home:false},
+        14:{opponent:"CIN",home:true},
+        15:{opponent:"NE",home:false},
+        16:{opponent:"CLE",home:true},
+        17:{opponent:"PHI",home:true},
+        18:{opponent:"NYJ",home:true},
+      },
+
+      CAR: {
+        1:{opponent:"JAX",home:false},
+        2:{opponent:"ARI",home:false},
+        3:{opponent:"ATL",home>true},
+        4:{opponent:"NE",home:true},
+        5:{opponent:"MIA",home:false},
+        6:{opponent:"DAL",home:true},
+        7:{opponent:"NYJ",home:false},
+        8:{opponent:"BUF",home:false},
+        9:{opponent:"GB",home:false},
+        10:{opponent:"NO",home:true},
+        11:{opponent:"ATL",home:true},
+        12:{opponent:"SF",home:false},
+        13:{opponent:"LAR",home:true},
+        14:{opponent:"BYE"},
+        15:{opponent:"NO",home:false},
+        16:{opponent:"TB",home:true},
+        17:{opponent:"SEA",home:true},
+        18:{opponent:"TB",home:false},
+      },
+
+      CHI: {
+        1:{opponent:"MIN",home:true},
+        2:{opponent:"DET",home:false},
+        3:{opponent:"DAL",home:true},
+        4:{opponent:"LV",home:false},
+        5:{opponent:"BYE"},
+        6:{opponent:"WSH",home:false},
+        7:{opponent:"NO",home:true},
+        8:{opponent:"BAL",home:false},
+        9:{opponent:"CIN",home:false},
+        10:{opponent:"NYG",home:true},
+        11:{opponent:"MIN",home:false},
+        12:{opponent:"PIT",home:true},
+        13:{opponent:"PHI",home:false},
+        14:{opponent:"GB",home:true},
+        15:{opponent:"CLE",home:true},
+        16:{opponent:"GB",home:false},
+        17:{opponent:"SF",home:false},
+        18:{opponent:"DET",home:true},
+      },
+
+      CIN: {
+        1:{opponent:"CLE",home:false},
+        2:{opponent:"JAX",home:true},
+        3:{opponent:"MIN",home:false},
+        4:{opponent:"DEN",home:true},
+        5:{opponent:"DET",home:false},
+        6:{opponent:"GB",home:false},
+        7:{opponent:"PIT",home:true},
+        8:{opponent:"NYJ",home:false},
+        9:{opponent:"CHI",home:true},
+        10:{opponent:"BYE"},
+        11:{opponent:"PIT",home:false},
+        12:{opponent:"NE",home:true},
+        13:{opponent:"BAL",home:false},
+        14:{opponent:"BUF",home:false},
+        15:{opponent:"BAL",home:true},
+        16:{opponent:"MIA",home:false},
+        17:{opponent:"ARI",home:true},
+        18:{opponent:"CLE",home:true},
+      },
+
+      CLE: {
+        1:{opponent:"CIN",home:true},
+        2:{opponent:"BAL",home:false},
+        3:{opponent:"GB",home:true},
+        4:{opponent:"DET",home:false},
+        5:{opponent:"MIN",home:true},
+        6:{opponent:"PIT",home:false},
+        7:{opponent:"MIA",home:true},
+        8:{opponent:"NE",home:true},
+        9:{opponent:"BYE"},
+        10:{opponent:"NYJ",home:false},
+        11:{opponent:"BAL",home:true},
+        12:{opponent:"LV",home:false},
+        13:{opponent:"SF",home:true},
+        14:{opponent:"TEN",home:true},
+        15:{opponent:"CHI",home:false},
+        16:{opponent:"BUF",home:false},
+        17:{opponent:"PIT",home:true},
+        18:{opponent:"CIN",home:false},
+      },
+
+      DAL: {
+        1:{opponent:"PHI",home:false},
+        2:{opponent:"NYG",home:true},
+        3:{opponent:"CHI",home:false},
+        4:{opponent:"GB",home:true},
+        5:{opponent:"NYJ",home:false},
+        6:{opponent:"CAR",home:false},
+        7:{opponent:"WSH",home:true},
+        8:{opponent:"DEN",home:true},
+        9:{opponent:"ARI",home:true},
+        10:{opponent:"BYE"},
+        11:{opponent:"LV",home:true},
+        12:{opponent:"PHI",home:true},
+        13:{opponent:"KC",home:false},
+        14:{opponent:"DET",home:true},
+        15:{opponent:"MIN",home>true},
+        16:{opponent:"LAC",home:false},
+        17:{opponent:"WSH",home:false},
+        18:{opponent:"NYG",home:true},
+      },
+
+      DEN: {
+        1:{opponent:"TEN",home:true},
+        2:{opponent:"IND",home:false},
+        3:{opponent:"LAC",home:false},
+        4:{opponent:"CIN",home:false},
+        5:{opponent:"PHI",home:true},
+        6:{opponent:"NYJ",home:true},
+        7:{opponent:"NYG",home:false},
+        8:{opponent:"DAL",home:false},
+        9:{opponent:"HOU",home:true},
+        10:{opponent:"LV",home:true},
+        11:{opponent:"KC",home:false},
+        12:{opponent:"BYE"},
+        13:{opponent:"WSH",home:false},
+        14:{opponent:"LV",home:true},
+        15:{opponent:"GB",home:false},
+        16:{opponent:"JAX",home:true},
+        17:{opponent:"KC",home:true},
+        18:{opponent:"LAC",home:true},
+      },
+
+      DET: {
+        1:{opponent:"GB",home:false},
+        2:{opponent:"CHI",home:true},
+        3:{opponent:"BAL",home:false},
+        4:{opponent:"CLE",home:true},
+        5:{opponent:"CIN",home:false},
+        6:{opponent:"KC",home:true},
+        7:{opponent:"TB",home:false},
+        8:{opponent:"BYE"},
+        9:{opponent:"MIN",home:true},
+        10:{opponent:"WSH",home:false},
+        11:{opponent:"PHI",home:true},
+        12:{opponent:"NYG",home:true},
+        13:{opponent:"GB",home:true},
+        14:{opponent:"DAL",home:false},
+        15:{opponent:"LAR",home:false},
+        16:{opponent:"PIT",home:true},
+        17:{opponent:"MIN",home:false},
+        18:{opponent:"CHI",home:false},
+      },
+
+      GB: {
+        1:{opponent:"DET",home:true},
+        2:{opponent:"WSH",home:false},
+        3:{opponent:"CLE",home:true},
+        4:{opponent:"DAL",home:false},
+        5:{opponent:"BYE"},
+        6:{opponent:"CIN",home>true},
+        7:{opponent:"ARI",home:false},
+        8:{opponent:"PIT",home:false},
+        9:{opponent:"CAR",home:true},
+        10:{opponent:"PHI",home:false},
+        11:{opponent:"NYG",home:false},
+        12:{opponent:"MIN",home:true},
+        13:{opponent:"DET",home:false},
+        14:{opponent:"CHI",home:false},
+        15:{opponent:"DEN",home:true},
+        16:{opponent:"CHI",home:true},
+        17:{opponent:"BAL",home:true},
+        18:{opponent:"MIN",home:true},
+      },
+
+      HOU: {
+        1:{opponent:"LAR",home:true},
+        2:{opponent:"TB",home:true},
+        3:{opponent:"JAX",home:false},
+        4:{opponent:"TEN",home:true},
+        5:{opponent:"BAL",home:true},
+        6:{opponent:"BYE"},
+        7:{opponent:"SEA",home:true},
+        8:{opponent:"SF",home:false},
+        9:{opponent:"DEN",home:false},
+        10:{opponent:"JAX",home:true},
+        11:{opponent:"TEN",home:false},
+        12:{opponent:"BUF",home>true},
+        13:{opponent:"IND",home:false},
+        14:{opponent:"KC",home:false},
+        15:{opponent:"ARI",home:true},
+        16:{opponent:"LV",home:true},
+        17:{opponent:"LAC",home:false},
+        18:{opponent:"IND",home:true},
+      },
+
+      IND: {
+        1:{opponent:"MIA",home:true},
+        2:{opponent:"DEN",home:true},
+        3:{opponent:"TEN",home:false},
+        4:{opponent:"LAR",home:false},
+        5:{opponent:"LV",home:true},
+        6:{opponent:"ARI",home:true},
+        7:{opponent:"LAC",home:false},
+        8:{opponent:"TEN",home:false},
+        9:{opponent:"PIT",home:true},
+        10:{opponent:"ATL",home:false},
+        11:{opponent:"BYE"},
+        12:{opponent:"KC",home:false},
+        13:{opponent:"HOU",home>true},
+        14:{opponent:"JAX",home:false},
+        15:{opponent:"SEA",home:true},
+        16:{opponent:"SF",home:false},
+        17:{opponent:"JAX",home:true},
+        18:{opponent:"HOU",home:false},
+      },
+
+      JAX: {
+        1:{opponent:"CAR",home:true},
+        2:{opponent:"CIN",home:false},
+        3:{opponent:"HOU",home:true},
+        4:{opponent:"SF",home:false},
+        5:{opponent:"KC",home:false},
+        6:{opponent:"SEA",home:true},
+        7:{opponent:"LAR",home:false},
+        8:{opponent:"BYE"},
+        9:{opponent:"LV",home:false},
+        10:{opponent:"HOU",home:false},
+        11:{opponent:"LAC",home>true},
+        12:{opponent:"ARI",home>true},
+        13:{opponent:"TEN",home:false},
+        14:{opponent:"IND",home>true},
+        15:{opponent:"NYJ",home:true},
+        16:{opponent:"DEN",home:false},
+        17:{opponent:"IND",home:false},
+        18:{opponent:"TEN",home:true},
+      },
+
+      KC: {
+        1:{opponent:"LAC",home:false},
+        2:{opponent:"PHI",home:true},
+        3:{opponent:"NYG",home:false},
+        4:{opponent:"BAL",home>true},
+        5:{opponent:"JAX",home:false},
+        6:{opponent:"DET",home:false},
+        7:{opponent:"LV",home:true},
+        8:{opponent:"WSH",home:true},
+        9:{opponent:"BUF",home:false},
+        10:{opponent:"BYE"},
+        11:{opponent:"DEN",home:false},
+        12:{opponent:"IND",home:true},
+        13:{opponent:"DAL",home>true},
+        14:{opponent:"HOU",home>true},
+        15:{opponent:"LAC",home:false},
+        16:{opponent:"TEN",home:false},
+        17:{opponent:"DEN",home:false},
+        18:{opponent:"LV",home:true},
+      },
+
+      LV: {
+        1:{opponent:"NE",home:false},
+        2:{opponent:"LAC",home:false},
+        3:{opponent:"WSH",home:true},
+        4:{opponent:"CHI",home>true},
+        5:{opponent:"IND",home:false},
+        6:{opponent:"TEN",home:true},
+        7:{opponent:"KC",home:false},
+        8:{opponent:"BYE"},
+        9:{opponent:"JAX",home:true},
+        10:{opponent:"DEN",home:false},
+        11:{opponent:"DAL",home:false},
+        12:{opponent:"CLE",home>true},
+        13:{opponent:"LAC",home:false},
+        14:{opponent:"DEN",home>false},
+        15:{opponent:"PHI",home>false},
+        16:{opponent:"HOU",home>false},
+        17:{opponent:"NYG",home>true},
+        18:{opponent:"KC",home:false},
+      },
+
+      LAR: {
+        1:{opponent:"HOU",home:true},
+        2:{opponent:"TEN",home:false},
+        3:{opponent:"PHI",home:false},
+        4:{opponent:"IND",home:true},
+        5:{opponent:"SF",home:true},
+        6:{opponent:"BAL",home:false},
+        7:{opponent:"JAX",home:true},
+        8:{opponent:"BYE"},
+        9:{opponent:"NO",home:true},
+        10:{opponent:"SF",home:false},
+        11:{opponent:"SEA",home>true},
+        12:{opponent:"TB",home:false},
+        13:{opponent:"CAR",home:false},
+        14:{opponent:"ARI",home>false},
+        15:{opponent:"DET",home>true},
+        16:{opponent:"SEA",home:false},
+        17:{opponent:"ATL",home:true},
+        18:{opponent:"ARI",home:false},
+      },
+
+      LAC: {
+        1:{opponent:"KC",home:true},
+        2:{opponent:"LV",home>true},
+        3:{opponent:"DEN",home>true},
+        4:{opponent:"NYG",home>true},
+        5:{opponent:"WSH",home:false},
+        6:{opponent:"MIA",home>false},
+        7:{opponent:"IND",home:true},
+        8:{opponent:"MIN",home:true},
+        9:{opponent:"TEN",home:true},
+        10:{opponent:"PIT",home:true},
+        11:{opponent:"JAX",home>false},
+        12:{opponent:"BYE"},
+        13:{opponent:"LV",home:true},
+        14:{opponent:"PHI",home>false},
+        15:{opponent:"KC",home>true},
+        16:{opponent:"DAL",home>true},
+        17:{opponent:"HOU",home>true},
+        18:{opponent:"DEN",home:false},
+      },
+
+      MIA: {
+        1:{opponent:"IND",home:false},
+        2:{opponent:"NE",home:true},
+        3:{opponent:"BUF",home>false},
+        4:{opponent:"NYJ",home:true},
+        5:{opponent:"CAR",home:false},
+        6:{opponent:"LAC",home:true},
+        7:{opponent:"CLE",home>false},
+        8:{opponent:"ATL",home>false},
+        9:{opponent:"BAL",home>true},
+        10:{opponent:"BUF",home>true},
+        11:{opponent:"WSH",home>true},
+        12:{opponent:"BYE"},
+        13:{opponent:"NO",home>true},
+        14:{opponent:"NYJ",home>false},
+        15:{opponent:"PIT",home>true},
+        16:{opponent:"CIN",home>true},
+        17:{opponent:"TB",home>false},
+        18:{opponent:"NE",home>false},
+      },
+
+      MIN: {
+        1:{opponent:"CHI",home>false},
+        2:{opponent:"ATL",home>true},
+        3:{opponent:"CIN",home>true},
+        4:{opponent:"PIT",home>false},
+        5:{opponent:"CLE",home>false},
+        6:{opponent:"BYE"},
+        7:{opponent:"PHI",home>true},
+        8:{opponent:"LAC",home>false},
+        9:{opponent:"DET",home>false},
+        10:{opponent:"BAL",home>false},
+        11:{opponent:"CHI",home>true},
+        12:{opponent:"GB",home>false},
+        13:{opponent:"SEA",home>true},
+        14:{opponent:"WSH",home>false},
+        15:{opponent:"DAL",home>false},
+        16:{opponent:"NYG",home>true},
+        17:{opponent:"DET",home>true},
+        18:{opponent:"GB",home>false},
+      },
+
+      NE: {
+        1:{opponent:"LV",home:true},
+        2:{opponent:"MIA",home>false},
+        3:{opponent:"PIT",home>true},
+        4:{opponent:"CAR",home>false},
+        5:{opponent:"BUF",home>false},
+        6:{opponent:"NO",home>true},
+        7:{opponent:"TEN",home>true},
+        8:{opponent:"CLE",home>false},
+        9:{opponent:"ATL",home>true},
+        10:{opponent:"TB",home>true},
+        11:{opponent:"NYJ",home>true},
+        12:{opponent:"CIN",home>false},
+        13:{opponent:"NYG",home>true},
+        14:{opponent:"BYE"},
+        15:{opponent:"BUF",home>true},
+        16:{opponent:"BAL",home>false},
+        17:{opponent:"NYJ",home>false},
+        18:{opponent:"MIA",home>true},
+      },
+
+      NO: {
+        1:{opponent:"ARI",home>true},
+        2:{opponent:"SF",home>false},
+        3:{opponent:"SEA",home>true},
+        4:{opponent:"BUF",home>true},
+        5:{opponent:"NYG",home>false},
+        6:{opponent:"NE",home>false},
+        7:{opponent:"CHI",home>false},
+        8:{opponent:"TB",home>true},
+        9:{opponent:"LAR",home>false},
+        10:{opponent:"CAR",home>false},
+        11:{opponent:"BYE"},
+        12:{opponent:"ATL",home>true},
+        13:{opponent:"MIA",home>false},
+        14:{opponent:"TB",home>false},
+        15:{opponent:"CAR",home>true},
+        16:{opponent:"NYJ",home>true},
+        17:{opponent:"TEN",home>false},
+        18:{opponent:"ATL",home>false},
+      },
+
+      NYG: {
+        1:{opponent:"WSH",home>false},
+        2:{opponent:"DAL",home>false},
+        3:{opponent:"KC",home>true},
+        4:{opponent:"LAC",home>false},
+        5:{opponent:"NO",home>true},
+        6:{opponent:"PHI",home>false},
+        7:{opponent:"DEN",home>true},
+        8:{opponent:"PHI",home>true},
+        9:{opponent:"SF",home>false},
+        10:{opponent:"CHI",home>false},
+        11:{opponent:"GB",home>true},
+        12:{opponent:"DET",home>false},
+        13:{opponent:"NE",home>false},
+        14:{opponent:"BYE"},
+        15:{opponent:"WSH",home>true},
+        16:{opponent:"MIN",home>false},
+        17:{opponent:"LV",home>false},
+        18:{opponent:"DAL",home>false},
+      },
+
+      NYJ: {
+        1:{opponent:"PIT",home>true},
+        2:{opponent:"BUF",home>true},
+        3:{opponent:"TB",home>true},
+        4:{opponent:"MIA",home>false},
+        5:{opponent:"DAL",home>true},
+        6:{opponent:"DEN",home>false},
+        7:{opponent:"CAR",home>false},
+        8:{opponent:"CIN",home>true},
+        9:{opponent:"BYE"},
+        10:{opponent:"CLE",home>true},
+        11:{opponent:"NE",home>false},
+        12:{opponent:"BAL",home>false},
+        13:{opponent:"ATL",home>true},
+        14:{opponent:"MIA",home>true},
+        15:{opponent:"JAX",home>false},
+        16:{opponent:"NO",home>false},
+        17:{opponent:"NE",home>true},
+        18:{opponent:"BUF",home>false},
+      },
+
+      PHI: {
+        1:{opponent:"DAL",home>true},
+        2:{opponent:"KC",home>false},
+        3:{opponent:"LAR",home>true},
+        4:{opponent:"TB",home>true},
+        5:{opponent:"DEN",home>false},
+        6:{opponent:"NYG",home>true},
+        7:{opponent:"MIN",home>false},
+        8:{opponent:"NYG",home>false},
+        9:{opponent:"BYE"},
+        10:{opponent:"GB",home>true},
+        11:{opponent:"DET",home>false},
+        12:{opponent:"DAL",home>false},
+        13:{opponent:"CHI",home>true},
+        14:{opponent:"LAC",home>true},
+        15:{opponent:"LV",home>true},
+        16:{opponent:"WSH",home>true},
+        17:{opponent:"BUF",home>false},
+        18:{opponent:"WSH",home>false},
+      },
+
+      PIT: {
+        1:{opponent:"NYJ",home>false},
+        2:{opponent:"SEA",home>false},
+        3:{opponent:"NE",home>false},
+        4:{opponent:"MIN",home>true},
+        5:{opponent:"BYE"},
+        6:{opponent:"CLE",home>true},
+        7:{opponent:"CIN",home>false},
+        8:{opponent:"GB",home>true},
+        9:{opponent:"IND",home>false},
+        10:{opponent:"LAC",home>false},
+        11:{opponent:"CIN",home>true},
+        12:{opponent:"CHI",home>false},
+        13:{opponent:"BUF",home>true},
+        14:{opponent:"BAL",home>true},
+        15:{opponent:"MIA",home>false},
+        16:{opponent:"DET",home>false},
+        17:{opponent:"CLE",home>false},
+        18:{opponent:"BAL",home>false},
+      },
+
+      SF: {
+        1:{opponent:"SEA",home>false},
+        2:{opponent:"NO",home>true},
+        3:{opponent:"ARI",home>true},
+        4:{opponent:"JAX",home>true},
+        5:{opponent:"LAR",home>false},
+        6:{opponent:"TB",home>true},
+        7:{opponent:"ATL",home>true},
+        8:{opponent:"HOU",home>true},
+        9:{opponent:"NYG",home>true},
+        10:{opponent:"LAR",home>true},
+        11:{opponent:"ARI",home>false},
+        12:{opponent:"CAR",home>true},
+        13:{opponent:"CLE",home>false},
+        14:{opponent:"BYE"},
+        15:{opponent:"TEN",home>true},
+        16:{opponent:"IND",home>true},
+        17:{opponent:"CHI",home>true},
+        18:{opponent:"SEA",home>true},
+      },
+
+      SEA: {
+        1:{opponent:"SF",home>true},
+        2:{opponent:"PIT",home>true},
+        3:{opponent:"NO",home>false},
+        4:{opponent:"ARI",home>true},
+        5:{opponent:"TB",home>false},
+        6:{opponent:"JAX",home>false},
+        7:{opponent:"HOU",home>false},
+        8:{opponent:"BYE"},
+        9:{opponent:"WSH",home>false},
+        10:{opponent:"ARI",home>true},
+        11:{opponent:"LAR",home>false},
+        12:{opponent:"TEN",home>false},
+        13:{opponent:"MIN",home>false},
+        14:{opponent:"ATL",home>false},
+        15:{opponent:"IND",home>false},
+        16:{opponent:"LAR",home>true},
+        17:{opponent:"CAR",home>false},
+        18:{opponent:"SF",home>false},
+      },
+
+      TB: {
+        1:{opponent:"ATL",home>false},
+        2:{opponent:"HOU",home>false},
+        3:{opponent:"NYJ",home>false},
+        4:{opponent:"PHI",home>false},
+        5:{opponent:"SEA",home>true},
+        6:{opponent:"SF",home>false},
+        7:{opponent:"DET",home>true},
+        8:{opponent:"NO",home>false},
+        9:{opponent:"BYE"},
+        10:{opponent:"NE",home>false},
+        11:{opponent:"BUF",home>false},
+        12:{opponent:"LAR",home>true},
+        13:{opponent:"ARI",home>true},
+        14:{opponent:"NO",home>true},
+        15:{opponent:"ATL",home>true},
+        16:{opponent:"CAR",home>false},
+        17:{opponent:"MIA",home>true},
+        18:{opponent:"CAR",home>true},
+      },
+
+      TEN: {
+        1:{opponent:"DEN",home:false},
+        2:{opponent:"LAR",home>true},
+        3:{opponent:"IND",home>true},
+        4:{opponent:"HOU",home>false},
+        5:{opponent:"ARI",home>false},
+        6:{opponent:"LV",home>false},
+        7:{opponent:"BYE"},
+        8:{opponent:"IND",home>true},
+        9:{opponent:"LAC",home>false},
+        10:{opponent:"HOU",home>true},
+        11:{opponent:"SEA",home>true},
+        12:{opponent:"JAX",home>true},
+        13:{opponent:"CLE",home>false},
+        14:{opponent:"SF",home>false},
+        15:{opponent:"KC",home>true},
+        16:{opponent:"NO",home>false},
+        17:{opponent:"JAX",home>false},
+        18:{opponent:"WSH",home>true},
+      },
+
+      WSH: {
+        1:{opponent:"NYG",home:true},
+        2:{opponent:"PHI",home>false},
+        3:{opponent:"ATL",home>false},
+        4:{opponent:"BYE"},
+        5:{opponent:"CHI",home>true},
+        6:{opponent:"GB",home>true},
+        7:{opponent:"DAL",home>false},
+        8:{opponent:"DEN",home>true},
+        9:{opponent:"SEA",home>true},
+        10:{opponent:"DET",home>true},
+        11:{opponent:"PHI",home>false},
+        12:{opponent:"LAC",home>true},
+        13:{opponent:"BYE"},
+        14:{opponent:"CLE",home>true},
+        15:{opponent:"DAL",home>true},
+        16:{opponent:"KC",home>false},
+        17:{opponent:"NYG",home>false},
+        18:{opponent:"PHI",home>true},
+      },
+    };
+
+    /* ----------------- CB1 MAP (teams we know) + fallback cycle ----------------- */
+    const primaryCorners2025 = {
+      NYJ:"sauce",
+      DEN:"surtain",
+      CAR:"horn",
+      HOU:"stingley",
+      CLE:"ward",
+      DAL:"diggs",
+      // you can add more team -> CB1 mappings here over time
+    };
+
     const cbCycle = ["sauce","surtain","horn","stingley","ward","diggs"];
     const MAX_WEEKS = 18;
-
-    const schedule2025 = {};
-    top24ReceiverOrder.forEach((wrId, idx) => {
-      schedule2025[wrId] = {};
-      for (let wk = 1; wk <= MAX_WEEKS; wk++) {
-        const cbId = cbCycle[(idx + wk - 1) % cbCycle.length];
-        schedule2025[wrId][wk] = cbId;
-      }
-    });
 
     /* ----------------- DOM HOOKS ----------------- */
     const wrSelect = document.getElementById("wrSelect");
@@ -646,6 +1322,28 @@
         opt.textContent = `Week ${wk}`;
         weekSelect.appendChild(opt);
       }
+    }
+
+    /* ----------------- GET PRIMARY CB FOR A WR/WEEK ----------------- */
+    function getPrimaryCornerFor(wr, week) {
+      const teamWeeks = teamSchedule2025[wr.team];
+      if (!teamWeeks) return null;
+
+      const weekInfo = teamWeeks[week];
+      if (!weekInfo || !weekInfo.opponent || weekInfo.opponent === "BYE") return null;
+
+      const opponentTeam = weekInfo.opponent;
+      // 1) Try real CB1
+      let cbId = primaryCorners2025[opponentTeam];
+
+      // 2) Fallback: deterministic archetype based on opponent + week
+      if (!cbId) {
+        const code = opponentTeam.charCodeAt(0) + (opponentTeam.charCodeAt(1) || 0) + week;
+        const idx = Math.abs(code) % cbCycle.length;
+        cbId = cbCycle[idx];
+      }
+
+      return corners[cbId] || null;
     }
 
     /* ----------------- MATCHUP LOGIC ----------------- */
@@ -683,7 +1381,9 @@
         <div class="bubble-label">Chip says</div>
 
         <div class="result-header">
-          <div class="matchup-vs">Week ${week}: ${primaryWr.name} vs ${primaryCb.name}</div>
+          <div class="matchup-vs">
+            Week ${week}: ${primaryWr.name} (${primaryWr.team}) vs ${primaryCb.name} (${primaryCb.team})
+          </div>
           <div class="score-pill">${primaryResult.score} / 100</div>
         </div>
 
@@ -699,13 +1399,15 @@
         if (cCb && cResult) {
           html += `
             <div class="result-header">
-              <div class="matchup-vs">Week ${week}: ${cWr.name} vs ${cCb.name}</div>
+              <div class="matchup-vs">
+                Week ${week}: ${cWr.name} (${cWr.team}) vs ${cCb.name} (${cCb.team})
+              </div>
               <div class="score-pill">${cResult.score}</div>
             </div>
             <div class="tier-label">${cResult.tier}</div>
           `;
         } else {
-          html += `<div class="empty-state">I don’t have a CB wired yet for that matchup.</div>`;
+          html += `<div class="empty-state">I don’t have a CB wired yet for that comparison matchup.</div>`;
         }
       }
 
@@ -732,30 +1434,27 @@
 
       const week = parseInt(weekVal, 10);
       const primaryWr = receivers[wrId];
-      const wrSchedule = schedule2025[wrId] || {};
-      const primaryCbId = wrSchedule[week];
+      const primaryCb = getPrimaryCornerFor(primaryWr, week);
 
-      if (!primaryCbId || !corners[primaryCbId]) {
+      if (!primaryCb) {
         renderEmpty(
-          `I don't have a CB mapped for ${primaryWr.name} in Week ${week} yet.`
+          `I don't have an opponent CB mapped for ${primaryWr.name} in Week ${week} yet. ` +
+          `Treat it as neutral and lean on volume + game total.`
         );
         autoCbChip.style.display = "none";
         return;
       }
 
-      const primaryCb = corners[primaryCbId];
       const primaryResult = evaluateMatchup(primaryWr, primaryCb);
 
       autoCbChip.style.display = "inline-flex";
-      autoCbChip.textContent = `Auto CB archetype: ${primaryCb.name} • ${primaryCb.team}`;
+      autoCbChip.textContent = `Auto CB (2025): ${primaryCb.name} • ${primaryCb.team}`;
 
       let cWr = null, cCb = null, cResult = null;
       if (compareId) {
         cWr = receivers[compareId];
-        const cSchedule = schedule2025[compareId] || {};
-        const cCbId = cSchedule[week];
-        if (cCbId && corners[cCbId]) {
-          cCb = corners[cCbId];
+        cCb = getPrimaryCornerFor(cWr, week);
+        if (cCb) {
           cResult = evaluateMatchup(cWr, cCb);
         }
       }
