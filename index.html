@@ -583,11 +583,34 @@
       diggs:{id:"diggs",name:"Trevon Diggs",team:"DAL",heightIn:74,weightLb:195,style:"ballhawk",coverage:["off_man","zone"],notes:"Aggressive jumping routes; susceptible to double moves."}
     };
 
-    const schedule2025 = {
-      jsn:{1:"sauce",2:"ward",3:"stingley",4:"diggs"},
-      devonta:{1:"ward",2:"surtain",3:"horn",4:"diggs"},
-      amonra:{1:"ward",2:"diggs",3:"surtain",4:"stingley"}
-    };
+    // data-scripts/team-schedule-2025.js
+const teamSchedule2025 = {
+  DET: {
+    1: { opponent: "CHI", home: true },
+    2: { opponent: "DAL", home: false },
+    // ...
+  },
+  PHI: {
+    1: { opponent: "WAS", home: true },
+    // ...
+  },
+  SEA: {
+    1: { opponent: "NYJ", home: false },
+    // ...
+  },
+  // every NFL team
+};
+// data-scripts/primary-corners-2025.js
+const primaryCorners2025 = {
+  NYJ: "sauce",
+  DEN: "surtain",
+  CAR: "horn",
+  HOU: "stingley",
+  CLE: "ward",
+  DAL: "diggs",
+  // later: fill out all 32 teams
+};
+
 
     const MAX_WEEKS = 4;
 
