@@ -333,6 +333,12 @@
       color: #4ade80;
     }
 
+    .archetype-details {
+      font-size: 11px;
+      color: #c4b5fd;
+      margin-top: 4px;
+    }
+
     .comparison-header {
       margin: 10px 0 4px;
       font-size: 11px;
@@ -495,51 +501,140 @@
       "Xavier Worthy": "KC"
     };
 
+    /* ----------------- WR ARCHETYPES MAPPING ----------------- */
+    const wrArchetypes = {
+      "A.J. Brown": "Alpha Boundary X",
+      "DK Metcalf": "Alpha Boundary X",
+      "Tee Higgins": "Alpha Boundary X",
+      "Drake London": "Alpha Boundary X",
+      "Mike Evans": "Alpha Boundary X",
+      "Nico Collins": "Alpha Boundary X",
+
+      "Tyreek Hill": "Vertical Field-Stretcher",
+      "Ja'Marr Chase": "Vertical Field-Stretcher",
+      "Marvin Harrison Jr.": "Vertical Field-Stretcher",
+      "Malik Nabers": "Vertical Field-Stretcher",
+      "Jaylen Waddle": "Vertical Field-Stretcher",
+      "Terry McLaurin": "Vertical Field-Stretcher",
+
+      "Justin Jefferson": "Precision Route Technician",
+      "CeeDee Lamb": "Precision Route Technician",
+      "Amon-Ra St. Brown": "Precision Route Technician",
+      "Garrett Wilson": "Precision Route Technician",
+      "Davante Adams": "Precision Route Technician",
+      "Brandon Aiyuk": "Precision Route Technician",
+      "Chris Olave": "Precision Route Technician",
+      "DeVonta Smith": "Precision Route Technician",
+
+      "Puka Nacua": "Space & YAC Engine",
+      "DJ Moore": "Space & YAC Engine",
+      "Jaxon Smith-Njigba": "Space & YAC Engine",
+      "Xavier Worthy": "Space & YAC Engine"
+    };
+
+    /* ----------------- CB ARCHETYPES MAPPING ----------------- */
+    const cbArchetypes = {
+      // Press / Length Boundary CBs
+      "Patrick Surtain II": "Press / Length Boundary",
+      "Joey Porter Jr.": "Press / Length Boundary",
+      "Marshon Lattimore": "Press / Length Boundary",
+      "Christian Gonzalez": "Press / Length Boundary",
+      "Derek Stingley Jr.": "Press / Length Boundary",
+      "L'Jarius Sneed": "Press / Length Boundary",
+      "Quinyon Mitchell": "Press / Length Boundary",
+      "Riq Woolen": "Press / Length Boundary",
+      "Jaylon Johnson": "Press / Length Boundary",
+      "Charvarius Ward": "Press / Length Boundary",
+      "A.J. Terrell": "Press / Length Boundary",
+      "Jaycee Horn": "Press / Length Boundary",
+      "Carlton Davis III": "Press / Length Boundary",
+      "Paulson Adebo": "Press / Length Boundary",
+      "Deonte Banks": "Press / Length Boundary",
+      "Terrion Arnold": "Press / Length Boundary",
+      "Will Johnson": "Press / Length Boundary",
+      "Tyson Campbell": "Press / Length Boundary",
+      "Benjamin St-Juste": "Press / Length Boundary",
+      "JuJu Brents": "Press / Length Boundary",
+
+      // Off-Zone / Ball-Hawking CBs
+      "Trevon Diggs": "Off-Zone / Ball-Hawking",
+      "DaRon Bland": "Off-Zone / Ball-Hawking",
+      "Denzel Ward": "Off-Zone / Ball-Hawking",
+      "Jaire Alexander": "Off-Zone / Ball-Hawking",
+      "Byron Murphy Jr.": "Off-Zone / Ball-Hawking",
+      "Brandon Stephens": "Off-Zone / Ball-Hawking",
+      "Nate Wiggins": "Off-Zone / Ball-Hawking",
+      "Chidobe Awuzie": "Off-Zone / Ball-Hawking",
+      "Dax Hill": "Off-Zone / Ball-Hawking",
+      "DJ Turner II": "Off-Zone / Ball-Hawking",
+      "Jamel Dean": "Off-Zone / Ball-Hawking",
+      "Ronald Darby": "Off-Zone / Ball-Hawking",
+      "Jack Jones": "Off-Zone / Ball-Hawking",
+      "Ahkello Witherspoon": "Off-Zone / Ball-Hawking",
+      "Emmanuel Forbes Jr.": "Off-Zone / Ball-Hawking",
+      "Shaquill Griffin": "Off-Zone / Ball-Hawking",
+      "Zyon McCollum": "Off-Zone / Ball-Hawking",
+      "Denzel Burke": "Off-Zone / Ball-Hawking",
+      "Riley Moss": "Off-Zone / Ball-Hawking",
+      "Christian Benford": "Off-Zone / Ball-Hawking",
+      "Maxwell Hairston": "Off-Zone / Ball-Hawking",
+      "Chris Johnson": "Off-Zone / Ball-Hawking",
+      "Nahshon Wright": "Off-Zone / Ball-Hawking",
+      "Jaylon Jones": "Off-Zone / Ball-Hawking",
+      "Jarrian Jones": "Off-Zone / Ball-Hawking",
+      "Jaylen Watson": "Off-Zone / Ball-Hawking",
+      "Cam Hart": "Off-Zone / Ball-Hawking",
+      "Tarheeb Still": "Off-Zone / Ball-Hawking",
+      "Cor'Dale Flott": "Off-Zone / Ball-Hawking",
+      "Tyrique Stevenson": "Off-Zone / Ball-Hawking",
+      "Carrington Valentine": "Off-Zone / Ball-Hawking",
+      "Ennis Rakestraw Jr.": "Off-Zone / Ball-Hawking",
+      "Clark Phillips III": "Off-Zone / Ball-Hawking",
+      "Mike Jackson": "Off-Zone / Ball-Hawking",
+      "Kool-Aid McKinstry": "Off-Zone / Ball-Hawking",
+      "Nehemiah Pritchett": "Off-Zone / Ball-Hawking",
+
+      // Slot / Nickel DBs
+      "Trent McDuffie": "Slot / Nickel DB",
+      "Devon Witherspoon": "Slot / Nickel DB",
+      "Kenny Moore II": "Slot / Nickel DB",
+      "Cooper DeJean": "Slot / Nickel DB",
+      "Nate Hobbs": "Slot / Nickel DB",
+      "Deommodore Lenoir": "Slot / Nickel DB",
+      "Roger McCreary": "Slot / Nickel DB",
+      "Cobie Durant": "Slot / Nickel DB"
+    };
+
     /* ----------------- UPDATED 2026 CORNERBACK MAP (ALL 32 TEAMS) ----------------- */
     const primaryCorners2026Names = {
-      // AFC East
       BUF: "Christian Benford",
       MIA: "Chris Johnson",
       NE: "Christian Gonzalez",
       NYJ: "Brandon Stephens",
-
-      // AFC North
       BAL: "Nate Wiggins",
       CIN: "Dax Hill",
       CLE: "Denzel Ward",
       PIT: "Joey Porter Jr.",
-
-      // AFC South
       HOU: "Derek Stingley Jr.",
       IND: "Jaylon Jones",
       JAX: "Ronald Darby",
       TEN: "L'Jarius Sneed",
-
-      // AFC West
       DEN: "Patrick Surtain II",
       KC: "Trent McDuffie",
       LV: "Nate Hobbs",
       LAC: "Tarheeb Still",
-
-      // NFC East
       DAL: "Trevon Diggs",
       NYG: "Deonte Banks",
       PHI: "Quinyon Mitchell",
       WSH: "Marshon Lattimore",
-
-      // NFC North
       CHI: "Jaylon Johnson",
       DET: "Terrion Arnold",
       GB: "Jaire Alexander",
       MIN: "Byron Murphy Jr.",
-
-      // NFC South
       ATL: "A.J. Terrell",
       CAR: "Jaycee Horn",
       NO: "Paulson Adebo",
       TB: "Zyon McCollum",
-
-      // NFC West
       ARI: "Will Johnson",
       LAR: "Cobie Durant",
       SF: "Charvarius Ward",
@@ -735,6 +830,8 @@
       }
 
       const mappedTeam = playerTeams[playerName] || "N/A";
+      const mappedWrArch = wrArchetypes[playerName] || "General Receiver";
+      const mappedCbArch = cbArchetypes[playerName] || "General Cornerback";
 
       try {
         const response = await fetch(`https://api.balldontlie.io/v1/nfl/players?search=${encodeURIComponent(playerName)}`, {
@@ -753,8 +850,8 @@
               team: mappedTeam,
               heightIn: player.height_feet ? (player.height_feet * 12 + (player.height_inches || 0)) : 73,
               weightLb: player.weight_pounds ? parseInt(player.weight_pounds, 10) : 200,
-              archetype: "technician_alpha",
-              style: "press_length"
+              wrArchetype: mappedWrArch,
+              cbArchetype: mappedCbArch
             };
             playerCache[playerName] = formatted;
             return formatted;
@@ -769,8 +866,8 @@
         team: mappedTeam,
         heightIn: 73,
         weightLb: 200,
-        archetype: "technician_alpha",
-        style: "press_length"
+        wrArchetype: mappedWrArch,
+        cbArchetype: mappedCbArch
       };
     }
 
@@ -825,17 +922,40 @@
       const heightDiff = wr.heightIn - cb.heightIn;
       const weightDiff = wr.weightLb - cb.weightLb;
 
-      if (heightDiff >= 3) score += 6;
-      else if (heightDiff <= -3) score -= 6;
+      // Base height & weight adjustments
+      if (heightDiff >= 3) score += 5;
+      else if (heightDiff <= -3) score -= 5;
 
       if (weightDiff >= 15) score += 5;
       else if (weightDiff <= -15) score -= 5;
 
-      if (wr.archetype === "crafty_slot" && cb.weightLb >= 200) score += 4;
-      if (wr.archetype === "slippery_route_runner" && cb.style === "ballhawk") score -= 2;
+      // Archetype Interaction Logic
+      const wrType = wr.wrArchetype;
+      const cbType = cb.cbArchetype;
 
-      if (wr.archetype === "physical_slot_alpha" && cb.weightLb < 195) score += 5;
-      if (wr.archetype === "field_stretcher" && cb.style === "ballhawk") score -= 3;
+      // 1. Alpha Boundary X vs CBs
+      if (wrType === "Alpha Boundary X") {
+        if (cbType === "Off-Zone / Ball-Hawking") score += 6; // Bullying in contested situations
+        if (cbType === "Press / Length Boundary") score -= 3; // Length cancels out physical edge
+      }
+
+      // 2. Vertical Field-Stretcher vs CBs
+      if (wrType === "Vertical Field-Stretcher") {
+        if (cbType === "Press / Length Boundary") score += 4; // Can beat press with raw speed over the top
+        if (cbType === "Off-Zone / Ball-Hawking") score -= 4; // Cushion gives safety support over top
+      }
+
+      // 3. Precision Route Technician vs CBs
+      if (wrType === "Precision Route Technician") {
+        if (cbType === "Off-Zone / Ball-Hawking") score += 5; // Carves up zone cushions
+        if (cbType === "Slot / Nickel DB") score -= 2;
+      }
+
+      // 4. Space & YAC Engine vs CBs
+      if (wrType === "Space & YAC Engine") {
+        if (cbType === "Press / Length Boundary") score += 5; // Quickness beats stiff outside boundary corners
+        if (cbType === "Slot / Nickel DB") score -= 3; // Agile slot corner can match quickness
+      }
 
       score = Math.max(0, Math.min(100, score));
 
@@ -860,6 +980,9 @@
         </div>
 
         <div class="tier-label">${primaryResult.tier}</div>
+        <div class="archetype-details">
+          ${primaryWr.wrArchetype} vs ${primaryCb.cbArchetype}
+        </div>
       `;
 
       if (cWr) {
@@ -877,6 +1000,9 @@
               <div class="score-pill">${cResult.score} / 100</div>
             </div>
             <div class="tier-label">${cResult.tier}</div>
+            <div class="archetype-details">
+              ${cWr.wrArchetype} vs ${cCb.cbArchetype}
+            </div>
           `;
         } else {
           html += `<div class="empty-state">No CB mapped yet for comparison matchup.</div>`;
