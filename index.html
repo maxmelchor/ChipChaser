@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>ChipChaser – Talk to Chip About WR vs CB Matchups</title>
+  <title>ChipChaser – Talk to Chip About WR & RB Matchups</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
@@ -207,6 +207,35 @@
       padding-right: 80px;
     }
 
+    /* POSITION TOGGLE BUTTONS */
+    .pos-toggle-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .pos-btn {
+      flex: 1;
+      padding: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 255, 0.5);
+      background: rgba(15, 23, 42, 0.8);
+      color: #a5b4fc;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pos-btn.active {
+      background: linear-gradient(135deg, #a855ff, #6366f1);
+      color: #ffffff;
+      border-color: #a855ff;
+      box-shadow: 0 4px 15px rgba(168, 85, 255, 0.4);
+    }
+
     .form-row {
       display: flex;
       flex-direction: column;
@@ -370,7 +399,7 @@
             ChipChaser<span class="brand-dot">.</span>
           </div>
           <div class="brand-tagline">
-            Let Chip read the WR vs CB tea leaves for your 2026 fantasy starts.
+            Let Chip read the WR & RB tea leaves for your 2026 fantasy starts.
           </div>
         </div>
 
@@ -381,26 +410,25 @@
         <div class="chip-bio-title">How Chip thinks</div>
         <div class="chip-bio-text">
           Chip blends <strong>body type</strong> (height, weight, play style) and
-          <strong>coverage tendencies</strong> to grade how a WR stacks up against his primary corner.
+          <strong>defensive tendencies</strong> to grade how a skill player stacks up against his matchup.
           It’s not projecting volume – it’s answering:
-          <em>“If these two are isolated, who has the physical edge?”</em>
+          <em>“Who has the physical and matchup edge?”</em>
         </div>
 
         <div class="chip-hint">
-          Start with a WR, pick a week, and Chip will explain the matchup in plain English.
-          Add a second WR to compare.
+          Toggle position, choose your player and week, and Chip will evaluate the physical matchup.
         </div>
       </div>
 
       <div class="chip-pill-row">
         <span class="chip-pill">Live API Data</span>
-        <span class="chip-pill">Body-Type Grades</span>
-        <span class="chip-pill">2026 Opponents</span>
-        <span class="chip-pill">Start/Sit Assistant</span>
+        <span class="chip-pill">WR vs CB</span>
+        <span class="chip-pill">RB vs Front 7</span>
+        <span class="chip-pill">2026 Schedule</span>
       </div>
 
       <div class="chip-footnote">
-        Roadmap: expand CB1 coverage for all 32 teams and layer in alignment data.
+        Roadmap: expand coverage models across all 32 NFL teams.
       </div>
     </section>
 
@@ -413,22 +441,27 @@
 
         <div class="controls-title">Ask Chip</div>
         <div class="controls-subtitle">
-          Choose a WR + week. Chip looks at the 2026 schedule, pulls the primary CB for that opponent,
-          and gives you a body-type matchup grade.
+          Select position mode, pick a player + week. Chip calculates the 2026 matchup grade.
         </div>
 
-        <!-- WR SELECT -->
+        <!-- POSITION TOGGLE -->
+        <div class="pos-toggle-group">
+          <button class="pos-btn active" id="modeWrBtn">Wide Receiver</button>
+          <button class="pos-btn" id="modeRbBtn">Running Back</button>
+        </div>
+
+        <!-- PLAYER SELECT -->
         <div class="form-row">
-          <label for="wrSelect">Primary wide receiver</label>
-          <select id="wrSelect">
-            <option value="">Select receiver…</option>
+          <label for="playerSelect" id="playerSelectLabel">Primary wide receiver</label>
+          <select id="playerSelect">
+            <option value="">Select player…</option>
           </select>
         </div>
 
-        <!-- COMPARISON WR -->
+        <!-- COMPARISON PLAYER -->
         <div class="form-row">
-          <label for="wrCompareSelect">Compare vs (optional)</label>
-          <select id="wrCompareSelect">
+          <label for="playerCompareSelect">Compare vs (optional)</label>
+          <select id="playerCompareSelect">
             <option value="">No comparison</option>
           </select>
         </div>
@@ -444,7 +477,7 @@
         <button class="btn" id="analyzeBtn">Ask Chip</button>
 
         <div class="controls-meta-row">
-          <div class="meta-chip" id="autoCbChip" style="display:none;"></div>
+          <div class="meta-chip" id="autoOpponentChip" style="display:none;"></div>
           <div class="meta-chip">MVP • Real 2026 schedule wired</div>
         </div>
 
@@ -452,7 +485,7 @@
         <div class="result-box" id="resultArea">
           <div class="bubble-label">Chip says</div>
           <div class="empty-state">
-            Pick a WR + week and hit <strong>Ask Chip</strong> to view matchup analysis here.
+            Pick a player + week and hit <strong>Ask Chip</strong> to view matchup analysis here.
           </div>
         </div>
 
@@ -465,7 +498,9 @@
     /* ----------------- API KEY ----------------- */
     const BALLDONTLIE_API_KEY = "146f4c2f-4eab-4f6d-969e-a8ca0817de4f";
 
-    /* ----------------- TOP 24 RECEIVERS ----------------- */
+    let currentMode = "WR"; // "WR" or "RB"
+
+    /* ----------------- RECEIVERS LIST ----------------- */
     const top24ReceiversList = [
       "Ja'Marr Chase", "Justin Jefferson", "CeeDee Lamb", "Tyreek Hill", "A.J. Brown", "Amon-Ra St. Brown",
       "Puka Nacua", "Garrett Wilson", "Marvin Harrison Jr.", "Malik Nabers", "Nico Collins",
@@ -473,172 +508,193 @@
       "Terry McLaurin", "Jaylen Waddle", "Brandon Aiyuk", "Chris Olave", "Jaxon Smith-Njigba", "DeVonta Smith", "Xavier Worthy"
     ];
 
+    /* ----------------- RUNNING BACKS LIST & DATA ----------------- */
+    const runningBacksData = {
+      // AFC East
+      "James Cook": { team: "BUF", heightIn: 71, weightLb: 190, archetype: "Elusive Space / One-Cut Slash" },
+      "Ray Davis": { team: "BUF", heightIn: 68, weightLb: 211, archetype: "Downhill Power / Contact Finisher" },
+      "De'Von Achane": { team: "MIA", heightIn: 69, weightLb: 188, archetype: "Home-Run Speed / Space Creator" },
+      "Jaylen Wright": { team: "MIA", heightIn: 70, weightLb: 210, archetype: "Speed & Power Hybrid" },
+      "Rhamondre Stevenson": { team: "NE", heightIn: 72, weightLb: 227, archetype: "Power Bellcow / Yards-After-Contact" },
+      "TreVeyon Henderson": { team: "NE", heightIn: 70, weightLb: 208, archetype: "Explosive One-Cut / Receiving Threat" },
+      "Breece Hall": { team: "NYJ", heightIn: 73, weightLb: 220, archetype: "Three-Down Workhorse / Home-Run Threat" },
+      "Braelon Allen": { team: "NYJ", heightIn: 73, weightLb: 235, archetype: "Bruising Power / Short-Yardage Hammer" },
+
+      // AFC North
+      "Derrick Henry": { team: "BAL", heightIn: 75, weightLb: 247, archetype: "Power Freight Train / Open-Field Speed" },
+      "Justice Hill": { team: "BAL", heightIn: 70, weightLb: 200, archetype: "Scatback / Change-of-Pace Pass-Catcher" },
+      "Chase Brown": { team: "CIN", heightIn: 69, weightLb: 205, archetype: "Explosive One-Cut Slash / Big-Play Threat" },
+      "Samaje Perine": { team: "CIN", heightIn: 71, weightLb: 240, archetype: "Pass-Blocking / Short-Yardage Power" },
+      "Quinshon Judkins": { team: "CLE", heightIn: 72, weightLb: 219, archetype: "Physical North-South / Contact-Balance" },
+      "Dylan Sampson": { team: "CLE", heightIn: 71, weightLb: 201, archetype: "Dynamic Speed / Perimeter Threat" },
+      "Jaylen Warren": { team: "PIT", heightIn: 68, weightLb: 215, archetype: "High-Motor Contact Finisher" },
+      "Rico Dowdle": { team: "PIT", heightIn: 72, weightLb: 215, archetype: "One-Cut Slash / Reliable Rotation" },
+
+      // AFC South
+      "David Montgomery": { team: "HOU", heightIn: 71, weightLb: 224, archetype: "Gritty Power / Tackle-Breaker" },
+      "Woody Marks": { team: "HOU", heightIn: 70, weightLb: 210, archetype: "Dual-Threat / Pass-Catching Specialist" },
+      "Jonathan Taylor": { team: "IND", heightIn: 70, weightLb: 226, archetype: "Elite Bellcow / Breakaway Speed & Vision" },
+      "DJ Giddens": { team: "IND", heightIn: 72, weightLb: 212, archetype: "Balanced Zone-Runner / Downhill Slash" },
+      "Travis Etienne Jr.": { team: "JAX", heightIn: 70, weightLb: 215, archetype: "Explosive Perimeter Runner" },
+      "Bhayshul Tuten": { team: "JAX", heightIn: 71, weightLb: 205, archetype: "Vertical Speed / Agility Slash" },
+      "Tony Pollard": { team: "TEN", heightIn: 72, weightLb: 209, archetype: "Dynamic Space Runner / Outside Speed" },
+      "Tyjae Spears": { team: "TEN", heightIn: 70, weightLb: 201, archetype: "Electric Agility / Pass-Catching Weapon" },
+
+      // AFC West
+      "Javonte Williams": { team: "DEN", heightIn: 70, weightLb: 220, archetype: "Physical Contact-Balance / Bruiser" },
+      "J.K. Dobbins": { team: "DEN", heightIn: 70, weightLb: 215, archetype: "One-Cut Vision / Efficient North-South" },
+      "Isiah Pacheco": { team: "KC", heightIn: 70, weightLb: 216, archetype: "Violent Downhill Runner / High-Energy" },
+      "Kenneth Walker III": { team: "KC", heightIn: 69, weightLb: 211, archetype: "Electric Cutback / Home-Run Hitter" },
+      "Ashton Jeanty": { team: "LV", heightIn: 69, weightLb: 215, archetype: "Elusive Contact-Balance / Dual-Threat Alpha" },
+      "Zamir White": { team: "LV", heightIn: 72, weightLb: 215, archetype: "Downhill Power / Short-Yardage Hammer" },
+      "Omarion Hampton": { team: "LAC", heightIn: 72, weightLb: 220, archetype: "Workhorse Bruiser / Physical Finisher" },
+      "Kimani Vidal": { team: "LAC", heightIn: 68, weightLb: 213, archetype: "Squatty Power / Low Center of Gravity" },
+
+      // NFC East
+      "Chuba Hubbard": { team: "DAL", heightIn: 72, weightLb: 210, archetype: "Patient Zone Runner / Contact-Balance" },
+      "Tyrone Tracy Jr.": { team: "NYG", heightIn: 71, weightLb: 209, archetype: "Converted-WR / Dynamic Space & Pass-Catcher" },
+      "Devin Singletary": { team: "NYG", heightIn: 67, weightLb: 203, archetype: "Patient Zone Runner / Short-Area Agility" },
+      "Saquon Barkley": { team: "PHI", heightIn: 72, weightLb: 233, archetype: "Elite Dynamic Bellcow / Jump-Cutter" },
+      "Will Shipley": { team: "PHI", heightIn: 71, weightLb: 206, archetype: "Versatile Pass-Catcher / Change-of-Pace" },
+      "Brian Robinson Jr.": { team: "WSH", heightIn: 73, weightLb: 225, archetype: "Heavy Downhill Power / Red-Zone Finisher" },
+      "Austin Ekeler": { team: "WSH", heightIn: 70, weightLb: 200, archetype: "Satellite Weapon / Receiving Specialist" },
+
+      // NFC North
+      "D'Andre Swift": { team: "CHI", heightIn: 69, weightLb: 215, archetype: "Agile Perimeter Slash / Pass-Catching" },
+      "Kyle Monangai": { team: "CHI", heightIn: 69, weightLb: 209, archetype: "Gritty Contact-Balance / Downhill Runner" },
+      "Jahmyr Gibbs": { team: "DET", heightIn: 69, weightLb: 200, archetype: "Electric Dynamic Weapon / Home-Run Hitter" },
+      "Josh Jacobs": { team: "GB", heightIn: 70, weightLb: 223, archetype: "Heavy-Volume Bellcow / Tackle-Breaker" },
+      "MarShawn Lloyd": { team: "GB", heightIn: 69, weightLb: 215, archetype: "Elusive Power Slash / High-Burst" },
+      "Aaron Jones Sr.": { team: "MIN", heightIn: 69, weightLb: 208, archetype: "Fluid Zone-Cut / High-IQ Pass-Catcher" },
+      "Jordan Mason": { team: "MIN", heightIn: 71, weightLb: 223, archetype: "Violent Contact-Finisher / Downhill Hammer" },
+
+      // NFC South
+      "Bijan Robinson": { team: "ATL", heightIn: 71, weightLb: 215, archetype: "Generational Agility / 3-Down Dynamic Back" },
+      "Tyler Allgeier": { team: "ATL", heightIn: 71, weightLb: 226, archetype: "Downhill Power Hammer / Physical Finisher" },
+      "Jonathon Brooks": { team: "CAR", heightIn: 72, weightLb: 216, archetype: "Fluid One-Cut / Smooth Vision" },
+      "Alvin Kamara": { team: "NO", heightIn: 70, weightLb: 215, archetype: "Elite Balance / Satellite Receiver" },
+      "Kendre Miller": { team: "NO", heightIn: 71, weightLb: 215, archetype: "Explosive Burst / North-South Slash" },
+      "Bucky Irving": { team: "TB", heightIn: 70, weightLb: 192, archetype: "Elusive Contact-Balance / Juke Specialist" },
+      "Rachaad White": { team: "TB", heightIn: 72, weightLb: 214, archetype: "Dynamic Pass-Catcher / Smooth Glider" },
+
+      // NFC West
+      "Trey Benson": { team: "ARI", heightIn: 72, weightLb: 216, archetype: "Explosive Size-Speed / Open-Field Threat" },
+      "James Conner": { team: "ARI", heightIn: 73, weightLb: 233, archetype: "Heavy Contact-Finisher / Bruising Power" },
+      "Kyren Williams": { team: "LAR", heightIn: 69, weightLb: 194, archetype: "Elite Vision / Zone Finisher" },
+      "Blake Corum": { team: "LAR", heightIn: 68, weightLb: 205, archetype: "Low Center-of-Gravity / Downhill Touchdown Machine" },
+      "Christian McCaffrey": { team: "SF", heightIn: 71, weightLb: 205, archetype: "All-Pro Hybrid / Elite Route-Runner & Bellcow" },
+      "Zach Charbonnet": { team: "SEA", heightIn: 72, weightLb: 214, archetype: "Heavy One-Cut / Physical Finisher" }
+    };
+
     /* ----------------- WR TO TEAM MAPPING ----------------- */
     const playerTeams = {
-      "Ja'Marr Chase": "CIN",
-      "Justin Jefferson": "MIN",
-      "CeeDee Lamb": "DAL",
-      "Tyreek Hill": "MIA",
-      "A.J. Brown": "NE",
-      "Amon-Ra St. Brown": "DET",
-      "Puka Nacua": "LAR",
-      "Garrett Wilson": "NYJ",
-      "Marvin Harrison Jr.": "ARI",
-      "Malik Nabers": "NYG",
-      "Nico Collins": "HOU",
-      "Drake London": "ATL",
-      "DJ Moore": "CHI",
-      "DK Metcalf": "SEA",
-      "Tee Higgins": "CIN",
-      "Davante Adams": "NYJ",
-      "Mike Evans": "TB",
-      "Terry McLaurin": "WSH",
-      "Jaylen Waddle": "MIA",
-      "Brandon Aiyuk": "SF",
-      "Chris Olave": "NO",
-      "Jaxon Smith-Njigba": "SEA",
-      "DeVonta Smith": "PHI",
-      "Xavier Worthy": "KC"
+      "Ja'Marr Chase": "CIN", "Justin Jefferson": "MIN", "CeeDee Lamb": "DAL", "Tyreek Hill": "MIA",
+      "A.J. Brown": "NE", "Amon-Ra St. Brown": "DET", "Puka Nacua": "LAR", "Garrett Wilson": "NYJ",
+      "Marvin Harrison Jr.": "ARI", "Malik Nabers": "NYG", "Nico Collins": "HOU", "Drake London": "ATL",
+      "DJ Moore": "CHI", "DK Metcalf": "SEA", "Tee Higgins": "CIN", "Davante Adams": "NYJ",
+      "Mike Evans": "TB", "Terry McLaurin": "WSH", "Jaylen Waddle": "MIA", "Brandon Aiyuk": "SF",
+      "Chris Olave": "NO", "Jaxon Smith-Njigba": "SEA", "DeVonta Smith": "PHI", "Xavier Worthy": "KC"
     };
 
     /* ----------------- WR ARCHETYPES MAPPING ----------------- */
     const wrArchetypes = {
-      "A.J. Brown": "Alpha Boundary X",
-      "DK Metcalf": "Alpha Boundary X",
-      "Tee Higgins": "Alpha Boundary X",
-      "Drake London": "Alpha Boundary X",
-      "Mike Evans": "Alpha Boundary X",
-      "Nico Collins": "Alpha Boundary X",
-
-      "Tyreek Hill": "Vertical Field-Stretcher",
-      "Ja'Marr Chase": "Vertical Field-Stretcher",
-      "Marvin Harrison Jr.": "Vertical Field-Stretcher",
-      "Malik Nabers": "Vertical Field-Stretcher",
-      "Jaylen Waddle": "Vertical Field-Stretcher",
-      "Terry McLaurin": "Vertical Field-Stretcher",
-
-      "Justin Jefferson": "Precision Route Technician",
-      "CeeDee Lamb": "Precision Route Technician",
-      "Amon-Ra St. Brown": "Precision Route Technician",
-      "Garrett Wilson": "Precision Route Technician",
-      "Davante Adams": "Precision Route Technician",
-      "Brandon Aiyuk": "Precision Route Technician",
-      "Chris Olave": "Precision Route Technician",
-      "DeVonta Smith": "Precision Route Technician",
-
-      "Puka Nacua": "Space & YAC Engine",
-      "DJ Moore": "Space & YAC Engine",
-      "Jaxon Smith-Njigba": "Space & YAC Engine",
-      "Xavier Worthy": "Space & YAC Engine"
+      "A.J. Brown": "Alpha Boundary X", "DK Metcalf": "Alpha Boundary X", "Tee Higgins": "Alpha Boundary X",
+      "Drake London": "Alpha Boundary X", "Mike Evans": "Alpha Boundary X", "Nico Collins": "Alpha Boundary X",
+      "Tyreek Hill": "Vertical Field-Stretcher", "Ja'Marr Chase": "Vertical Field-Stretcher",
+      "Marvin Harrison Jr.": "Vertical Field-Stretcher", "Malik Nabers": "Vertical Field-Stretcher",
+      "Jaylen Waddle": "Vertical Field-Stretcher", "Terry McLaurin": "Vertical Field-Stretcher",
+      "Justin Jefferson": "Precision Route Technician", "CeeDee Lamb": "Precision Route Technician",
+      "Amon-Ra St. Brown": "Precision Route Technician", "Garrett Wilson": "Precision Route Technician",
+      "Davante Adams": "Precision Route Technician", "Brandon Aiyuk": "Precision Route Technician",
+      "Chris Olave": "Precision Route Technician", "DeVonta Smith": "Precision Route Technician",
+      "Puka Nacua": "Space & YAC Engine", "DJ Moore": "Space & YAC Engine",
+      "Jaxon Smith-Njigba": "Space & YAC Engine", "Xavier Worthy": "Space & YAC Engine"
     };
 
     /* ----------------- CB ARCHETYPES MAPPING ----------------- */
     const cbArchetypes = {
-      // Press / Length Boundary CBs
-      "Patrick Surtain II": "Press / Length Boundary",
-      "Joey Porter Jr.": "Press / Length Boundary",
-      "Marshon Lattimore": "Press / Length Boundary",
-      "Christian Gonzalez": "Press / Length Boundary",
-      "Derek Stingley Jr.": "Press / Length Boundary",
-      "L'Jarius Sneed": "Press / Length Boundary",
-      "Quinyon Mitchell": "Press / Length Boundary",
-      "Riq Woolen": "Press / Length Boundary",
-      "Jaylon Johnson": "Press / Length Boundary",
-      "Charvarius Ward": "Press / Length Boundary",
-      "A.J. Terrell": "Press / Length Boundary",
-      "Jaycee Horn": "Press / Length Boundary",
-      "Carlton Davis III": "Press / Length Boundary",
-      "Paulson Adebo": "Press / Length Boundary",
-      "Deonte Banks": "Press / Length Boundary",
-      "Terrion Arnold": "Press / Length Boundary",
-      "Will Johnson": "Press / Length Boundary",
-      "Tyson Campbell": "Press / Length Boundary",
-      "Benjamin St-Juste": "Press / Length Boundary",
-      "JuJu Brents": "Press / Length Boundary",
+      "Patrick Surtain II": "Press / Length Boundary", "Joey Porter Jr.": "Press / Length Boundary",
+      "Marshon Lattimore": "Press / Length Boundary", "Christian Gonzalez": "Press / Length Boundary",
+      "Derek Stingley Jr.": "Press / Length Boundary", "L'Jarius Sneed": "Press / Length Boundary",
+      "Quinyon Mitchell": "Press / Length Boundary", "Riq Woolen": "Press / Length Boundary",
+      "Jaylon Johnson": "Press / Length Boundary", "Charvarius Ward": "Press / Length Boundary",
+      "A.J. Terrell": "Press / Length Boundary", "Jaycee Horn": "Press / Length Boundary",
+      "Carlton Davis III": "Press / Length Boundary", "Paulson Adebo": "Press / Length Boundary",
+      "Deonte Banks": "Press / Length Boundary", "Terrion Arnold": "Press / Length Boundary",
+      "Will Johnson": "Press / Length Boundary", "Tyson Campbell": "Press / Length Boundary",
+      "Benjamin St-Juste": "Press / Length Boundary", "JuJu Brents": "Press / Length Boundary",
 
-      // Off-Zone / Ball-Hawking CBs
-      "Trevon Diggs": "Off-Zone / Ball-Hawking",
-      "DaRon Bland": "Off-Zone / Ball-Hawking",
-      "Denzel Ward": "Off-Zone / Ball-Hawking",
-      "Jaire Alexander": "Off-Zone / Ball-Hawking",
-      "Byron Murphy Jr.": "Off-Zone / Ball-Hawking",
-      "Brandon Stephens": "Off-Zone / Ball-Hawking",
-      "Nate Wiggins": "Off-Zone / Ball-Hawking",
-      "Chidobe Awuzie": "Off-Zone / Ball-Hawking",
-      "Dax Hill": "Off-Zone / Ball-Hawking",
-      "DJ Turner II": "Off-Zone / Ball-Hawking",
-      "Jamel Dean": "Off-Zone / Ball-Hawking",
-      "Ronald Darby": "Off-Zone / Ball-Hawking",
-      "Jack Jones": "Off-Zone / Ball-Hawking",
-      "Ahkello Witherspoon": "Off-Zone / Ball-Hawking",
-      "Emmanuel Forbes Jr.": "Off-Zone / Ball-Hawking",
-      "Shaquill Griffin": "Off-Zone / Ball-Hawking",
-      "Zyon McCollum": "Off-Zone / Ball-Hawking",
-      "Denzel Burke": "Off-Zone / Ball-Hawking",
-      "Riley Moss": "Off-Zone / Ball-Hawking",
-      "Christian Benford": "Off-Zone / Ball-Hawking",
-      "Maxwell Hairston": "Off-Zone / Ball-Hawking",
-      "Chris Johnson": "Off-Zone / Ball-Hawking",
-      "Nahshon Wright": "Off-Zone / Ball-Hawking",
-      "Jaylon Jones": "Off-Zone / Ball-Hawking",
-      "Jarrian Jones": "Off-Zone / Ball-Hawking",
-      "Jaylen Watson": "Off-Zone / Ball-Hawking",
-      "Cam Hart": "Off-Zone / Ball-Hawking",
-      "Tarheeb Still": "Off-Zone / Ball-Hawking",
-      "Cor'Dale Flott": "Off-Zone / Ball-Hawking",
-      "Tyrique Stevenson": "Off-Zone / Ball-Hawking",
-      "Carrington Valentine": "Off-Zone / Ball-Hawking",
-      "Ennis Rakestraw Jr.": "Off-Zone / Ball-Hawking",
-      "Clark Phillips III": "Off-Zone / Ball-Hawking",
-      "Mike Jackson": "Off-Zone / Ball-Hawking",
-      "Kool-Aid McKinstry": "Off-Zone / Ball-Hawking",
-      "Nehemiah Pritchett": "Off-Zone / Ball-Hawking",
+      "Trevon Diggs": "Off-Zone / Ball-Hawking", "DaRon Bland": "Off-Zone / Ball-Hawking",
+      "Denzel Ward": "Off-Zone / Ball-Hawking", "Jaire Alexander": "Off-Zone / Ball-Hawking",
+      "Byron Murphy Jr.": "Off-Zone / Ball-Hawking", "Brandon Stephens": "Off-Zone / Ball-Hawking",
+      "Nate Wiggins": "Off-Zone / Ball-Hawking", "Chidobe Awuzie": "Off-Zone / Ball-Hawking",
+      "Dax Hill": "Off-Zone / Ball-Hawking", "DJ Turner II": "Off-Zone / Ball-Hawking",
+      "Jamel Dean": "Off-Zone / Ball-Hawking", "Ronald Darby": "Off-Zone / Ball-Hawking",
+      "Jack Jones": "Off-Zone / Ball-Hawking", "Ahkello Witherspoon": "Off-Zone / Ball-Hawking",
+      "Emmanuel Forbes Jr.": "Off-Zone / Ball-Hawking", "Shaquill Griffin": "Off-Zone / Ball-Hawking",
+      "Zyon McCollum": "Off-Zone / Ball-Hawking", "Denzel Burke": "Off-Zone / Ball-Hawking",
+      "Riley Moss": "Off-Zone / Ball-Hawking", "Christian Benford": "Off-Zone / Ball-Hawking",
+      "Maxwell Hairston": "Off-Zone / Ball-Hawking", "Chris Johnson": "Off-Zone / Ball-Hawking",
+      "Nahshon Wright": "Off-Zone / Ball-Hawking", "Jaylon Jones": "Off-Zone / Ball-Hawking",
+      "Jarrian Jones": "Off-Zone / Ball-Hawking", "Jaylen Watson": "Off-Zone / Ball-Hawking",
+      "Cam Hart": "Off-Zone / Ball-Hawking", "Tarheeb Still": "Off-Zone / Ball-Hawking",
+      "Cor'Dale Flott": "Off-Zone / Ball-Hawking", "Tyrique Stevenson": "Off-Zone / Ball-Hawking",
+      "Carrington Valentine": "Off-Zone / Ball-Hawking", "Ennis Rakestraw Jr.": "Off-Zone / Ball-Hawking",
+      "Clark Phillips III": "Off-Zone / Ball-Hawking", "Mike Jackson": "Off-Zone / Ball-Hawking",
+      "Kool-Aid McKinstry": "Off-Zone / Ball-Hawking", "Nehemiah Pritchett": "Off-Zone / Ball-Hawking",
 
-      // Slot / Nickel DBs
-      "Trent McDuffie": "Slot / Nickel DB",
-      "Devon Witherspoon": "Slot / Nickel DB",
-      "Kenny Moore II": "Slot / Nickel DB",
-      "Cooper DeJean": "Slot / Nickel DB",
-      "Nate Hobbs": "Slot / Nickel DB",
-      "Deommodore Lenoir": "Slot / Nickel DB",
-      "Roger McCreary": "Slot / Nickel DB",
-      "Cobie Durant": "Slot / Nickel DB"
+      "Trent McDuffie": "Slot / Nickel DB", "Devon Witherspoon": "Slot / Nickel DB",
+      "Kenny Moore II": "Slot / Nickel DB", "Cooper DeJean": "Slot / Nickel DB",
+      "Nate Hobbs": "Slot / Nickel DB", "Deommodore Lenoir": "Slot / Nickel DB",
+      "Roger McCreary": "Slot / Nickel DB", "Cobie Durant": "Slot / Nickel DB"
     };
 
-    /* ----------------- UPDATED 2026 CORNERBACK MAP (ALL 32 TEAMS) ----------------- */
+    /* ----------------- 2026 CORNERBACK MAP ----------------- */
     const primaryCorners2026Names = {
-      BUF: "Christian Benford",
-      MIA: "Chris Johnson",
-      NE: "Christian Gonzalez",
-      NYJ: "Brandon Stephens",
-      BAL: "Nate Wiggins",
-      CIN: "Dax Hill",
-      CLE: "Denzel Ward",
-      PIT: "Joey Porter Jr.",
-      HOU: "Derek Stingley Jr.",
-      IND: "Jaylon Jones",
-      JAX: "Ronald Darby",
-      TEN: "L'Jarius Sneed",
-      DEN: "Patrick Surtain II",
-      KC: "Trent McDuffie",
-      LV: "Nate Hobbs",
-      LAC: "Tarheeb Still",
-      DAL: "Trevon Diggs",
-      NYG: "Deonte Banks",
-      PHI: "Quinyon Mitchell",
-      WSH: "Marshon Lattimore",
-      CHI: "Jaylon Johnson",
-      DET: "Terrion Arnold",
-      GB: "Jaire Alexander",
-      MIN: "Byron Murphy Jr.",
-      ATL: "A.J. Terrell",
-      CAR: "Jaycee Horn",
-      NO: "Paulson Adebo",
-      TB: "Zyon McCollum",
-      ARI: "Will Johnson",
-      LAR: "Cobie Durant",
-      SF: "Charvarius Ward",
-      SEA: "Devon Witherspoon"
+      BUF: "Christian Benford", MIA: "Chris Johnson", NE: "Christian Gonzalez", NYJ: "Brandon Stephens",
+      BAL: "Nate Wiggins", CIN: "Dax Hill", CLE: "Denzel Ward", PIT: "Joey Porter Jr.",
+      HOU: "Derek Stingley Jr.", IND: "Jaylon Jones", JAX: "Ronald Darby", TEN: "L'Jarius Sneed",
+      DEN: "Patrick Surtain II", KC: "Trent McDuffie", LV: "Nate Hobbs", LAC: "Tarheeb Still",
+      DAL: "Trevon Diggs", NYG: "Deonte Banks", PHI: "Quinyon Mitchell", WSH: "Marshon Lattimore",
+      CHI: "Jaylon Johnson", DET: "Terrion Arnold", GB: "Jaire Alexander", MIN: "Byron Murphy Jr.",
+      ATL: "A.J. Terrell", CAR: "Jaycee Horn", NO: "Paulson Adebo", TB: "Zyon McCollum",
+      ARI: "Will Johnson", LAR: "Cobie Durant", SF: "Charvarius Ward", SEA: "Devon Witherspoon"
+    };
+
+    /* ----------------- 2026 FRONT 7 DEFENSE MAP FOR RBs ----------------- */
+    const frontSevenDefenses2026 = {
+      BUF: { name: "Bills Front 7", archetype: "Heavy Interior / Penetrating Gap" },
+      MIA: { name: "Dolphins Front 7", archetype: "Speed-Pass Rush / Flow Defense" },
+      NE:  { name: "Patriots Front 7", archetype: "Heavy 2-Gap / Power Wall" },
+      NYJ: { name: "Jets Front 7", archetype: "Aggressive 4-Man Rush / Wide-9" },
+      BAL: { name: "Ravens Front 7", archetype: "Heavy 2-Gap / Physical Wall" },
+      CIN: { name: "Bengals Front 7", archetype: "Balanced 4-3 / Gap Control" },
+      CLE: { name: "Browns Front 7", archetype: "Aggressive Edge / Speed Flow" },
+      PIT: { name: "Steelers Front 7", archetype: "Physical Blitz-Heavy / Power Front" },
+      HOU: { name: "Texans Front 7", archetype: "Fast Flow / Penetrating 4-3" },
+      IND: { name: "Colts Front 7", archetype: "Cover-2 Gap Control / Under Front" },
+      JAX: { name: "Jaguars Front 7", archetype: "Balanced Front / Speed Linebackers" },
+      TEN: { name: "Titans Front 7", archetype: "Heavy Nose / Interior Plugger" },
+      DEN: { name: "Broncos Front 7", archetype: "3-4 Hybrid / Edge Pressure" },
+      KC:  { name: "Chiefs Front 7", archetype: "Aggressive Blitz / Penetrating Gap" },
+      LV:  { name: "Raiders Front 7", archetype: "Edge Heavy / Penetrating 4-3" },
+      LAC: { name: "Chargers Front 7", archetype: "Physical 3-4 / Stacking Wall" },
+      DAL: { name: "Cowboys Front 7", archetype: "Speed Edge / Light Linebackers" },
+      NYG: { name: "Giants Front 7", archetype: "Heavy Interior / Blitz Heavy" },
+      PHI: { name: "Eagles Front 7", archetype: "Heavy Rotational Wall / Power Front" },
+      WSH: { name: "Commanders Front 7", archetype: "Penetrating DTs / Fast Pursuit" },
+      CHI: { name: "Bears Front 7", archetype: "Tampa-2 Flow / Gap Penetration" },
+      DET: { name: "Lions Front 7", archetype: "Physical Downhill / Heavy Wall" },
+      GB:  { name: "Packers Front 7", archetype: "3-4 Hybrid / Speed Edge" },
+      MIN: { name: "Vikings Front 7", archetype: "A-Gap Blitz Heavy / Dynamic Front" },
+      ATL: { name: "Falcons Front 7", archetype: "Flow Defense / Speed Linebackers" },
+      CAR: { name: "Panthers Front 7", archetype: "3-4 Gap Control / Heavy Nose" },
+      NO:  { name: "Saints Front 7", archetype: "Physical 4-3 / Power Interior" },
+      TB:  { name: "Buccaneers Front 7", archetype: "Blitz-Heavy / Fast Linebackers" },
+      ARI: { name: "Cardinals Front 7", archetype: "3-4 Hybrid / Flow Defense" },
+      LAR: { name: "Rams Front 7", archetype: "Young Penetrating / High-Motor" },
+      SF:  { name: "49ers Front 7", archetype: "Fast Pursuit / Wide-9 Penetrating" },
+      SEA: { name: "Seahawks Front 7", archetype: "3-4 Heavy / Physical Edge" }
     };
 
     /* ----------------- FULL 2026 SCHEDULE PARSED ----------------- */
@@ -805,7 +861,6 @@
 
     rawSchedule2026.forEach(game => {
       const { week, away, home } = game;
-
       if (!teamSchedule2026[away]) teamSchedule2026[away] = {};
       teamSchedule2026[away][week] = { opponent: home, home: false };
 
@@ -814,73 +869,31 @@
     });
 
     /* ----------------- DOM HOOKS ----------------- */
-    const wrSelect = document.getElementById("wrSelect");
-    const wrCompareSelect = document.getElementById("wrCompareSelect");
+    const playerSelect = document.getElementById("playerSelect");
+    const playerCompareSelect = document.getElementById("playerCompareSelect");
     const weekSelect = document.getElementById("weekSelect");
     const analyzeBtn = document.getElementById("analyzeBtn");
     const resultArea = document.getElementById("resultArea");
-    const autoCbChip = document.getElementById("autoCbChip");
-
-    /* ----------------- API FETCH & CACHE ----------------- */
-    const playerCache = {};
-
-    async function fetchPlayerFromAPI(playerName) {
-      if (playerCache[playerName]) {
-        return playerCache[playerName];
-      }
-
-      const mappedTeam = playerTeams[playerName] || "N/A";
-      const mappedWrArch = wrArchetypes[playerName] || "General Receiver";
-      const mappedCbArch = cbArchetypes[playerName] || "General Cornerback";
-
-      try {
-        const response = await fetch(`https://api.balldontlie.io/v1/nfl/players?search=${encodeURIComponent(playerName)}`, {
-          headers: {
-            "Authorization": "Bearer " + BALLDONTLIE_API_KEY
-          }
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.data && data.data.length > 0) {
-            const player = data.data[0];
-            const formatted = {
-              id: player.id,
-              name: `${player.first_name} ${player.last_name}`,
-              team: mappedTeam,
-              heightIn: player.height_feet ? (player.height_feet * 12 + (player.height_inches || 0)) : 73,
-              weightLb: player.weight_pounds ? parseInt(player.weight_pounds, 10) : 200,
-              wrArchetype: mappedWrArch,
-              cbArchetype: mappedCbArch
-            };
-            playerCache[playerName] = formatted;
-            return formatted;
-          }
-        }
-      } catch (err) {
-        console.error("API Fetch Error:", err);
-      }
-
-      return {
-        name: playerName,
-        team: mappedTeam,
-        heightIn: 73,
-        weightLb: 200,
-        wrArchetype: mappedWrArch,
-        cbArchetype: mappedCbArch
-      };
-    }
+    const autoOpponentChip = document.getElementById("autoOpponentChip");
+    const modeWrBtn = document.getElementById("modeWrBtn");
+    const modeRbBtn = document.getElementById("modeRbBtn");
+    const playerSelectLabel = document.getElementById("playerSelectLabel");
 
     /* ----------------- POPULATE SELECTS ----------------- */
-    function populateReceivers() {
-      top24ReceiversList.forEach(name => {
+    function populatePlayers() {
+      playerSelect.innerHTML = '<option value="">Select player…</option>';
+      playerCompareSelect.innerHTML = '<option value="">No comparison</option>';
+
+      const list = currentMode === "WR" ? top24ReceiversList : Object.keys(runningBacksData);
+
+      list.forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
         opt.textContent = name;
-        wrSelect.appendChild(opt);
+        playerSelect.appendChild(opt);
 
         const opt2 = opt.cloneNode(true);
-        wrCompareSelect.appendChild(opt2);
+        playerCompareSelect.appendChild(opt2);
       });
     }
 
@@ -893,119 +906,169 @@
       }
     }
 
-    /* ----------------- GET PRIMARY CB FOR A WR/WEEK ----------------- */
-    async function getPrimaryCornerFor(wr, week) {
-      const wrTeam = wr.team || playerTeams[wr.name];
-      const teamWeeks = teamSchedule2026[wrTeam];
+    /* ----------------- MODE SWITCHING ----------------- */
+    modeWrBtn.addEventListener("click", () => {
+      if (currentMode === "WR") return;
+      currentMode = "WR";
+      modeWrBtn.classList.add("active");
+      modeRbBtn.classList.remove("active");
+      playerSelectLabel.textContent = "Primary wide receiver";
+      populatePlayers();
+      renderEmpty("Switched to Wide Receiver mode. Select a player and week.");
+    });
+
+    modeRbBtn.addEventListener("click", () => {
+      if (currentMode === "RB") return;
+      currentMode = "RB";
+      modeRbBtn.classList.add("active");
+      modeWrBtn.classList.remove("active");
+      playerSelectLabel.textContent = "Primary running back";
+      populatePlayers();
+      renderEmpty("Switched to Running Back mode. Select a player and week.");
+    });
+
+    /* ----------------- FETCH PLAYER DATA ----------------- */
+    const playerCache = {};
+
+    async function fetchPlayer(playerName) {
+      if (playerCache[playerName]) return playerCache[playerName];
+
+      if (currentMode === "RB") {
+        const rbInfo = runningBacksData[playerName] || { team: "N/A", heightIn: 70, weightLb: 210, archetype: "Balanced Back" };
+        const formatted = {
+          name: playerName,
+          team: rbInfo.team,
+          heightIn: rbInfo.heightIn,
+          weightLb: rbInfo.weightLb,
+          archetype: rbInfo.archetype,
+          pos: "RB"
+        };
+        playerCache[playerName] = formatted;
+        return formatted;
+      } else {
+        const mappedTeam = playerTeams[playerName] || "N/A";
+        const mappedWrArch = wrArchetypes[playerName] || "General Receiver";
+        const formatted = {
+          name: playerName,
+          team: mappedTeam,
+          heightIn: 72,
+          weightLb: 200,
+          archetype: mappedWrArch,
+          pos: "WR"
+        };
+        playerCache[playerName] = formatted;
+        return formatted;
+      }
+    }
+
+    /* ----------------- GET OPPONENT DEFENSE ----------------- */
+    async function getOpponentFor(player, week) {
+      const teamWeeks = teamSchedule2026[player.team];
       if (!teamWeeks) return null;
 
       const weekInfo = teamWeeks[week];
       if (!weekInfo || !weekInfo.opponent) return null;
 
-      const opponentTeam = weekInfo.opponent;
+      const oppTeam = weekInfo.opponent;
 
-      let cbName = primaryCorners2026Names[opponentTeam];
-
-      if (!cbName) {
-        cbName = "Primary CB";
+      if (currentMode === "RB") {
+        const front7 = frontSevenDefenses2026[oppTeam] || { name: `${oppTeam} Front 7`, archetype: "Standard Front" };
+        return { name: front7.name, team: oppTeam, archetype: front7.archetype };
+      } else {
+        const cbName = primaryCorners2026Names[oppTeam] || "Primary CB";
+        const cbArch = cbArchetypes[cbName] || "General Cornerback";
+        return { name: cbName, team: oppTeam, archetype: cbArch };
       }
-
-      const cb = await fetchPlayerFromAPI(cbName);
-      if (cb) cb.team = opponentTeam;
-      return cb;
     }
 
     /* ----------------- MATCHUP LOGIC ----------------- */
-    function evaluateMatchup(wr, cb) {
+    function evaluateMatchup(player, opp) {
       let score = 70;
 
-      const heightDiff = wr.heightIn - cb.heightIn;
-      const weightDiff = wr.weightLb - cb.weightLb;
+      if (currentMode === "WR") {
+        const wrType = player.archetype;
+        const cbType = opp.archetype;
 
-      // Base height & weight adjustments
-      if (heightDiff >= 3) score += 5;
-      else if (heightDiff <= -3) score -= 5;
+        if (wrType === "Alpha Boundary X") {
+          if (cbType === "Off-Zone / Ball-Hawking") score += 6;
+          if (cbType === "Press / Length Boundary") score -= 3;
+        } else if (wrType === "Vertical Field-Stretcher") {
+          if (cbType === "Press / Length Boundary") score += 5;
+          if (cbType === "Off-Zone / Ball-Hawking") score -= 4;
+        } else if (wrType === "Precision Route Technician") {
+          if (cbType === "Off-Zone / Ball-Hawking") score += 5;
+          if (cbType === "Slot / Nickel DB") score -= 2;
+        } else if (wrType === "Space & YAC Engine") {
+          if (cbType === "Press / Length Boundary") score += 5;
+          if (cbType === "Slot / Nickel DB") score -= 3;
+        }
+      } else {
+        // RB vs Front 7 Logic
+        const rbArch = player.archetype;
+        const f7Arch = opp.archetype;
 
-      if (weightDiff >= 15) score += 5;
-      else if (weightDiff <= -15) score -= 5;
+        if (player.weightLb >= 218) {
+          if (f7Arch.includes("Light") || f7Arch.includes("Speed")) score += 6;
+          if (f7Arch.includes("Heavy") || f7Arch.includes("Power")) score -= 3;
+        } else {
+          if (f7Arch.includes("Heavy") || f7Arch.includes("Blitz")) score += 5;
+          if (f7Arch.includes("Flow") || f7Arch.includes("Penetrating")) score -= 2;
+        }
 
-      // Archetype Interaction Logic
-      const wrType = wr.wrArchetype;
-      const cbType = cb.cbArchetype;
-
-      // 1. Alpha Boundary X vs CBs
-      if (wrType === "Alpha Boundary X") {
-        if (cbType === "Off-Zone / Ball-Hawking") score += 6; // Bullying in contested situations
-        if (cbType === "Press / Length Boundary") score -= 3; // Length cancels out physical edge
-      }
-
-      // 2. Vertical Field-Stretcher vs CBs
-      if (wrType === "Vertical Field-Stretcher") {
-        if (cbType === "Press / Length Boundary") score += 4; // Can beat press with raw speed over the top
-        if (cbType === "Off-Zone / Ball-Hawking") score -= 4; // Cushion gives safety support over top
-      }
-
-      // 3. Precision Route Technician vs CBs
-      if (wrType === "Precision Route Technician") {
-        if (cbType === "Off-Zone / Ball-Hawking") score += 5; // Carves up zone cushions
-        if (cbType === "Slot / Nickel DB") score -= 2;
-      }
-
-      // 4. Space & YAC Engine vs CBs
-      if (wrType === "Space & YAC Engine") {
-        if (cbType === "Press / Length Boundary") score += 5; // Quickness beats stiff outside boundary corners
-        if (cbType === "Slot / Nickel DB") score -= 3; // Agile slot corner can match quickness
+        if (rbArch.includes("Speed") || rbArch.includes("Pass-Catching") || rbArch.includes("Space")) {
+          if (f7Arch.includes("Heavy") || f7Arch.includes("Slow")) score += 6;
+        }
       }
 
       score = Math.max(0, Math.min(100, score));
 
       let tier = "Neutral";
-      if (score >= 85) tier = "Smash Spot";
-      else if (score >= 70) tier = "Solid Start";
+      if (score >= 82) tier = "Smash Spot";
+      else if (score >= 68) tier = "Solid Start";
       else if (score <= 55) tier = "Tough Draw";
 
       return { score, tier };
     }
 
-    /* ----------------- RENDER ----------------- */
-    function renderCombined(primaryWr, primaryCb, week, primaryResult, cWr, cCb, cResult) {
+    /* ----------------- RENDER RESULTS ----------------- */
+    function renderCombined(p1, opp1, week, res1, p2, opp2, res2) {
       let html = `
         <div class="bubble-label">Chip says</div>
 
         <div class="result-header">
           <div class="matchup-vs">
-            Week ${week}: ${primaryWr.name} (${primaryWr.team}) vs ${primaryCb.name} (${primaryCb.team})
+            Week ${week}: ${p1.name} (${p1.team}) vs ${opp1.name} (${opp1.team})
           </div>
-          <div class="score-pill">${primaryResult.score} / 100</div>
+          <div class="score-pill">${res1.score} / 100</div>
         </div>
 
-        <div class="tier-label">${primaryResult.tier}</div>
+        <div class="tier-label">${res1.tier}</div>
         <div class="archetype-details">
-          ${primaryWr.wrArchetype} vs ${primaryCb.cbArchetype}
+          ${p1.archetype} vs ${opp1.archetype}
         </div>
       `;
 
-      if (cWr) {
+      if (p2) {
         html += `
           <hr class="comparison-divider" />
-          <div class="comparison-header">Comparison: ${cWr.name}</div>
+          <div class="comparison-header">Comparison: ${p2.name}</div>
         `;
 
-        if (cCb && cResult) {
+        if (opp2 && res2) {
           html += `
             <div class="result-header">
               <div class="matchup-vs">
-                Week ${week}: ${cWr.name} (${cWr.team}) vs ${cCb.name} (${cCb.team})
+                Week ${week}: ${p2.name} (${p2.team}) vs ${opp2.name} (${opp2.team})
               </div>
-              <div class="score-pill">${cResult.score} / 100</div>
+              <div class="score-pill">${res2.score} / 100</div>
             </div>
-            <div class="tier-label">${cResult.tier}</div>
+            <div class="tier-label">${res2.tier}</div>
             <div class="archetype-details">
-              ${cWr.wrArchetype} vs ${cCb.cbArchetype}
+              ${p2.archetype} vs ${opp2.archetype}
             </div>
           `;
         } else {
-          html += `<div class="empty-state">No CB mapped yet for comparison matchup.</div>`;
+          html += `<div class="empty-state">No matchup mapped yet for comparison player.</div>`;
         }
       }
 
@@ -1020,51 +1083,46 @@
 
     /* ----------------- MAIN HANDLER ----------------- */
     async function handleAnalyze() {
-      const wrName = wrSelect.value;
-      const compareName = wrCompareSelect.value;
+      const pName = playerSelect.value;
+      const compareName = playerCompareSelect.value;
       const weekVal = weekSelect.value;
 
-      if (!wrName || !weekVal) {
-        renderEmpty("Pick a WR + week first.");
-        autoCbChip.style.display = "none";
+      if (!pName || !weekVal) {
+        renderEmpty("Pick a player + week first.");
+        autoOpponentChip.style.display = "none";
         return;
       }
 
-      renderEmpty("Fetching live player data...");
+      renderEmpty("Calculating matchup parameters...");
 
       const week = parseInt(weekVal, 10);
-      const primaryWr = await fetchPlayerFromAPI(wrName);
-      const primaryCb = await getPrimaryCornerFor(primaryWr, week);
+      const p1 = await fetchPlayer(pName);
+      const opp1 = await getOpponentFor(p1, week);
 
-      if (!primaryCb) {
-        renderEmpty(
-          `I don't have an opponent CB mapped for ${primaryWr.name} in Week ${week} yet (or team is on bye). ` +
-          `Treat it as neutral and lean on volume + game total.`
-        );
-        autoCbChip.style.display = "none";
+      if (!opp1) {
+        renderEmpty(`No matchup found for ${p1.name} in Week ${week} (likely on bye).`);
+        autoOpponentChip.style.display = "none";
         return;
       }
 
-      const primaryResult = evaluateMatchup(primaryWr, primaryCb);
+      const res1 = evaluateMatchup(p1, opp1);
 
-      autoCbChip.style.display = "inline-flex";
-      autoCbChip.textContent = `Auto CB (2026): ${primaryCb.name} • ${primaryCb.team}`;
+      autoOpponentChip.style.display = "inline-flex";
+      autoOpponentChip.textContent = `2026 Opponent: ${opp1.name} (${opp1.team})`;
 
-      let cWr = null, cCb = null, cResult = null;
+      let p2 = null, opp2 = null, res2 = null;
       if (compareName) {
-        cWr = await fetchPlayerFromAPI(compareName);
-        cCb = await getPrimaryCornerFor(cWr, week);
-        if (cCb) {
-          cResult = evaluateMatchup(cWr, cCb);
-        }
+        p2 = await fetchPlayer(compareName);
+        opp2 = await getOpponentFor(p2, week);
+        if (opp2) res2 = evaluateMatchup(p2, opp2);
       }
 
-      renderCombined(primaryWr, primaryCb, week, primaryResult, cWr, cCb, cResult);
+      renderCombined(p1, opp1, week, res1, p2, opp2, res2);
     }
 
     /* ----------------- INIT ----------------- */
     document.addEventListener("DOMContentLoaded", () => {
-      populateReceivers();
+      populatePlayers();
       populateWeeks();
       analyzeBtn.addEventListener("click", handleAnalyze);
     });
