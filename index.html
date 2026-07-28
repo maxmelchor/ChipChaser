@@ -287,41 +287,80 @@
       display: flex;
       align-items: flex-start;
       gap: 8px;
+  <script>
+  // 1. 146f4c2f-4eab-4f6d-969e-a8ca0817de4f
+  const BALLDONTLIE_API_KEY = "146f4c2f-4eab-4f6d-969e-a8ca0817de4f";
+
+  // Cache object to store fetched players so we don't spam the API
+  const playerCache = {};
+
+  /**
+   * Fetches NFL players from balldontlie API by name or query
+   * Endpoint reference: https://api.balldontlie.io/v1/nfl/players
+   */
+  async function fetchPlayerFromAPI(searchQuery) {
+    if (playerCache[searchQuery]) {
+      return playerCache[searchQuery];
     }
 
-    .response-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      overflow: hidden;
-      border: 1px solid rgba(248, 250, 252, 0.85);
-      background: #020617;
-      flex-shrink: 0;
+    try {
+      const response = await fetch(`https://api.balldontlie.io/v1/nfl/players?search=${encodeURIComponent(searchQuery)}`, {
+        headers: {
+          "Authorization": "Bearer 146f4c2f-4eab-4f6d-969e-a8ca0817de4f"
+        }
+      });
+
+      if (!response.ok) {
+        console.error("API Request failed:", response.status, response.statusText);
+        return null;
+      }
+
+      const data = await response.json();
+      
+      if (data.data && data.data.length > 0) {
+        const player = data.data[0];
+        
+        // Map API response fields to your existing app's structure
+        const formattedPlayer = {
+          id: player.id,
+          name: `${player.first_name} ${player.last_name}`,
+          team: player.team ? player.team.abbreviation : "N/A",
+          position: player.position,
+          heightIn: player.height_feet ? (player.height_feet * 12 + (player.height_inches || 0)) : 72, // fallback height
+          weightLb: player.weight_pounds ? parseInt(player.weight_pounds, 10) : 200, // fallback weight
+          archetype: "technician_alpha" // default or derived archetype
+        };
+
+        playerCache[searchQuery] = formattedPlayer;
+        return formattedPlayer;
+      }
+    } catch (error) {
+      console.error("Error fetching player data:", error);
+    }
+    return null;
+  }
+
+  // Example usage in your existing handleAnalyze function:
+  async function handleAnalyzeWithAPI() {
+    const selectedWrName = wrSelect.options[wrSelect.selectedIndex]?.text;
+    if (!selectedWrName || !weekSelect.value) {
+      renderEmpty("Pick a WR + week first.");
+      return;
     }
 
-    .response-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    // Fetch dynamic WR details from API
+    const primaryWr = await fetchPlayerFromAPI(selectedWrName);
+    
+    if (!primaryWr) {
+      renderEmpty("Could not load player data from the API.");
+      return;
     }
 
-    .bubble {
-      flex: 1;
-      background: rgba(15, 23, 42, 0.98);
-      border-radius: 16px 16px 16px 4px;
-      border: 1px solid rgba(148, 163, 255, 0.7);
-      padding: 10px 12px 11px;
-      position: relative;
+    // Pass the fetched primaryWr into your existing evaluateMatchup function
+    // const primaryResult = evaluateMatchup(primaryWr, primaryCb);
+  }
+</script>
     }
-
-    .bubble-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: #a5b4fc;
-      margin-bottom: 4px;
-    }
-
     .empty-state {
       font-size: 12px;
       color: #9ca3af;
