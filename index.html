@@ -462,8 +462,36 @@
       "Ja'Marr Chase", "Justin Jefferson", "CeeDee Lamb", "Tyreek Hill", "A.J. Brown", "Amon-Ra St. Brown",
       "Puka Nacua", "Garrett Wilson", "Marvin Harrison Jr.", "Malik Nabers", "Nico Collins",
       "Drake London", "DJ Moore", "DK Metcalf", "Tee Higgins", "Davante Adams", "Mike Evans",
-      "Terry McLaurin", "Jaylen Waddle", "Brandon Aiyuk", "Chris Olave", "Jaxon Smith-Niegba", "DeVonta Smith", "Xavier Worthy"
+      "Terry McLaurin", "Jaylen Waddle", "Brandon Aiyuk", "Chris Olave", "Jaxon Smith-Njigba", "DeVonta Smith", "Xavier Worthy"
     ];
+
+    /* ----------------- WR TO TEAM MAPPING ----------------- */
+    const playerTeams = {
+      "Ja'Marr Chase": "CIN",
+      "Justin Jefferson": "MIN",
+      "CeeDee Lamb": "DAL",
+      "Tyreek Hill": "MIA",
+      "A.J. Brown": "PHI",
+      "Amon-Ra St. Brown": "DET",
+      "Puka Nacua": "LAR",
+      "Garrett Wilson": "NYJ",
+      "Marvin Harrison Jr.": "ARI",
+      "Malik Nabers": "NYG",
+      "Nico Collins": "HOU",
+      "Drake London": "ATL",
+      "DJ Moore": "CHI",
+      "DK Metcalf": "SEA",
+      "Tee Higgins": "CIN",
+      "Davante Adams": "NYJ",
+      "Mike Evans": "TB",
+      "Terry McLaurin": "WSH",
+      "Jaylen Waddle": "MIA",
+      "Brandon Aiyuk": "SF",
+      "Chris Olave": "NO",
+      "Jaxon Smith-Njigba": "SEA",
+      "DeVonta Smith": "PHI",
+      "Xavier Worthy": "KC"
+    };
 
     /* ----------------- TOP CORNERBACKS ----------------- */
     const primaryCorners2025Names = {
@@ -514,6 +542,8 @@
         return playerCache[playerName];
       }
 
+      const mappedTeam = playerTeams[playerName] || "N/A";
+
       try {
         const response = await fetch(`https://api.balldontlie.io/v1/nfl/players?search=${encodeURIComponent(playerName)}`, {
           headers: {
@@ -528,7 +558,7 @@
             const formatted = {
               id: player.id,
               name: `${player.first_name} ${player.last_name}`,
-              team: player.team ? player.team.abbreviation : "N/A",
+              team: mappedTeam,
               heightIn: player.height_feet ? (player.height_feet * 12 + (player.height_inches || 0)) : 73,
               weightLb: player.weight_pounds ? parseInt(player.weight_pounds, 10) : 200,
               archetype: "technician_alpha",
@@ -545,7 +575,7 @@
       // Fallback object if API is unavailable or key is missing
       return {
         name: playerName,
-        team: "N/A",
+        team: mappedTeam,
         heightIn: 73,
         weightLb: 200,
         archetype: "technician_alpha",
@@ -577,7 +607,8 @@
 
     /* ----------------- GET PRIMARY CB FOR A WR/WEEK ----------------- */
     async function getPrimaryCornerFor(wr, week) {
-      const teamWeeks = teamSchedule2025[wr.team];
+      const wrTeam = wr.team || playerTeams[wr.name];
+      const teamWeeks = teamSchedule2025[wrTeam];
       if (!teamWeeks) return null;
 
       const weekInfo = teamWeeks[week];
