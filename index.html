@@ -495,23 +495,56 @@
       "Xavier Worthy": "KC"
     };
 
-    /* ----------------- TOP CORNERBACKS ----------------- */
+    /* ----------------- UPDATED 2026 CORNERBACK MAP (ALL 32 TEAMS) ----------------- */
     const primaryCorners2026Names = {
-      NYJ: "Sauce Gardner",
-      DEN: "Patrick Surtain II",
-      CAR: "Jaycee Horn",
-      HOU: "Derek Stingley Jr.",
-      CLE: "Denzel Ward",
-      DAL: "Trevon Diggs",
-      SEA: "Riq Woolen",
-      LAR: "Tre'Davious White",
-      KC: "Trent McDuffie",
-      PHI: "Quinyon Mitchell",
-      BAL: "Marlon Humphrey",
-      CHI: "Jaylon Johnson"
-    };
+      // AFC East
+      BUF: "Christian Benford",
+      MIA: "Chris Johnson",
+      NE: "Christian Gonzalez",
+      NYJ: "Brandon Stephens",
 
-    const cbCycleNames = ["Sauce Gardner", "Patrick Surtain II", "Jaycee Horn", "Derek Stingley Jr.", "Denzel Ward", "Trevon Diggs", "Riq Woolen", "Trent McDuffie", "Jaylon Johnson"];
+      // AFC North
+      BAL: "Nate Wiggins",
+      CIN: "Dax Hill",
+      CLE: "Denzel Ward",
+      PIT: "Joey Porter Jr.",
+
+      // AFC South
+      HOU: "Derek Stingley Jr.",
+      IND: "Jaylon Jones",
+      JAX: "Ronald Darby",
+      TEN: "L'Jarius Sneed",
+
+      // AFC West
+      DEN: "Patrick Surtain II",
+      KC: "Trent McDuffie",
+      LV: "Nate Hobbs",
+      LAC: "Tarheeb Still",
+
+      // NFC East
+      DAL: "Trevon Diggs",
+      NYG: "Deonte Banks",
+      PHI: "Quinyon Mitchell",
+      WSH: "Marshon Lattimore",
+
+      // NFC North
+      CHI: "Jaylon Johnson",
+      DET: "Terrion Arnold",
+      GB: "Jaire Alexander",
+      MIN: "Byron Murphy Jr.",
+
+      // NFC South
+      ATL: "A.J. Terrell",
+      CAR: "Jaycee Horn",
+      NO: "Paulson Adebo",
+      TB: "Zyon McCollum",
+
+      // NFC West
+      ARI: "Will Johnson",
+      LAR: "Cobie Durant",
+      SF: "Charvarius Ward",
+      SEA: "Devon Witherspoon"
+    };
 
     /* ----------------- FULL 2026 SCHEDULE PARSED ----------------- */
     const rawSchedule2026 = [
@@ -777,9 +810,7 @@
       let cbName = primaryCorners2026Names[opponentTeam];
 
       if (!cbName) {
-        const code = opponentTeam.charCodeAt(0) + (opponentTeam.charCodeAt(1) || 0) + week;
-        const idx = Math.abs(code) % cbCycleNames.length;
-        cbName = cbCycleNames[idx];
+        cbName = "Primary CB";
       }
 
       const cb = await fetchPlayerFromAPI(cbName);
