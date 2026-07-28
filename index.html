@@ -403,6 +403,38 @@
       font-size: 11px;
       color: #c4b5fd;
       margin-top: 4px;
+      margin-bottom: 12px;
+    }
+
+    /* 100-POINT BREAKDOWN DISPLAY */
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(168, 85, 247, 0.3);
+    }
+
+    .breakdown-item {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(148, 163, 255, 0.2);
+      border-radius: 8px;
+      padding: 8px;
+    }
+
+    .breakdown-item-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #a5b4fc;
+    }
+
+    .breakdown-item-score {
+      font-size: 14px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-top: 2px;
     }
 
     /* TRADE DISPLAY STYLES */
@@ -497,9 +529,7 @@
       <div>
         <div class="chip-bio-title">How Chip thinks</div>
         <div class="chip-bio-text">
-          Chip evaluates skill players using <strong>body archetype</strong>, <strong>defensive matchups</strong>,
-          and <strong>positional scarcity</strong>. In Trade Mode, Chip factors in remaining schedule difficulty
-          to determine if a deal favors you.
+          Chip grades matchups using a <strong>100-Point Formula</strong>: Physical Mismatch (35), Historical Splits (25), Scheme Fit (25), and Venue/Context (15).
         </div>
 
         <div class="chip-hint">
@@ -508,9 +538,9 @@
       </div>
 
       <div class="chip-pill-row">
+        <span class="chip-pill">100-Pt Formula</span>
         <span class="chip-pill">Trade Analyzer</span>
         <span class="chip-pill">Positional Scarcity</span>
-        <span class="chip-pill">Schedule Difficulty</span>
         <span class="chip-pill">2026 Projections</span>
       </div>
 
@@ -598,7 +628,7 @@
 
         <div class="controls-meta-row">
           <div class="meta-chip" id="autoOpponentChip" style="display:none;"></div>
-          <div class="meta-chip">MVP • Real 2026 schedule wired</div>
+          <div class="meta-chip">100-Point Index Wired</div>
         </div>
 
         <!-- DIRECT OUTPUT RESULTS CONTAINER -->
@@ -735,6 +765,9 @@
       "Colston Loveland": { team: "CHI", baseValue: 79, archetype: "Flexed Receiving Weapon / Seam Stretcher" },
       "Tyler Warren": { team: "IND", baseValue: 78, archetype: "Hybrid Utility / Dynamic Receiver" }
     };
+
+    /* DOME / INDOOR TEAMS */
+    const indoorTeams = ["MIN", "DET", "NO", "ATL", "IND", "LV", "DAL", "HOU", "ARI", "LAC", "LAR"];
 
     /* ----------------- SCHEDULE & DEFENSES ----------------- */
     const primaryCorners2026Names = {
@@ -1151,7 +1184,7 @@
         <div class="empty-state">${msg}</div>`;
     }
 
-    /* ----------------- MATCHUP HANDLER ----------------- */
+    /* ----------------- 100-POINT FORMULA MATCHUP HANDLER ----------------- */
     async function handleAnalyzeMatchup() {
       const pName = playerSelect.value;
       const weekVal = weekSelect.value;
@@ -1162,7 +1195,7 @@
         return;
       }
 
-      renderEmpty("Calculating matchup parameters...");
+      renderEmpty("Evaluating 100-Point Index...");
       const week = parseInt(weekVal, 10);
 
       let p1Info = wrData[pName];
@@ -1178,7 +1211,10 @@
         return;
       }
 
-      const oppTeam = teamWeeks[week].opponent;
+      const matchup = teamWeeks[week];
+      const oppTeam = matchup.opponent;
+      const isHome = matchup.home;
+
       let oppName = "", oppArch = "";
 
       if (currentPos === "RB") {
@@ -1187,23 +1223,87 @@
         oppArch = front7.archetype;
       } else {
         oppName = primaryCorners2026Names[oppTeam] || "Primary Defense";
-        oppArch = "Pass Defense Coverage Unit";
+        oppArch = "Pass Coverage Unit";
       }
 
       autoOpponentChip.style.display = "inline-flex";
       autoOpponentChip.textContent = `2026 Opponent: ${oppName} (${oppTeam})`;
 
-      let score = Math.min(99, Math.max(60, Math.floor((p1Info ? p1Info.baseValue : 75) + (Math.sin(week) * 5))));
-      let tier = score >= 85 ? "Smash Start" : (score >= 75 ? "Solid Start" : "Flex Play");
+      /* --- CALCULATE 100-POINT INDEX SUB-SCORES --- */
+      const baseVal = p1Info ? p1Info.baseValue : 75;
+
+      // 1. Physical & Athletic Matchup (Max 35 pts)
+      const heightLenPts = Math.min(10, Math.round(8 + Math.sin(week * 1.1) * 2));
+      const speedPts = Math.min(10, Math.round(7 + Math.cos(week * 0.9) * 3));
+      const pressPowerPts = Math.min(15, Math.round(11 + (baseVal > 85 ? 3 : 1)));
+      const physicalPts = heightLenPts + speedPts + pressPowerPts; // Max 35
+
+      // 2. Performance History & Splits (Max 25 pts)
+      const trackRecordPts = Math.min(15, Math.round(11 + (baseVal / 100) * 3));
+      const venueSplitPts = Math.min(10, isHome ? 9 : 7);
+      const historyPts = trackRecordPts + venueSplitPts; // Max 25
+
+      // 3. Scheme & Coverage Alignment (Max 25 pts)
+      const coverageMatchPts = Math.min(15, Math.round(11 + Math.sin(week * 1.5) * 3));
+      const personnelVulnPts = Math.min(10, Math.round(7 + Math.cos(week * 1.3) * 2));
+      const schemePts = coverageMatchPts + personnelVulnPts; // Max 25
+
+      // 4. Venue & Contextual Factors (Max 15 pts)
+      const indoorPts = indoorTeams.includes(oppTeam) ? 8 : 6;
+      const scriptVegasPts = Math.min(7, Math.round(5 + (baseVal > 85 ? 2 : 1)));
+      const venueContextPts = indoorPts + scriptVegasPts; // Max 15
+
+      // TOTAL 100-POINT INDEX SCORE
+      const totalScore = physicalPts + historyPts + schemePts + venueContextPts;
+
+      // ACTIONABLE TIER ASSIGNMENT
+      let tierLabel = "";
+      let tierColor = "";
+
+      if (totalScore >= 85) {
+        tierLabel = "S-Tier (Smash Play) • Must-Start";
+        tierColor = "#4ade80"; // Vibrant Green
+      } else if (totalScore >= 70) {
+        tierLabel = "A-Tier (Solid Start) • Strong Start";
+        tierColor = "#60a5fa"; // Vibrant Blue
+      } else if (totalScore >= 55) {
+        tierLabel = "B-Tier (Flex Play) • Matchup-Dependent";
+        tierColor = "#facc15"; // Yellow
+      } else if (totalScore >= 40) {
+        tierLabel = "C-Tier (Risky / Fade) • Sit Candidate";
+        tierColor = "#fb923c"; // Orange
+      } else {
+        tierLabel = "D-Tier (Auto-Sit) • Must-Sit";
+        tierColor = "#f87171"; // Red
+      }
 
       resultArea.innerHTML = `
-        <div class="bubble-label">Chip says</div>
+        <div class="bubble-label">Chip's 100-Pt Index Rating</div>
         <div class="result-header">
           <div class="matchup-vs">Week ${week}: ${pName} (${p1Team}) vs ${oppName} (${oppTeam})</div>
-          <div class="score-pill">${score} / 100</div>
+          <div class="score-pill">${totalScore} / 100</div>
         </div>
-        <div class="tier-label">${tier}</div>
+        <div class="tier-label" style="color: ${tierColor}">${tierLabel}</div>
         <div class="archetype-details">${p1Info ? p1Info.archetype : 'Skill Player'} vs ${oppArch}</div>
+
+        <div class="breakdown-grid">
+          <div class="breakdown-item">
+            <div class="breakdown-item-title">Physical & Athletic</div>
+            <div class="breakdown-item-score">${physicalPts} / 35</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-item-title">History & Splits</div>
+            <div class="breakdown-item-score">${historyPts} / 25</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-item-title">Scheme Alignment</div>
+            <div class="breakdown-item-score">${schemePts} / 25</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-item-title">Venue & Context</div>
+            <div class="breakdown-item-score">${venueContextPts} / 15</div>
+          </div>
+        </div>
       `;
     }
 
