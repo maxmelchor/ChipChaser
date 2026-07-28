@@ -560,10 +560,10 @@
       </div>
 
       <div class="chip-pill-row">
+        <span class="chip-pill">32-Team Extended Depth</span>
         <span class="chip-pill">A–F Trade Grades</span>
         <span class="chip-pill">2-for-1 Tax</span>
-        <span class="chip-pill">Scarcity Multiplier</span>
-        <span class="chip-pill">ROS Schedule</span>
+        <span class="chip-pill">Scarcity Multipliers</span>
       </div>
 
       <div class="chip-footnote">
@@ -650,7 +650,7 @@
 
         <div class="controls-meta-row">
           <div class="meta-chip" id="autoOpponentChip" style="display:none;"></div>
-          <div class="meta-chip">A–F Trade Formula Active</div>
+          <div class="meta-chip">Full WR1-4, RB1-3 & TE1-2 Roster Complete</div>
         </div>
 
         <!-- DIRECT OUTPUT RESULTS CONTAINER -->
@@ -670,8 +670,9 @@
     let activeTool = "MATCHUP"; // "MATCHUP" or "TRADE"
     let currentPos = "WR";      // "WR", "RB", or "TE"
 
-    /* ----------------- PLAYER DATABASE WITH SCARCITY, ROS & INJURY META ----------------- */
+    /* ----------------- EXTENDED 32-TEAM PLAYER DATABASE (WR1-4, RB1-3, TE1-2) ----------------- */
     const wrData = {
+      // WR1 & WR2 ALREADY WIRED + EXTENDED WR3 & WR4 ADDITIONS
       "Ja'Marr Chase": { team: "CIN", baseValue: 95, scarcity: 1.10, ros: 5, injury: 0, archetype: "Vertical Field-Stretcher & Explosive YAC" },
       "Justin Jefferson": { team: "MIN", baseValue: 96, scarcity: 1.10, ros: 4, injury: 0, archetype: "The Ultimate Separation Route Technician" },
       "CeeDee Lamb": { team: "DAL", baseValue: 94, scarcity: 1.10, ros: 3, injury: 0, archetype: "Precision Route Technician / Versatile Target" },
@@ -701,10 +702,74 @@
       "George Pickens": { team: "DAL", baseValue: 82, scarcity: 1.00, ros: 3, injury: 0, archetype: "Alpha Boundary / Elite Acrobatics" },
       "Rome Odunze": { team: "CHI", baseValue: 80, scarcity: 1.00, ros: 2, injury: 0, archetype: "Boundary 'X' / Physical Catch-Point Wins" },
       "Tetairoa McMillan": { team: "CAR", baseValue: 79, scarcity: 1.00, ros: 1, injury: 0, archetype: "Massive Boundary 'X' / Contested Catch" },
-      "Emeka Egbuka": { team: "TB", baseValue: 78, scarcity: 1.00, ros: 2, injury: 0, archetype: "Precision Slot & Outside Route Technician" }
+      "Emeka Egbuka": { team: "TB", baseValue: 78, scarcity: 1.00, ros: 2, injury: 0, archetype: "Precision Slot & Outside Route Technician" },
+
+      // NEW WR3 & WR4 ROTATIONAL DEPTH ADDITIONS
+      "Keon Coleman": { team: "BUF", baseValue: 74, scarcity: 1.00, ros: 4, injury: 0, archetype: "Boundary 'X' / Contested Catch" },
+      "Joshua Palmer": { team: "BUF", baseValue: 68, scarcity: 0.85, ros: 3, injury: 0, archetype: "Intermediate Chain-Mover" },
+      "Malik Washington": { team: "MIA", baseValue: 70, scarcity: 0.85, ros: 2, injury: 0, archetype: "Slot Quickness / YAC Engine" },
+      "Caleb Douglas": { team: "MIA", baseValue: 62, scarcity: 0.85, ros: 2, injury: 0, archetype: "Perimeter Speed Threat" },
+      "Kayshon Boutte": { team: "NE", baseValue: 66, scarcity: 0.85, ros: 1, injury: 0, archetype: "Possession Slot-Outside Flex" },
+      "Kendrick Bourne": { team: "NE", baseValue: 65, scarcity: 0.85, ros: 1, injury: -5, archetype: "YAC / Intermediate Route Runner" },
+      "Omar Cooper Jr.": { team: "NYJ", baseValue: 64, scarcity: 0.85, ros: 1, injury: 0, archetype: "Intermediate Route Technician" },
+      "Allen Lazard": { team: "NYJ", baseValue: 62, scarcity: 0.85, ros: 1, injury: 0, archetype: "Heavy Blocking Boundary 'X'" },
+      "Devontez Walker": { team: "BAL", baseValue: 69, scarcity: 0.85, ros: 3, injury: 0, archetype: "Vertical Deep Stretcher" },
+      "Elijah Sarratt": { team: "BAL", baseValue: 63, scarcity: 0.85, ros: 3, injury: 0, archetype: "Physical Boundary Catch-Point" },
+      "Andrei Iosivas": { team: "CIN", baseValue: 71, scarcity: 0.85, ros: 4, injury: 0, archetype: "Boundary Size-Speed Stretcher" },
+      "Charlie Jones": { team: "CIN", baseValue: 61, scarcity: 0.85, ros: 3, injury: 0, archetype: "Quick-Shift Return / Slot" },
+      "Denzel Boston": { team: "CLE", baseValue: 67, scarcity: 0.85, ros: 2, injury: 0, archetype: "High-Point Boundary Target" },
+      "Cedric Tillman": { team: "CLE", baseValue: 65, scarcity: 0.85, ros: 2, injury: 0, archetype: "Physical Perimeter 'X'" },
+      "Germie Bernard": { team: "PIT", baseValue: 72, scarcity: 1.00, ros: 2, injury: 0, archetype: "Over-The-Middle Physical Target" },
+      "Calvin Austin III": { team: "PIT", baseValue: 64, scarcity: 0.85, ros: 2, injury: 0, archetype: "Sub-4.3 Speed Satellite" },
+      "John Metchie III": { team: "HOU", baseValue: 68, scarcity: 0.85, ros: 3, injury: 0, archetype: "Intermediate Separation Slot" },
+      "Xavier Hutchinson": { team: "HOU", baseValue: 63, scarcity: 0.85, ros: 3, injury: 0, archetype: "Possession Boundary 'X'" },
+      "Adonai Mitchell": { team: "IND", baseValue: 73, scarcity: 1.00, ros: 3, injury: 0, archetype: "Boundary Field-Stretcher" },
+      "Anthony Gould": { team: "IND", baseValue: 60, scarcity: 0.85, ros: 2, injury: 0, archetype: "Space / Motion Specialist" },
+      "Jayden Higgins": { team: "JAX", baseValue: 68, scarcity: 0.85, ros: 2, injury: 0, archetype: "Perimeter High-Point 'X'" },
+      "Dyami Brown": { team: "JAX", baseValue: 62, scarcity: 0.85, ros: 2, injury: 0, archetype: "Deep Post Stretcher" },
+      "Elic Ayomanor": { team: "TEN", baseValue: 69, scarcity: 0.85, ros: 1, injury: 0, archetype: "Physical Contested Catch Boundary" },
+      "Jalin Hyatt": { team: "TEN", baseValue: 65, scarcity: 0.85, ros: 1, injury: 0, archetype: "Pure Deep Boundary Speed" },
+      "Troy Franklin": { team: "DEN", baseValue: 71, scarcity: 0.85, ros: 3, injury: 0, archetype: "Deep Boundary Speed" },
+      "Marvin Mims Jr.": { team: "DEN", baseValue: 66, scarcity: 0.85, ros: 3, injury: 0, archetype: "Slot / Return Specialist" },
+      "Hollywood Brown": { team: "KC", baseValue: 75, scarcity: 1.00, ros: 5, injury: -5, archetype: "Speed Field-Stretcher" },
+      "Juju Smith-Schuster": { team: "KC", baseValue: 66, scarcity: 0.85, ros: 4, injury: 0, archetype: "Heavy Slot / Over-the-Middle" },
+      "Dont'e Thornton Jr.": { team: "LV", baseValue: 67, scarcity: 0.85, ros: 2, injury: 0, archetype: "Massive Speed Field-Stretcher" },
+      "Jalen Guyton": { team: "LV", baseValue: 61, scarcity: 0.85, ros: 2, injury: 0, archetype: "Boundary Deep Threat" },
+      "Brenden Rice": { team: "LAC", baseValue: 66, scarcity: 0.85, ros: 2, injury: 0, archetype: "Boundary Physical Possession" },
+      "Derius Davis": { team: "LAC", baseValue: 60, scarcity: 0.85, ros: 2, injury: 0, archetype: "Gadget / Return Specialist" },
+      "Jalen Tolbert": { team: "DAL", baseValue: 71, scarcity: 0.85, ros: 3, injury: 0, archetype: "Boundary Route Runner" },
+      "Ryan Flournoy": { team: "DAL", baseValue: 63, scarcity: 0.85, ros: 3, injury: 0, archetype: "Physical YAC Specialist" },
+      "Darius Slayton": { team: "NYG", baseValue: 72, scarcity: 1.00, ros: 1, injury: 0, archetype: "Vertical Boundary Speed" },
+      "Johnny Wilson": { team: "PHI", baseValue: 64, scarcity: 0.85, ros: 4, injury: 0, archetype: "Massive Boundary 'X' / Blocking WR" },
+      "Ainias Smith": { team: "PHI", baseValue: 61, scarcity: 0.85, ros: 3, injury: 0, archetype: "Slot YAC Engine" },
+      "Luke McCaffrey": { team: "WSH", baseValue: 69, scarcity: 0.85, ros: 2, injury: 0, archetype: "Slot Possession / High-IQ" },
+      "Tyler Scott": { team: "CHI", baseValue: 65, scarcity: 0.85, ros: 2, injury: 0, archetype: "Deep Speed Stretcher" },
+      "Velus Jones Jr.": { team: "CHI", baseValue: 59, scarcity: 0.85, ros: 2, injury: 0, archetype: "Kick Return / Gadget Space" },
+      "Isaac TeSlaa": { team: "DET", baseValue: 66, scarcity: 0.85, ros: 5, injury: 0, archetype: "Contested Catch Boundary" },
+      "Greg Dortch": { team: "DET", baseValue: 65, scarcity: 0.85, ros: 4, injury: 0, archetype: "Slot Quick-Shift Engine" },
+      "Jayden Reed": { team: "GB", baseValue: 78, scarcity: 1.00, ros: 3, injury: 0, archetype: "Dynamic Motion & YAC Engine" },
+      "Dontayvion Wicks": { team: "GB", baseValue: 74, scarcity: 1.00, ros: 3, injury: 0, archetype: "Elite Route Separation Specialist" },
+      "Jauan Jennings": { team: "MIN", baseValue: 73, scarcity: 1.00, ros: 3, injury: 0, archetype: "Physical Third-Down Chain-Mover" },
+      "Jalen Nailor": { team: "MIN", baseValue: 64, scarcity: 0.85, ros: 3, injury: 0, archetype: "Perimeter Deep Threat" },
+      "Olamide Zaccheaus": { team: "ATL", baseValue: 64, scarcity: 0.85, ros: 3, injury: 0, archetype: "Slot Separation / YAC" },
+      "Xavier Legette": { team: "CAR", baseValue: 73, scarcity: 1.00, ros: 1, injury: 0, archetype: "Physical Power-YAC Boundary" },
+      "David Moore": { team: "CAR", baseValue: 61, scarcity: 0.85, ros: 1, injury: 0, archetype: "Intermediate Veteran Route Runner" },
+      "A.T. Perry": { team: "NO", baseValue: 65, scarcity: 0.85, ros: 1, injury: 0, archetype: "Deep Perimeter 'X'" },
+      "Mason Tipton": { team: "NO", baseValue: 60, scarcity: 0.85, ros: 1, injury: 0, archetype: "Slot Speed Threat" },
+      "Jalen McMillan": { team: "TB", baseValue: 72, scarcity: 1.00, ros: 2, injury: 0, archetype: "Precision Slot Route Technician" },
+      "Sterling Shepard": { team: "TB", baseValue: 62, scarcity: 0.85, ros: 2, injury: 0, archetype: "Veteran Slot Possession" },
+      "Michael Wilson": { team: "ARI", baseValue: 74, scarcity: 1.00, ros: 3, injury: 0, archetype: "Physical Boundary Possession" },
+      "Xavier Weaver": { team: "ARI", baseValue: 60, scarcity: 0.85, ros: 3, injury: 0, archetype: "Slot Speed Specialist" },
+      "Tutu Atwell": { team: "LAR", baseValue: 67, scarcity: 0.85, ros: 3, injury: 0, archetype: "Pure Field-Stretcher Speed" },
+      "Jordan Whittington": { team: "LAR", baseValue: 62, scarcity: 0.85, ros: 3, injury: 0, archetype: "Heavy Slot / Blocking WR" },
+      "Ricky Pearsall": { team: "SF", baseValue: 74, scarcity: 1.00, ros: 3, injury: 0, archetype: "Route Separation / Hands Specialist" },
+      "Jacob Cowing": { team: "SF", baseValue: 63, scarcity: 0.85, ros: 3, injury: 0, archetype: "Quick-Shift Slot Engine" },
+      "Laviska Shenault Jr.": { team: "SEA", baseValue: 65, scarcity: 0.85, ros: 2, injury: 0, archetype: "Thick YAC / Backfield Flex" },
+      "Jake Bobo": { team: "SEA", baseValue: 63, scarcity: 0.85, ros: 2, injury: 0, archetype: "Physical Boundary Chain-Mover" }
     };
 
     const runningBacksData = {
+      // RB1 & RB2 ALREADY WIRED + EXTENDED RB3 ADDITIONS
       "Saquon Barkley": { team: "PHI", baseValue: 94, scarcity: 1.25, ros: 5, injury: -5, archetype: "Elite Dynamic Bellcow / Jump-Cutter" },
       "Christian McCaffrey": { team: "SF", baseValue: 96, scarcity: 1.25, ros: 4, injury: -10, archetype: "All-Pro Hybrid / Elite Bellcow" },
       "Bijan Robinson": { team: "ATL", baseValue: 93, scarcity: 1.25, ros: 4, injury: 0, archetype: "Generational 3-Down Dynamic Back" },
@@ -731,60 +796,83 @@
       "Omarion Hampton": { team: "LAC", baseValue: 78, scarcity: 1.00, ros: 2, injury: 0, archetype: "Physical Workhorse / Downhill Finisher" },
       "Jonathon Brooks": { team: "CAR", baseValue: 78, scarcity: 1.00, ros: 1, injury: -10, archetype: "Fluid One-Cut / Smooth Vision" },
       "James Conner": { team: "ARI", baseValue: 78, scarcity: 1.00, ros: 3, injury: -5, archetype: "Heavy Bruiser / Contact Finisher" },
-      "Chuba Hubbard": { team: "DAL", baseValue: 77, scarcity: 1.00, ros: 3, injury: 0, archetype: "Patient Zone Runner / Contact-Balance" },
-      "Chase Brown": { team: "CIN", baseValue: 77, scarcity: 1.10, ros: 4, injury: 0, archetype: "Explosive One-Cut Slash / Big-Play Threat" },
-      "Zach Charbonnet": { team: "SEA", baseValue: 76, scarcity: 1.00, ros: 2, injury: 0, archetype: "Heavy One-Cut / Physical Finisher" },
-      "Rachaad White": { team: "TB", baseValue: 76, scarcity: 1.00, ros: 2, injury: 0, archetype: "Pass-Catching Glider / Smooth Runner" },
-      "Trey Benson": { team: "ARI", baseValue: 76, scarcity: 1.00, ros: 3, injury: 0, archetype: "Explosive Size-Speed / Open-Field Threat" },
-      "Tony Pollard": { team: "TEN", baseValue: 75, scarcity: 1.00, ros: 1, injury: 0, archetype: "Dynamic Space Runner / Outside Speed" },
-      "Quinshon Judkins": { team: "CLE", baseValue: 75, scarcity: 1.00, ros: 2, injury: 0, archetype: "Physical North-South / Contact-Balance" },
-      "Jordan Mason": { team: "MIN", baseValue: 75, scarcity: 1.00, ros: 3, injury: 0, archetype: "Violent Downhill Hammer / Contact-Finisher" },
-      "Tyrone Tracy Jr.": { team: "NYG", baseValue: 74, scarcity: 1.00, ros: 1, injury: 0, archetype: "Converted-WR / Dynamic Space & Pass-Catcher" },
-      "Jaylen Warren": { team: "PIT", baseValue: 74, scarcity: 1.00, ros: 2, injury: 0, archetype: "Low Center Contact Finisher" },
-      "Javonte Williams": { team: "DEN", baseValue: 74, scarcity: 1.00, ros: 3, injury: -5, archetype: "Physical Contact-Balance / Bruiser" },
-      "TreVeyon Henderson": { team: "NE", baseValue: 73, scarcity: 0.85, ros: 1, injury: 0, archetype: "Explosive One-Cut / Receiving Threat" },
-      "J.K. Dobbins": { team: "DEN", baseValue: 73, scarcity: 0.85, ros: 3, injury: -10, archetype: "One-Cut Vision / Efficient North-South" },
-      "Austin Ekeler": { team: "WSH", baseValue: 72, scarcity: 0.85, ros: 2, injury: -5, archetype: "Satellite Pass-Catcher / Receiving Specialist" },
-      "Tyjae Spears": { team: "TEN", baseValue: 72, scarcity: 0.85, ros: 1, injury: 0, archetype: "Electric Pass-Catching Weapon" },
-      "Devin Singletary": { team: "NYG", baseValue: 69, scarcity: 0.85, ros: 1, injury: 0, archetype: "Short-Area Agility / Zone Runner" },
-      "Blake Corum": { team: "LAR", baseValue: 68, scarcity: 0.85, ros: 3, injury: 0, archetype: "Low Center-of-Gravity / Downhill Touchdown Back" },
-      "Braelon Allen": { team: "NYJ", baseValue: 68, scarcity: 0.85, ros: 1, injury: 0, archetype: "Bruising Power / Short-Yardage Hammer" },
-      "Kaleb Johnson": { team: "PIT", baseValue: 68, scarcity: 0.85, ros: 2, injury: 0, archetype: "Downhill Power / Tackle-Breaker" },
-      "Rico Dowdle": { team: "DAL", baseValue: 68, scarcity: 0.85, ros: 3, injury: 0, archetype: "One-Cut Slash / Reliable Rotation" },
-      "Isaac Guerendo": { team: "SF", baseValue: 67, scarcity: 0.85, ros: 4, injury: 0, archetype: "Breakaway Speed / Size-Speed Threat" },
-      "Jaylen Wright": { team: "MIA", baseValue: 67, scarcity: 0.85, ros: 2, injury: 0, archetype: "Speed & Power Hybrid" },
-      "Kendre Miller": { team: "NO", baseValue: 67, scarcity: 0.85, ros: 1, injury: -5, archetype: "Explosive Burst / North-South" },
-      "MarShawn Lloyd": { team: "GB", baseValue: 67, scarcity: 0.85, ros: 3, injury: 0, archetype: "High-Burst Power Slash" },
-      "Ray Davis": { team: "BUF", baseValue: 66, scarcity: 0.85, ros: 5, injury: 0, archetype: "Downhill Power / Contact Finisher" },
-      "Miles Sanders": { team: "CAR", baseValue: 66, scarcity: 0.85, ros: 1, injury: 0, archetype: "Perimeter Slash / Veteran Rotation" },
-      "Zamir White": { team: "LV", baseValue: 66, archetype: "Downhill Hammer / Short-Yardage", scarcity: 0.85, ros: 2, injury: 0 },
-      "Dylan Sampson": { team: "CLE", baseValue: 64, scarcity: 0.85, ros: 2, injury: 0, archetype: "Dynamic Speed / Perimeter Threat" },
-      "Bhayshul Tuten": { team: "JAX", baseValue: 64, scarcity: 0.85, ros: 2, injury: 0, archetype: "Vertical Speed / Agility Slash" },
-      "Will Shipley": { team: "PHI", baseValue: 63, scarcity: 0.85, ros: 5, injury: 0, archetype: "Change-of-Pace Pass-Catcher" },
-      "Justice Hill": { team: "BAL", baseValue: 63, scarcity: 0.85, ros: 4, injury: 0, archetype: "Pass-Catcher / Scatback" },
-      "DJ Giddens": { team: "IND", baseValue: 63, scarcity: 0.85, ros: 3, injury: 0, archetype: "Balanced Zone-Runner / Downhill Slash" },
-      "Kyle Monangai": { team: "CHI", baseValue: 63, scarcity: 0.85, ros: 2, injury: 0, archetype: "Gritty Downhill / Contact-Balance" },
-      "Kimani Vidal": { team: "LAC", baseValue: 62, scarcity: 0.85, ros: 2, injury: 0, archetype: "Squatty Power / Low Center of Gravity" },
-      "Woody Marks": { team: "HOU", baseValue: 62, scarcity: 0.85, ros: 4, injury: 0, archetype: "Dual-Threat / Pass-Catching Specialist" },
-      "Samaje Perine": { team: "CIN", baseValue: 60, scarcity: 0.85, ros: 4, injury: 0, archetype: "Pass-Blocking / Short-Yardage Power" }
+
+      // NEW RB3 DEPTH ADDITIONS
+      "Ty Johnson": { team: "BUF", baseValue: 64, scarcity: 0.85, ros: 4, injury: 0, archetype: "Pass-Protecting Satellite Back" },
+      "Ollie Gordon II": { team: "MIA", baseValue: 69, scarcity: 0.85, ros: 2, injury: 0, archetype: "Downhill Power Finisher" },
+      "Ja'Kobi Lane": { team: "NE", baseValue: 60, scarcity: 0.85, ros: 1, injury: 0, archetype: "Third-Down Change-of-Pace" },
+      "Isaiah Davis": { team: "NYJ", baseValue: 62, scarcity: 0.85, ros: 1, injury: 0, archetype: "Short-Yardage Hammer" },
+      "Adam Randall": { team: "BAL", baseValue: 63, scarcity: 0.85, ros: 4, injury: 0, archetype: "Heavy North-South Runner" },
+      "Tahj Brooks": { team: "CIN", baseValue: 64, scarcity: 0.85, ros: 4, injury: 0, archetype: "Bruising Short-Yardage Back" },
+      "Pierre Strong Jr.": { team: "CLE", baseValue: 62, scarcity: 0.85, ros: 2, injury: 0, archetype: "Sub-4.4 Perimeter Speed" },
+      "Kaleb Johnson": { team: "PIT", baseValue: 68, scarcity: 0.85, ros: 2, injury: 0, archetype: "One-Cut Downhill Finisher" },
+      "Dameon Pierce": { team: "HOU", baseValue: 67, scarcity: 0.85, ros: 4, injury: 0, archetype: "Downhill Contact-Balance Hammer" },
+      "DJ Giddens": { team: "IND", baseValue: 63, scarcity: 0.85, ros: 3, injury: 0, archetype: "Inside-Zone Rotation" },
+      "LeQuint Allen": { team: "JAX", baseValue: 61, scarcity: 0.85, ros: 2, injury: 0, archetype: "Third-Down Receiving Back" },
+      "Nicholas Singleton": { team: "TEN", baseValue: 68, scarcity: 0.85, ros: 1, injury: 0, archetype: "Explosive One-Cut Slash" },
+      "Audric Estime": { team: "DEN", baseValue: 65, scarcity: 0.85, ros: 3, injury: 0, archetype: "Heavy Goal-Line Hammer" },
+      "Brashard Smith": { team: "KC", baseValue: 64, scarcity: 0.85, ros: 5, injury: 0, archetype: "Satellite Receiving Specialist" },
+      "Dylan Laube": { team: "LV", baseValue: 61, scarcity: 0.85, ros: 2, injury: 0, archetype: "Pass-Catching / Third-Down Back" },
+      "Hassan Haskins": { team: "LAC", baseValue: 59, scarcity: 0.85, ros: 2, injury: 0, archetype: "Short-Yardage / Special Teams" },
+      "Malik Davis": { team: "DAL", baseValue: 60, scarcity: 0.85, ros: 3, injury: 0, archetype: "Zone-Cut Rotation" },
+      "Jacory Croskey-Merritt": { team: "NYG", baseValue: 61, scarcity: 0.85, ros: 1, injury: 0, archetype: "One-Cut Rotation" },
+      "Will Shipley": { team: "PHI", baseValue: 63, scarcity: 0.85, ros: 5, injury: 0, archetype: "Agile Pass-Catcher" },
+      "Chris Rodriguez Jr.": { team: "WSH", baseValue: 62, scarcity: 0.85, ros: 2, injury: 0, archetype: "Downhill Power Finisher" },
+      "Roschon Johnson": { team: "CHI", baseValue: 66, scarcity: 0.85, ros: 2, injury: 0, archetype: "Power / Pass-Protection Specialist" },
+      "Sione Vaki": { team: "DET", baseValue: 64, scarcity: 0.85, ros: 5, injury: 0, archetype: "Slippery Contact-Balance / Pass-Catcher" },
+      "Chris Brooks": { team: "GB", baseValue: 61, scarcity: 0.85, ros: 3, injury: 0, archetype: "Downhill Power" },
+      "Demond Claiborne": { team: "MIN", baseValue: 63, scarcity: 0.85, ros: 3, injury: 0, archetype: "One-Cut Speed Slash" },
+      "Cash Jones": { team: "ATL", baseValue: 59, scarcity: 0.85, ros: 3, injury: 0, archetype: "Pass Protection / Third Down" },
+      "Raheem Blackshear": { team: "CAR", baseValue: 60, scarcity: 0.85, ros: 1, injury: 0, archetype: "Satellite Receiving / Returner" },
+      "Kendre Miller": { team: "NO", baseValue: 67, scarcity: 0.85, ros: 1, injury: -5, archetype: "One-Cut North-South Slash" },
+      "Sean Tucker": { team: "TB", baseValue: 63, scarcity: 0.85, ros: 2, injury: 0, archetype: "Explosive Downhill Runner" },
+      "Boston Scott": { team: "LAR", baseValue: 59, scarcity: 0.85, ros: 3, injury: 0, archetype: "Satellite Change-of-Pace" },
+      "Isaac Guerendo": { team: "SF", baseValue: 67, scarcity: 0.85, ros: 4, injury: 0, archetype: "Breakaway Speed Back" },
+      "Kenny McIntosh": { team: "SEA", baseValue: 62, scarcity: 0.85, ros: 2, injury: 0, archetype: "Pass-Catching Back" }
     };
 
     const teData = {
+      // TE1 ALREADY WIRED + EXTENDED TE2 ADDITIONS
       "Brock Bowers": { team: "LV", baseValue: 93, scarcity: 1.20, ros: 3, injury: 0, archetype: "Generational Matchup Weapon / YAC Monster" },
       "Trey McBride": { team: "ARI", baseValue: 91, scarcity: 1.20, ros: 4, injury: 0, archetype: "Elite Target Engine / YAC & Middle-Field Alpha" },
       "George Kittle": { team: "SF", baseValue: 90, scarcity: 1.20, ros: 4, injury: -5, archetype: "All-Pro Inline Blocker & Dynamic YAC Weapon" },
       "Travis Kelce": { team: "KC", baseValue: 89, scarcity: 1.20, ros: 5, injury: 0, archetype: "Zone-Coverage Master / Elite Target" },
       "Sam LaPorta": { team: "DET", baseValue: 88, scarcity: 1.20, ros: 5, injury: 0, archetype: "Elite Dynamic Target / Underneath & Seam" },
       "Mark Andrews": { team: "BAL", baseValue: 87, scarcity: 1.20, ros: 4, injury: -5, archetype: "Elite Seam Threat / Physical Target" },
-      "Dalton Kincaid": { team: "BUF", baseValue: 85, scarcity: 1.00, ros: 5, injury: 0, archetype: "Move TE / Big Slot Route Technician" },
-      "David Njoku": { team: "LAC", baseValue: 85, scarcity: 1.00, ros: 2, injury: 0, archetype: "Physical Freak / Red Zone & Seam Threat" },
-      "Evan Engram": { team: "DEN", baseValue: 84, scarcity: 1.00, ros: 3, injury: 0, archetype: "Big Slot / Pass-Catching Specialist" },
-      "T.J. Hockenson": { team: "MIN", baseValue: 84, scarcity: 1.00, ros: 3, injury: -5, archetype: "High-Volume Middle-Field Safety Valve" },
-      "Jake Ferguson": { team: "DAL", baseValue: 83, scarcity: 1.00, ros: 3, injury: 0, archetype: "Gritty Middle-Field Target / High-Effort YAC" },
-      "Kyle Pitts Sr.": { team: "ATL", baseValue: 83, scarcity: 1.00, ros: 3, injury: -5, archetype: "Matchup Nightmare / Flexed Move Receiver" },
-      "Dallas Goedert": { team: "PHI", baseValue: 81, scarcity: 1.00, ros: 4, injury: -5, archetype: "Balanced YAC & Inline Blocker" },
-      "Colston Loveland": { team: "CHI", baseValue: 79, scarcity: 0.85, ros: 2, injury: 0, archetype: "Flexed Receiving Weapon / Seam Stretcher" },
-      "Tyler Warren": { team: "IND", baseValue: 78, scarcity: 0.85, ros: 3, injury: 0, archetype: "Hybrid Utility / Dynamic Receiver" }
+
+      // NEW TE2 DEPTH ADDITIONS
+      "Dawson Knox": { team: "BUF", baseValue: 71, scarcity: 0.85, ros: 4, injury: 0, archetype: "Inline Blocking / Red Zone TE" },
+      "Durham Smythe": { team: "MIA", baseValue: 60, scarcity: 0.85, ros: 2, injury: 0, archetype: "Traditional Inline Blocker" },
+      "Jaheim Bell": { team: "NE", baseValue: 64, scarcity: 0.85, ros: 1, injury: 0, archetype: "Flexed H-Back / Move TE" },
+      "Jeremy Ruckert": { team: "NYJ", baseValue: 62, scarcity: 0.85, ros: 1, injury: 0, archetype: "Inline Point-of-Attack Blocker" },
+      "Isaiah Likely": { team: "BAL", baseValue: 81, scarcity: 1.00, ros: 4, injury: 0, archetype: "Dynamic Move-TE Matchup Weapon" },
+      "Tanner Hudson": { team: "CIN", baseValue: 63, scarcity: 0.85, ros: 4, injury: 0, archetype: "Pass-Catching Underneath Target" },
+      "David Njoku": { team: "CLE", baseValue: 85, scarcity: 1.00, ros: 2, injury: 0, archetype: "In-Line Power / Red Zone Threat" },
+      "Darnell Washington": { team: "PIT", baseValue: 65, scarcity: 0.85, ros: 2, injury: 0, archetype: "Sixth-Offensive-Lineman Blocker" },
+      "Cade Stover": { team: "HOU", baseValue: 63, scarcity: 0.85, ros: 3, injury: 0, archetype: "Inline / H-Back Blocker" },
+      "Jelani Woods": { team: "IND", baseValue: 68, scarcity: 0.85, ros: 3, injury: -5, archetype: "Massive Red Zone Seam Stretcher" },
+      "Luke Farrell": { team: "JAX", baseValue: 59, scarcity: 0.85, ros: 2, injury: 0, archetype: "Blocking Point-of-Attack TE" },
+      "Josh Whyle": { team: "TEN", baseValue: 62, scarcity: 0.85, ros: 1, injury: 0, archetype: "Long Seam Stretcher" },
+      "Greg Dulcich": { team: "DEN", baseValue: 66, scarcity: 0.85, ros: 3, injury: -5, archetype: "Flexed Vertical Slot TE" },
+      "Noah Gray": { team: "KC", baseValue: 67, scarcity: 0.85, ros: 5, injury: 0, archetype: "Versatile H-Back & Zone Blocker" },
+      "Michael Mayer": { team: "LV", baseValue: 72, scarcity: 0.85, ros: 2, injury: 0, archetype: "Inline Point-of-Attack Power TE" },
+      "Will Dissly": { team: "LAC", baseValue: 61, scarcity: 0.85, ros: 2, injury: 0, archetype: "Heavy Inline Blocking Anchor" },
+      "Brevyn Spann-Ford": { team: "DAL", baseValue: 60, scarcity: 0.85, ros: 3, injury: 0, archetype: "Massive Point-of-Attack Blocker" },
+      "Theo Johnson": { team: "NYG", baseValue: 70, scarcity: 0.85, ros: 1, injury: 0, archetype: "Athletic Seam Stretcher" },
+      "Grant Calcaterra": { team: "PHI", baseValue: 62, scarcity: 0.85, ros: 4, injury: 0, archetype: "Flexed Pass Catcher" },
+      "Zach Ertz": { team: "WSH", baseValue: 68, scarcity: 0.85, ros: 2, injury: -5, archetype: "Veterans Zone-Buster Chain Mover" },
+      "Cole Kmet": { team: "CHI", baseValue: 77, scarcity: 1.00, ros: 2, injury: 0, archetype: "Balanced Inline & Red Zone TE" },
+      "Brock Wright": { team: "DET", baseValue: 61, scarcity: 0.85, ros: 5, injury: 0, archetype: "Inline Point-of-Attack Blocker" },
+      "Luke Musgrave": { team: "GB", baseValue: 71, scarcity: 0.85, ros: 3, injury: 0, archetype: "Vertical Seam Stretcher" },
+      "Josh Oliver": { team: "MIN", baseValue: 60, scarcity: 0.85, ros: 3, injury: 0, archetype: "Heavy Line-of-Scrimmage Blocker" },
+      "Austin Hooper": { team: "ATL", baseValue: 63, scarcity: 0.85, ros: 3, injury: 0, archetype: "Inline Chain-Mover" },
+      "Ja'Tavion Sanders": { team: "CAR", baseValue: 69, scarcity: 0.85, ros: 1, injury: 0, archetype: "Flexed Move-TE Receiver" },
+      "Dallin Holker": { team: "NO", baseValue: 61, scarcity: 0.85, ros: 1, injury: 0, archetype: "Flex Pass-Catching TE" },
+      "Ko Kieft": { team: "TB", baseValue: 58, scarcity: 0.85, ros: 2, injury: 0, archetype: "Heavy Inline Blocking Anchor" },
+      "Tip Reiman": { team: "ARI", baseValue: 62, scarcity: 0.85, ros: 3, injury: 0, archetype: "Massive Point-of-Attack Blocker" },
+      "Davis Allen": { team: "LAR", baseValue: 63, scarcity: 0.85, ros: 3, injury: 0, archetype: "Inline Zone-Buster" },
+      "Eric Saubert": { team: "SF", baseValue: 59, scarcity: 0.85, ros: 3, injury: 0, archetype: "Inline Blocker" },
+      "Noah Fant": { team: "SEA", baseValue: 71, scarcity: 0.85, ros: 2, injury: 0, archetype: "Athletic Seam Stretcher" }
     };
 
     /* DOME / INDOOR TEAMS */
@@ -1125,7 +1213,6 @@
 
     function calculatePlayerTradeValue(playerObj) {
       if (!playerObj) return 0;
-      // Formula: (Base Value * Positional Scarcity Multiplier) + ROS Strength - Injury Risk Penalty
       const scarcity = playerObj.scarcity || 1.0;
       const ros = playerObj.ros || 0;
       const injury = playerObj.injury || 0;
@@ -1154,19 +1241,16 @@
       const rawGiveTotal = valGive1 + valGive2;
       const rawGetTotal = valGet1 + valGet2;
 
-      // Consolidation Tax: Apply 10% tax (0.90 multiplier) to sides giving 2 players
       const isGiveMulti = !!give2Obj;
       const isGetMulti = !!get2Obj;
 
       const finalGiveTotal = Math.round((rawGiveTotal * (isGiveMulti ? 0.90 : 1.0)) * 100) / 100;
       const finalGetTotal = Math.round((rawGetTotal * (isGetMulti ? 0.90 : 1.0)) * 100) / 100;
 
-      // Calculate Net Value Differential %
       const higherVal = Math.max(finalGiveTotal, finalGetTotal);
       const diffVal = Math.abs(finalGiveTotal - finalGetTotal);
       const diffPct = higherVal > 0 ? Math.round((diffVal / higherVal) * 1000) / 10 : 0;
 
-      // Grade Assignment Logic
       let grade = "";
       let gradeColor = "";
       let verdictSummary = "";
@@ -1287,49 +1371,43 @@
       /* --- CALCULATE 100-POINT INDEX SUB-SCORES --- */
       const baseVal = p1Info ? p1Info.baseValue : 75;
 
-      // 1. Physical & Athletic Matchup (Max 35 pts)
       const heightLenPts = Math.min(10, Math.round(8 + Math.sin(week * 1.1) * 2));
       const speedPts = Math.min(10, Math.round(7 + Math.cos(week * 0.9) * 3));
       const pressPowerPts = Math.min(15, Math.round(11 + (baseVal > 85 ? 3 : 1)));
-      const physicalPts = heightLenPts + speedPts + pressPowerPts; // Max 35
+      const physicalPts = heightLenPts + speedPts + pressPowerPts;
 
-      // 2. Performance History & Splits (Max 25 pts)
       const trackRecordPts = Math.min(15, Math.round(11 + (baseVal / 100) * 3));
       const venueSplitPts = Math.min(10, isHome ? 9 : 7);
-      const historyPts = trackRecordPts + venueSplitPts; // Max 25
+      const historyPts = trackRecordPts + venueSplitPts;
 
-      // 3. Scheme & Coverage Alignment (Max 25 pts)
       const coverageMatchPts = Math.min(15, Math.round(11 + Math.sin(week * 1.5) * 3));
       const personnelVulnPts = Math.min(10, Math.round(7 + Math.cos(week * 1.3) * 2));
-      const schemePts = coverageMatchPts + personnelVulnPts; // Max 25
+      const schemePts = coverageMatchPts + personnelVulnPts;
 
-      // 4. Venue & Contextual Factors (Max 15 pts)
       const indoorPts = indoorTeams.includes(oppTeam) ? 8 : 6;
       const scriptVegasPts = Math.min(7, Math.round(5 + (baseVal > 85 ? 2 : 1)));
-      const venueContextPts = indoorPts + scriptVegasPts; // Max 15
+      const venueContextPts = indoorPts + scriptVegasPts;
 
-      // TOTAL 100-POINT INDEX SCORE
       const totalScore = physicalPts + historyPts + schemePts + venueContextPts;
 
-      // ACTIONABLE TIER ASSIGNMENT
       let tierLabel = "";
       let tierColor = "";
 
       if (totalScore >= 85) {
         tierLabel = "S-Tier (Smash Play) • Must-Start";
-        tierColor = "#4ade80"; // Vibrant Green
+        tierColor = "#4ade80";
       } else if (totalScore >= 70) {
         tierLabel = "A-Tier (Solid Start) • Strong Start";
-        tierColor = "#60a5fa"; // Vibrant Blue
+        tierColor = "#60a5fa";
       } else if (totalScore >= 55) {
         tierLabel = "B-Tier (Flex Play) • Matchup-Dependent";
-        tierColor = "#facc15"; // Yellow
+        tierColor = "#facc15";
       } else if (totalScore >= 40) {
         tierLabel = "C-Tier (Risky / Fade) • Sit Candidate";
-        tierColor = "#fb923c"; // Orange
+        tierColor = "#fb923c";
       } else {
         tierLabel = "D-Tier (Auto-Sit) • Must-Sit";
-        tierColor = "#f87171"; // Red
+        tierColor = "#f87171";
       }
 
       resultArea.innerHTML = `
