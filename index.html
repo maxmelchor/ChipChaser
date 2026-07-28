@@ -542,6 +542,7 @@
           <div class="pos-toggle-group">
             <button class="pos-btn active" id="posWrBtn">Wide Receiver</button>
             <button class="pos-btn" id="posRbBtn">Running Back</button>
+            <button class="pos-btn" id="posTeBtn">Tight End</button>
           </div>
 
           <div class="form-row">
@@ -614,107 +615,125 @@
 
   <!-- ============= JS ============= -->
   <script>
-    /* ----------------- API KEY & MODES ----------------- */
-    const BALLDONTLIE_API_KEY = "146f4c2f-4eab-4f6d-969e-a8ca0817de4f";
-
     let activeTool = "MATCHUP"; // "MATCHUP" or "TRADE"
-    let currentPos = "WR";      // "WR" or "RB"
+    let currentPos = "WR";      // "WR", "RB", or "TE"
 
     /* ----------------- PLAYER DATABASE ----------------- */
-    const top24ReceiversList = [
-      "Ja'Marr Chase", "Justin Jefferson", "CeeDee Lamb", "Tyreek Hill", "A.J. Brown", "Amon-Ra St. Brown",
-      "Puka Nacua", "Garrett Wilson", "Marvin Harrison Jr.", "Malik Nabers", "Nico Collins",
-      "Drake London", "DJ Moore", "DK Metcalf", "Tee Higgins", "Davante Adams", "Mike Evans",
-      "Terry McLaurin", "Jaylen Waddle", "Brandon Aiyuk", "Chris Olave", "Jaxon Smith-Njigba", "DeVonta Smith", "Xavier Worthy"
-    ];
-
     const wrData = {
-      "Ja'Marr Chase": { team: "CIN", baseValue: 92, archetype: "Vertical Field-Stretcher" },
-      "Justin Jefferson": { team: "MIN", baseValue: 95, archetype: "Precision Route Technician" },
-      "CeeDee Lamb": { team: "DAL", baseValue: 93, archetype: "Precision Route Technician" },
-      "Tyreek Hill": { team: "MIA", baseValue: 90, archetype: "Vertical Field-Stretcher" },
-      "A.J. Brown": { team: "NE", baseValue: 88, archetype: "Alpha Boundary X" },
-      "Amon-Ra St. Brown": { team: "DET", baseValue: 91, archetype: "Precision Route Technician" },
-      "Puka Nacua": { team: "LAR", baseValue: 87, archetype: "Space & YAC Engine" },
-      "Garrett Wilson": { team: "NYJ", baseValue: 85, archetype: "Precision Route Technician" },
-      "Marvin Harrison Jr.": { team: "ARI", baseValue: 84, archetype: "Vertical Field-Stretcher" },
-      "Malik Nabers": { team: "NYG", baseValue: 83, archetype: "Vertical Field-Stretcher" },
-      "Nico Collins": { team: "HOU", baseValue: 86, archetype: "Alpha Boundary X" },
-      "Drake London": { team: "ATL", baseValue: 82, archetype: "Alpha Boundary X" },
-      "DJ Moore": { team: "CHI", baseValue: 80, archetype: "Space & YAC Engine" },
-      "DK Metcalf": { team: "SEA", baseValue: 81, archetype: "Alpha Boundary X" },
-      "Tee Higgins": { team: "CIN", baseValue: 78, archetype: "Alpha Boundary X" },
-      "Davante Adams": { team: "NYJ", baseValue: 82, archetype: "Precision Route Technician" },
-      "Mike Evans": { team: "TB", baseValue: 79, archetype: "Alpha Boundary X" },
-      "Terry McLaurin": { team: "WSH", baseValue: 77, archetype: "Vertical Field-Stretcher" },
-      "Jaylen Waddle": { team: "MIA", baseValue: 79, archetype: "Vertical Field-Stretcher" },
-      "Brandon Aiyuk": { team: "SF", baseValue: 80, archetype: "Precision Route Technician" },
-      "Chris Olave": { team: "NO", baseValue: 78, archetype: "Precision Route Technician" },
-      "Jaxon Smith-Njigba": { team: "SEA", baseValue: 77, archetype: "Space & YAC Engine" },
-      "DeVonta Smith": { team: "PHI", baseValue: 78, archetype: "Precision Route Technician" },
-      "Xavier Worthy": { team: "KC", baseValue: 75, archetype: "Space & YAC Engine" }
+      "Ja'Marr Chase": { team: "CIN", baseValue: 95, archetype: "Vertical Field-Stretcher & Explosive YAC" },
+      "Justin Jefferson": { team: "MIN", baseValue: 96, archetype: "The Ultimate Separation Route Technician" },
+      "CeeDee Lamb": { team: "DAL", baseValue: 94, archetype: "Precision Route Technician / Versatile Target" },
+      "Tyreek Hill": { team: "MIA", baseValue: 91, archetype: "Vertical Field-Stretcher / Home-Run Threat" },
+      "A.J. Brown": { team: "NE", baseValue: 90, archetype: "Physical Alpha Boundary 'X' / YAC Machine" },
+      "Amon-Ra St. Brown": { team: "DET", baseValue: 92, archetype: "Elite Slot Technician / Chain-Mover" },
+      "Puka Nacua": { team: "LAR", baseValue: 89, archetype: "Space & YAC Engine / Physical Contested Catch" },
+      "Garrett Wilson": { team: "NYJ", baseValue: 87, archetype: "Precision Route Technician / Body Control" },
+      "Marvin Harrison Jr.": { team: "ARI", baseValue: 88, archetype: "Generational Boundary 'X' & Technician" },
+      "Malik Nabers": { team: "NYG", baseValue: 86, archetype: "Explosive Vertical & YAC Threat" },
+      "Nico Collins": { team: "HOU", baseValue: 88, archetype: "Alpha Boundary 'X' / Big-Play Dominator" },
+      "Drake London": { team: "ATL", baseValue: 85, archetype: "Alpha Boundary 'X' / High-Point Dominator" },
+      "DJ Moore": { team: "BUF", baseValue: 84, archetype: "Space & YAC Engine / Physical Slot-Outside Flex" },
+      "DK Metcalf": { team: "PIT", baseValue: 83, archetype: "Freakish Size-Speed Boundary 'X'" },
+      "Tee Higgins": { team: "CIN", baseValue: 81, archetype: "Alpha Boundary / High-Point Jump-Ball" },
+      "Davante Adams": { team: "LAR", baseValue: 85, archetype: "Master Route Technician / Release Specialist" },
+      "Mike Evans": { team: "TB", baseValue: 81, archetype: "Hall-of-Fame Boundary 'X' / Red Zone Alpha" },
+      "Terry McLaurin": { team: "WSH", baseValue: 82, archetype: "Boundary Deep Threat & Route Precision" },
+      "Jaylen Waddle": { team: "DEN", baseValue: 83, archetype: "Explosive Field-Stretcher / Space Threat" },
+      "Brandon Aiyuk": { team: "SF", baseValue: 83, archetype: "Elite Release & Separation Specialist" },
+      "Chris Olave": { team: "NO", baseValue: 81, archetype: "Precision Route Technician / Smooth Separation" },
+      "Jaxon Smith-Njigba": { team: "SEA", baseValue: 82, archetype: "Elite Agility / High-Volume Slot Engine" },
+      "DeVonta Smith": { team: "PHI", baseValue: 82, archetype: "Silky Separation Technician / Smooth Hands" },
+      "Xavier Worthy": { team: "KC", baseValue: 80, archetype: "World-Class Speed Field-Stretcher" },
+      "Zay Flowers": { team: "BAL", baseValue: 83, archetype: "Space & YAC Engine / Electric Agility" },
+      "Ladd McConkey": { team: "LAC", baseValue: 82, archetype: "Elite Route Separation / Slot & Outside" },
+      "George Pickens": { team: "DAL", baseValue: 82, archetype: "Alpha Boundary / Elite Acrobatics" },
+      "Rome Odunze": { team: "CHI", baseValue: 80, archetype: "Boundary 'X' / Physical Catch-Point Wins" },
+      "Tetairoa McMillan": { team: "CAR", baseValue: 79, archetype: "Massive Boundary 'X' / Contested Catch" },
+      "Emeka Egbuka": { team: "TB", baseValue: 78, archetype: "Precision Slot & Outside Route Technician" }
     };
 
     const runningBacksData = {
-      "James Cook": { team: "BUF", heightIn: 71, weightLb: 190, baseValue: 81, archetype: "Elusive Space / One-Cut Slash" },
-      "Ray Davis": { team: "BUF", heightIn: 68, weightLb: 211, baseValue: 65, archetype: "Downhill Power / Contact Finisher" },
-      "De'Von Achane": { team: "MIA", heightIn: 69, weightLb: 188, baseValue: 88, archetype: "Home-Run Speed / Space Creator" },
-      "Jaylen Wright": { team: "MIA", heightIn: 70, weightLb: 210, baseValue: 66, archetype: "Speed & Power Hybrid" },
-      "Rhamondre Stevenson": { team: "NE", heightIn: 72, weightLb: 227, baseValue: 78, archetype: "Power Bellcow / Yards-After-Contact" },
-      "TreVeyon Henderson": { team: "NE", heightIn: 70, weightLb: 208, baseValue: 72, archetype: "Explosive One-Cut / Receiving Threat" },
-      "Breece Hall": { team: "NYJ", heightIn: 73, weightLb: 220, baseValue: 92, archetype: "Three-Down Workhorse / Home-Run Threat" },
-      "Braelon Allen": { team: "NYJ", heightIn: 73, weightLb: 235, baseValue: 68, archetype: "Bruising Power / Short-Yardage Hammer" },
-      "Derrick Henry": { team: "BAL", heightIn: 75, weightLb: 247, baseValue: 89, archetype: "Power Freight Train / Open-Field Speed" },
-      "Justice Hill": { team: "BAL", heightIn: 70, weightLb: 200, baseValue: 62, archetype: "Scatback / Change-of-Pace Pass-Catcher" },
-      "Chase Brown": { team: "CIN", heightIn: 69, weightLb: 205, baseValue: 76, archetype: "Explosive One-Cut Slash / Big-Play Threat" },
-      "Samaje Perine": { team: "CIN", heightIn: 71, weightLb: 240, baseValue: 60, archetype: "Pass-Blocking / Short-Yardage Power" },
-      "Quinshon Judkins": { team: "CLE", heightIn: 72, weightLb: 219, baseValue: 74, archetype: "Physical North-South / Contact-Balance" },
-      "Dylan Sampson": { team: "CLE", heightIn: 71, weightLb: 201, baseValue: 63, archetype: "Dynamic Speed / Perimeter Threat" },
-      "Jaylen Warren": { team: "PIT", heightIn: 68, weightLb: 215, baseValue: 72, archetype: "High-Motor Contact Finisher" },
-      "Rico Dowdle": { team: "PIT", heightIn: 72, weightLb: 215, baseValue: 67, archetype: "One-Cut Slash / Reliable Rotation" },
-      "David Montgomery": { team: "HOU", heightIn: 71, weightLb: 224, baseValue: 80, archetype: "Gritty Power / Tackle-Breaker" },
-      "Woody Marks": { team: "HOU", heightIn: 70, weightLb: 210, baseValue: 61, archetype: "Dual-Threat / Pass-Catching Specialist" },
-      "Jonathan Taylor": { team: "IND", heightIn: 70, weightLb: 226, baseValue: 91, archetype: "Elite Bellcow / Breakaway Speed & Vision" },
-      "DJ Giddens": { team: "IND", heightIn: 72, weightLb: 212, baseValue: 62, archetype: "Balanced Zone-Runner / Downhill Slash" },
-      "Travis Etienne Jr.": { team: "JAX", heightIn: 70, weightLb: 215, baseValue: 82, archetype: "Explosive Perimeter Runner" },
-      "Bhayshul Tuten": { team: "JAX", heightIn: 71, weightLb: 205, baseValue: 64, archetype: "Vertical Speed / Agility Slash" },
-      "Tony Pollard": { team: "TEN", heightIn: 72, weightLb: 209, baseValue: 75, archetype: "Dynamic Space Runner / Outside Speed" },
-      "Tyjae Spears": { team: "TEN", heightIn: 70, weightLb: 201, baseValue: 71, archetype: "Electric Agility / Pass-Catching Weapon" },
-      "Javonte Williams": { team: "DEN", heightIn: 70, weightLb: 220, baseValue: 74, archetype: "Physical Contact-Balance / Bruiser" },
-      "J.K. Dobbins": { team: "DEN", heightIn: 70, weightLb: 215, baseValue: 73, archetype: "One-Cut Vision / Efficient North-South" },
-      "Isiah Pacheco": { team: "KC", heightIn: 70, weightLb: 216, baseValue: 83, archetype: "Violent Downhill Runner / High-Energy" },
-      "Kenneth Walker III": { team: "KC", heightIn: 69, weightLb: 211, baseValue: 84, archetype: "Electric Cutback / Home-Run Hitter" },
-      "Ashton Jeanty": { team: "LV", heightIn: 69, weightLb: 215, baseValue: 85, archetype: "Elusive Contact-Balance / Dual-Threat Alpha" },
-      "Zamir White": { team: "LV", heightIn: 72, weightLb: 215, baseValue: 66, archetype: "Downhill Power / Short-Yardage Hammer" },
-      "Omarion Hampton": { team: "LAC", heightIn: 72, weightLb: 220, baseValue: 77, archetype: "Workhorse Bruiser / Physical Finisher" },
-      "Kimani Vidal": { team: "LAC", heightIn: 68, weightLb: 213, baseValue: 62, archetype: "Squatty Power / Low Center of Gravity" },
-      "Chuba Hubbard": { team: "DAL", heightIn: 72, weightLb: 210, baseValue: 76, archetype: "Patient Zone Runner / Contact-Balance" },
-      "Tyrone Tracy Jr.": { team: "NYG", heightIn: 71, weightLb: 209, baseValue: 73, archetype: "Converted-WR / Dynamic Space & Pass-Catcher" },
-      "Devin Singletary": { team: "NYG", heightIn: 67, weightLb: 203, baseValue: 69, archetype: "Patient Zone Runner / Short-Area Agility" },
-      "Saquon Barkley": { team: "PHI", heightIn: 72, weightLb: 233, baseValue: 94, archetype: "Elite Dynamic Bellcow / Jump-Cutter" },
-      "Will Shipley": { team: "PHI", heightIn: 71, weightLb: 206, baseValue: 63, archetype: "Versatile Pass-Catcher / Change-of-Pace" },
-      "Brian Robinson Jr.": { team: "WSH", heightIn: 73, weightLb: 225, baseValue: 78, archetype: "Heavy Downhill Power / Red-Zone Finisher" },
-      "Austin Ekeler": { team: "WSH", heightIn: 70, weightLb: 200, baseValue: 72, archetype: "Satellite Weapon / Receiving Specialist" },
-      "D'Andre Swift": { team: "CHI", heightIn: 69, weightLb: 215, baseValue: 79, archetype: "Agile Perimeter Slash / Pass-Catching" },
-      "Kyle Monangai": { team: "CHI", heightIn: 69, weightLb: 209, baseValue: 62, archetype: "Gritty Contact-Balance / Downhill Runner" },
-      "Jahmyr Gibbs": { team: "DET", heightIn: 69, weightLb: 200, baseValue: 90, archetype: "Electric Dynamic Weapon / Home-Run Hitter" },
-      "Josh Jacobs": { team: "GB", heightIn: 70, weightLb: 223, baseValue: 87, archetype: "Heavy-Volume Bellcow / Tackle-Breaker" },
-      "MarShawn Lloyd": { team: "GB", heightIn: 69, weightLb: 215, baseValue: 66, archetype: "Elusive Power Slash / High-Burst" },
-      "Aaron Jones Sr.": { team: "MIN", heightIn: 69, weightLb: 208, baseValue: 81, archetype: "Fluid Zone-Cut / High-IQ Pass-Catcher" },
-      "Jordan Mason": { team: "MIN", heightIn: 71, weightLb: 223, baseValue: 75, archetype: "Violent Contact-Finisher / Downhill Hammer" },
-      "Bijan Robinson": { team: "ATL", heightIn: 71, weightLb: 215, baseValue: 93, archetype: "Generational Agility / 3-Down Dynamic Back" },
-      "Tyler Allgeier": { team: "ATL", heightIn: 71, weightLb: 226, baseValue: 69, archetype: "Downhill Power Hammer / Physical Finisher" },
-      "Jonathon Brooks": { team: "CAR", heightIn: 72, weightLb: 216, baseValue: 77, archetype: "Fluid One-Cut / Smooth Vision" },
-      "Alvin Kamara": { team: "NO", heightIn: 70, weightLb: 215, baseValue: 86, archetype: "Elite Balance / Satellite Receiver" },
-      "Kendre Miller": { team: "NO", heightIn: 71, weightLb: 215, baseValue: 67, archetype: "Explosive Burst / North-South Slash" },
-      "Bucky Irving": { team: "TB", heightIn: 70, weightLb: 192, baseValue: 80, archetype: "Elusive Contact-Balance / Juke Specialist" },
-      "Rachaad White": { team: "TB", heightIn: 72, weightLb: 214, baseValue: 76, archetype: "Dynamic Pass-Catcher / Smooth Glider" },
-      "Trey Benson": { team: "ARI", heightIn: 72, weightLb: 216, baseValue: 75, archetype: "Explosive Size-Speed / Open-Field Threat" },
-      "James Conner": { team: "ARI", heightIn: 73, weightLb: 233, baseValue: 79, archetype: "Heavy Contact-Finisher / Bruising Power" },
-      "Kyren Williams": { team: "LAR", heightIn: 69, weightLb: 194, baseValue: 86, archetype: "Elite Vision / Zone Finisher" },
-      "Blake Corum": { team: "LAR", heightIn: 68, weightLb: 205, baseValue: 68, archetype: "Low Center-of-Gravity / Downhill Touchdown Machine" },
-      "Christian McCaffrey": { team: "SF", heightIn: 71, weightLb: 205, baseValue: 96, archetype: "All-Pro Hybrid / Elite Route-Runner & Bellcow" },
-      "Zach Charbonnet": { team: "SEA", heightIn: 72, weightLb: 214, baseValue: 74, archetype: "Heavy One-Cut / Physical Finisher" }
+      "James Cook": { team: "BUF", baseValue: 82, archetype: "Elusive Space / One-Cut Slash" },
+      "Ray Davis": { team: "BUF", baseValue: 66, archetype: "Downhill Power / Contact Finisher" },
+      "De'Von Achane": { team: "MIA", baseValue: 89, archetype: "Home-Run Speed / Space Creator" },
+      "Jaylen Wright": { team: "MIA", baseValue: 67, archetype: "Speed & Power Hybrid" },
+      "Rhamondre Stevenson": { team: "NE", baseValue: 78, archetype: "Power Bellcow / Yards-After-Contact" },
+      "TreVeyon Henderson": { team: "NE", baseValue: 73, archetype: "Explosive One-Cut / Receiving Threat" },
+      "Breece Hall": { team: "NYJ", baseValue: 92, archetype: "Three-Down Workhorse / Home-Run Threat" },
+      "Braelon Allen": { team: "NYJ", baseValue: 68, archetype: "Bruising Power / Short-Yardage Hammer" },
+      "Derrick Henry": { team: "BAL", baseValue: 89, archetype: "Power Freight Train / Open-Field Speed" },
+      "Justice Hill": { team: "BAL", baseValue: 63, archetype: "Pass-Catcher / Scatback" },
+      "Chase Brown": { team: "CIN", baseValue: 77, archetype: "Explosive One-Cut Slash / Big-Play Threat" },
+      "Samaje Perine": { team: "CIN", baseValue: 60, archetype: "Pass-Blocking / Short-Yardage Power" },
+      "Quinshon Judkins": { team: "CLE", baseValue: 75, archetype: "Physical North-South / Contact-Balance" },
+      "Dylan Sampson": { team: "CLE", baseValue: 64, archetype: "Dynamic Speed / Perimeter Threat" },
+      "Jaylen Warren": { team: "PIT", baseValue: 74, archetype: "Low Center Contact Finisher" },
+      "Kaleb Johnson": { team: "PIT", baseValue: 68, archetype: "Downhill Power / Tackle-Breaker" },
+      "Joe Mixon": { team: "HOU", baseValue: 82, archetype: "Workhorse Volume / Power" },
+      "Woody Marks": { team: "HOU", baseValue: 62, archetype: "Dual-Threat / Pass-Catching Specialist" },
+      "Jonathan Taylor": { team: "IND", baseValue: 91, archetype: "Elite Bellcow / Breakaway Speed & Vision" },
+      "DJ Giddens": { team: "IND", baseValue: 63, archetype: "Balanced Zone-Runner / Downhill Slash" },
+      "Travis Etienne Jr.": { team: "JAX", baseValue: 82, archetype: "Explosive Perimeter Runner" },
+      "Bhayshul Tuten": { team: "JAX", baseValue: 64, archetype: "Vertical Speed / Agility Slash" },
+      "Tony Pollard": { team: "TEN", baseValue: 75, archetype: "Dynamic Space Runner / Outside Speed" },
+      "Tyjae Spears": { team: "TEN", baseValue: 72, archetype: "Electric Pass-Catching Weapon" },
+      "Javonte Williams": { team: "DEN", baseValue: 74, archetype: "Physical Contact-Balance / Bruiser" },
+      "J.K. Dobbins": { team: "DEN", baseValue: 73, archetype: "One-Cut Vision / Efficient North-South" },
+      "Isiah Pacheco": { team: "KC", baseValue: 83, archetype: "Violent High-Energy Downhill Runner" },
+      "Kenneth Walker III": { team: "KC", baseValue: 85, archetype: "Explosive Cutback / Home-Run Hitter" },
+      "Ashton Jeanty": { team: "LV", baseValue: 86, archetype: "Elusive Contact-Balance / Dual-Threat Alpha" },
+      "Zamir White": { team: "LV", baseValue: 66, archetype: "Downhill Hammer / Short-Yardage" },
+      "Omarion Hampton": { team: "LAC", baseValue: 78, archetype: "Physical Workhorse / Downhill Finisher" },
+      "Kimani Vidal": { team: "LAC", baseValue: 62, archetype: "Squatty Power / Low Center of Gravity" },
+      "Chuba Hubbard": { team: "DAL", baseValue: 77, archetype: "Patient Zone Runner / Contact-Balance" },
+      "Rico Dowdle": { team: "DAL", baseValue: 68, archetype: "One-Cut Slash / Reliable Rotation" },
+      "Tyrone Tracy Jr.": { team: "NYG", baseValue: 74, archetype: "Converted-WR / Dynamic Space & Pass-Catcher" },
+      "Devin Singletary": { team: "NYG", baseValue: 69, archetype: "Short-Area Agility / Zone Runner" },
+      "Saquon Barkley": { team: "PHI", baseValue: 94, archetype: "Elite Dynamic Bellcow / Jump-Cutter" },
+      "Will Shipley": { team: "PHI", baseValue: 63, archetype: "Change-of-Pace Pass-Catcher" },
+      "Brian Robinson Jr.": { team: "WSH", baseValue: 78, archetype: "Heavy Downhill Power / Red-Zone Finisher" },
+      "Austin Ekeler": { team: "WSH", baseValue: 72, archetype: "Satellite Pass-Catcher / Receiving Specialist" },
+      "D'Andre Swift": { team: "CHI", baseValue: 79, archetype: "Agile Perimeter Slash / Pass-Catching" },
+      "Kyle Monangai": { team: "CHI", baseValue: 63, archetype: "Gritty Downhill / Contact-Balance" },
+      "Jahmyr Gibbs": { team: "DET", baseValue: 91, archetype: "Electric Dynamic Weapon / Home-Run Hitter" },
+      "David Montgomery": { team: "DET", baseValue: 81, archetype: "Gritty Power / Short-Yardage Finisher" },
+      "Josh Jacobs": { team: "GB", baseValue: 87, archetype: "Heavy-Volume Bellcow / Tackle-Breaker" },
+      "MarShawn Lloyd": { team: "GB", baseValue: 67, archetype: "High-Burst Power Slash" },
+      "Aaron Jones Sr.": { team: "MIN", baseValue: 81, archetype: "Fluid Zone-Cut / High-IQ Pass-Catcher" },
+      "Jordan Mason": { team: "MIN", baseValue: 75, archetype: "Violent Downhill Hammer / Contact-Finisher" },
+      "Bijan Robinson": { team: "ATL", baseValue: 93, archetype: "Generational 3-Down Dynamic Back" },
+      "Tyler Allgeier": { team: "ATL", baseValue: 69, archetype: "Downhill Physical Finisher" },
+      "Jonathon Brooks": { team: "CAR", baseValue: 78, archetype: "Fluid One-Cut / Smooth Vision" },
+      "Miles Sanders": { team: "CAR", baseValue: 66, archetype: "Perimeter Slash / Veteran Rotation" },
+      "Alvin Kamara": { team: "NO", baseValue: 86, archetype: "Slippery Balance / Pass-Catcher" },
+      "Kendre Miller": { team: "NO", baseValue: 67, archetype: "Explosive Burst / North-South" },
+      "Bucky Irving": { team: "TB", baseValue: 81, archetype: "Elusive Contact-Balance / Juke Specialist" },
+      "Rachaad White": { team: "TB", baseValue: 76, archetype: "Pass-Catching Glider / Smooth Runner" },
+      "Trey Benson": { team: "ARI", baseValue: 76, archetype: "Explosive Size-Speed / Open-Field Threat" },
+      "James Conner": { team: "ARI", baseValue: 78, archetype: "Heavy Bruiser / Contact Finisher" },
+      "Kyren Williams": { team: "LAR", baseValue: 86, archetype: "Elite Vision & Effort / Zone Finisher" },
+      "Blake Corum": { team: "LAR", baseValue: 68, archetype: "Low Center-of-Gravity / Downhill Touchdown Back" },
+      "Christian McCaffrey": { team: "SF", baseValue: 96, archetype: "All-Pro Hybrid / Elite Bellcow" },
+      "Isaac Guerendo": { team: "SF", baseValue: 67, archetype: "Breakaway Speed / Size-Speed Threat" },
+      "Zach Charbonnet": { team: "SEA", baseValue: 76, archetype: "Heavy One-Cut / Physical Finisher" }
+    };
+
+    const teData = {
+      "Brock Bowers": { team: "LV", baseValue: 93, archetype: "Generational Matchup Weapon / YAC Monster" },
+      "Trey McBride": { team: "ARI", baseValue: 91, archetype: "Elite Target Engine / YAC & Middle-Field Alpha" },
+      "Travis Kelce": { team: "KC", baseValue: 89, archetype: "Zone-Coverage Master / Elite Target" },
+      "George Kittle": { team: "SF", baseValue: 90, archetype: "All-Pro Inline Blocker & Dynamic YAC Weapon" },
+      "Sam LaPorta": { team: "DET", baseValue: 88, archetype: "Elite Dynamic Target / Underneath & Seam" },
+      "Dalton Kincaid": { team: "BUF", baseValue: 85, archetype: "Move TE / Big Slot Route Technician" },
+      "Mark Andrews": { team: "BAL", baseValue: 87, archetype: "Elite Seam Threat / Physical Target" },
+      "Evan Engram": { team: "DEN", baseValue: 84, archetype: "Big Slot / Pass-Catching Specialist" },
+      "David Njoku": { team: "LAC", baseValue: 85, archetype: "Physical Freak / Red Zone & Seam Threat" },
+      "Jake Ferguson": { team: "DAL", baseValue: 83, archetype: "Gritty Middle-Field Target / High-Effort YAC" },
+      "T.J. Hockenson": { team: "MIN", baseValue: 84, archetype: "High-Volume Middle-Field Safety Valve" },
+      "Kyle Pitts Sr.": { team: "ATL", baseValue: 83, archetype: "Matchup Nightmare / Flexed Move Receiver" },
+      "Dallas Goedert": { team: "PHI", baseValue: 81, archetype: "Balanced YAC & Inline Blocker" },
+      "Colston Loveland": { team: "CHI", baseValue: 79, archetype: "Flexed Receiving Weapon / Seam Stretcher" },
+      "Tyler Warren": { team: "IND", baseValue: 78, archetype: "Hybrid Utility / Dynamic Receiver" }
     };
 
     /* ----------------- SCHEDULE & DEFENSES ----------------- */
@@ -925,6 +944,7 @@
 
     const posWrBtn = document.getElementById("posWrBtn");
     const posRbBtn = document.getElementById("posRbBtn");
+    const posTeBtn = document.getElementById("posTeBtn");
 
     const playerSelect = document.getElementById("playerSelect");
     const playerCompareSelect = document.getElementById("playerCompareSelect");
@@ -945,9 +965,11 @@
       playerSelect.innerHTML = '<option value="">Select player…</option>';
       playerCompareSelect.innerHTML = '<option value="">No comparison</option>';
 
-      const list = currentPos === "WR" ? top24ReceiversList : Object.keys(runningBacksData);
+      let dict = wrData;
+      if (currentPos === "RB") dict = runningBacksData;
+      if (currentPos === "TE") dict = teData;
 
-      list.forEach(name => {
+      Object.keys(dict).forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
         opt.textContent = `${name} (${currentPos})`;
@@ -960,8 +982,9 @@
 
     function populateTradeSelects() {
       const allPlayers = [
-        ...top24ReceiversList.map(n => ({ name: n, pos: "WR" })),
-        ...Object.keys(runningBacksData).map(n => ({ name: n, pos: "RB" }))
+        ...Object.keys(wrData).map(n => ({ name: n, pos: "WR" })),
+        ...Object.keys(runningBacksData).map(n => ({ name: n, pos: "RB" })),
+        ...Object.keys(teData).map(n => ({ name: n, pos: "TE" }))
       ];
 
       const selects = [tradeGive1, tradeGive2, tradeGet1, tradeGet2];
@@ -1012,6 +1035,7 @@
       currentPos = "WR";
       posWrBtn.classList.add("active");
       posRbBtn.classList.remove("active");
+      posTeBtn.classList.remove("active");
       playerSelectLabel.textContent = "Primary wide receiver";
       populatePlayers();
     });
@@ -1021,7 +1045,18 @@
       currentPos = "RB";
       posRbBtn.classList.add("active");
       posWrBtn.classList.remove("active");
+      posTeBtn.classList.remove("active");
       playerSelectLabel.textContent = "Primary running back";
+      populatePlayers();
+    });
+
+    posTeBtn.addEventListener("click", () => {
+      if (currentPos === "TE") return;
+      currentPos = "TE";
+      posTeBtn.classList.add("active");
+      posWrBtn.classList.remove("active");
+      posRbBtn.classList.remove("active");
+      playerSelectLabel.textContent = "Primary tight end";
       populatePlayers();
     });
 
@@ -1038,11 +1073,12 @@
       } else if (wrData[playerName]) {
         pos = "WR";
         baseVal = wrData[playerName].baseValue;
+      } else if (teData[playerName]) {
+        pos = "TE";
+        baseVal = teData[playerName].baseValue;
       }
 
-      // Positional Scarcity Weight (Running Backs carry higher baseline trade scarcity multiplier)
-      const scarcityMultiplier = pos === "RB" ? 1.12 : 1.0;
-
+      const scarcityMultiplier = pos === "RB" ? 1.12 : (pos === "TE" ? 1.08 : 1.0);
       return Math.round(baseVal * scarcityMultiplier);
     }
 
@@ -1118,7 +1154,6 @@
     /* ----------------- MATCHUP HANDLER ----------------- */
     async function handleAnalyzeMatchup() {
       const pName = playerSelect.value;
-      const compareName = playerCompareSelect.value;
       const weekVal = weekSelect.value;
 
       if (!pName || !weekVal) {
@@ -1130,8 +1165,10 @@
       renderEmpty("Calculating matchup parameters...");
       const week = parseInt(weekVal, 10);
 
-      const isRb = currentPos === "RB";
-      const p1Info = isRb ? runningBacksData[pName] : wrData[pName];
+      let p1Info = wrData[pName];
+      if (currentPos === "RB") p1Info = runningBacksData[pName];
+      if (currentPos === "TE") p1Info = teData[pName];
+
       const p1Team = p1Info ? p1Info.team : "N/A";
 
       const teamWeeks = teamSchedule2026[p1Team];
@@ -1144,20 +1181,20 @@
       const oppTeam = teamWeeks[week].opponent;
       let oppName = "", oppArch = "";
 
-      if (isRb) {
+      if (currentPos === "RB") {
         const front7 = frontSevenDefenses2026[oppTeam] || { name: `${oppTeam} Front 7`, archetype: "Standard Front" };
         oppName = front7.name;
         oppArch = front7.archetype;
       } else {
-        oppName = primaryCorners2026Names[oppTeam] || "Primary CB";
-        oppArch = "Press / Coverage DB";
+        oppName = primaryCorners2026Names[oppTeam] || "Primary Defense";
+        oppArch = "Pass Defense Coverage Unit";
       }
 
       autoOpponentChip.style.display = "inline-flex";
       autoOpponentChip.textContent = `2026 Opponent: ${oppName} (${oppTeam})`;
 
-      let score = 72;
-      let tier = "Solid Start";
+      let score = Math.min(99, Math.max(60, Math.floor((p1Info ? p1Info.baseValue : 75) + (Math.sin(week) * 5))));
+      let tier = score >= 85 ? "Smash Start" : (score >= 75 ? "Solid Start" : "Flex Play");
 
       resultArea.innerHTML = `
         <div class="bubble-label">Chip says</div>
