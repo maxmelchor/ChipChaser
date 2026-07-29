@@ -287,7 +287,7 @@
       color: #9ca3ff;
     }
 
-    select {
+    select, input[list] {
       width: 100%;
       padding: 8px 12px;
       border-radius: 999px;
@@ -299,7 +299,7 @@
       appearance: none;
     }
 
-    select:focus {
+    select:focus, input[list]:focus {
       border-color: #a855ff;
       box-shadow: 0 0 0 1px rgba(168, 85, 255, 0.5);
     }
@@ -599,16 +599,14 @@
 
           <div class="form-row">
             <label for="playerSelect" id="playerSelectLabel">Primary wide receiver</label>
-            <select id="playerSelect">
-              <option value="">Select player…</option>
-            </select>
+            <input type="text" id="playerSelect" list="playerList" placeholder="Search or select player…" />
+            <datalist id="playerList"></datalist>
           </div>
 
           <div class="form-row">
             <label for="playerCompareSelect">Compare vs (optional)</label>
-            <select id="playerCompareSelect">
-              <option value="">No comparison</option>
-            </select>
+            <input type="text" id="playerCompareSelect" list="playerCompareList" placeholder="No comparison" />
+            <datalist id="playerCompareList"></datalist>
           </div>
 
           <div class="form-row">
@@ -623,27 +621,20 @@
         <div id="tradeControls" style="display: none;">
           <div class="trade-section-header">You Give (Side A)</div>
           <div class="form-row">
-            <select id="tradeGive1">
-              <option value="">Select player 1 to trade away…</option>
-            </select>
+            <input type="text" id="tradeGive1" list="tradePlayerList" placeholder="Select player 1 to trade away…" />
           </div>
           <div class="form-row">
-            <select id="tradeGive2">
-              <option value="">Select player 2 (optional)…</option>
-            </select>
+            <input type="text" id="tradeGive2" list="tradePlayerList" placeholder="Select player 2 (optional)…" />
           </div>
 
           <div class="trade-section-header">You Get (Side B)</div>
           <div class="form-row">
-            <select id="tradeGet1">
-              <option value="">Select player 1 to receive…</option>
-            </select>
+            <input type="text" id="tradeGet1" list="tradePlayerList" placeholder="Select player 1 to receive…" />
           </div>
           <div class="form-row">
-            <select id="tradeGet2">
-              <option value="">Select player 2 (optional)…</option>
-            </select>
+            <input type="text" id="tradeGet2" list="tradePlayerList" placeholder="Select player 2 (optional)…" />
           </div>
+          <datalist id="tradePlayerList"></datalist>
         </div>
 
         <button class="btn" id="analyzeBtn">Ask Chip</button>
@@ -1102,10 +1093,15 @@
     const autoOpponentChip = document.getElementById("autoOpponentChip");
     const playerSelectLabel = document.getElementById("playerSelectLabel");
 
-    /* ----------------- POPULATE SELECTS ----------------- */
+    /* ----------------- POPULATE DATALISTS ----------------- */
     function populatePlayers() {
-      playerSelect.innerHTML = '<option value="">Select player…</option>';
-      playerCompareSelect.innerHTML = '<option value="">No comparison</option>';
+      playerSelect.value = "";
+      playerCompareSelect.value = "";
+
+      const pList = document.getElementById("playerList");
+      const cList = document.getElementById("playerCompareList");
+      pList.innerHTML = "";
+      cList.innerHTML = "";
 
       let dict = wrData;
       if (currentPos === "RB") dict = runningBacksData;
@@ -1114,31 +1110,29 @@
       Object.keys(dict).forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
-        opt.textContent = `${name} (${currentPos})`;
-        playerSelect.appendChild(opt);
+        opt.label = `${name} (${currentPos})`;
+        pList.appendChild(opt);
 
         const opt2 = opt.cloneNode(true);
-        playerCompareSelect.appendChild(opt2);
+        cList.appendChild(opt2);
       });
     }
 
     function populateTradeSelects() {
+      const tradeList = document.getElementById("tradePlayerList");
+      tradeList.innerHTML = "";
+
       const allPlayers = [
         ...Object.keys(wrData).map(n => ({ name: n, pos: "WR" })),
         ...Object.keys(runningBacksData).map(n => ({ name: n, pos: "RB" })),
         ...Object.keys(teData).map(n => ({ name: n, pos: "TE" }))
       ];
 
-      const selects = [tradeGive1, tradeGive2, tradeGet1, tradeGet2];
-
-      selects.forEach((sel, idx) => {
-        sel.innerHTML = `<option value="">${idx < 2 ? "Select player to give…" : "Select player to receive…"}</option>`;
-        allPlayers.forEach(p => {
-          const opt = document.createElement("option");
-          opt.value = p.name;
-          opt.textContent = `${p.name} (${p.pos})`;
-          sel.appendChild(opt);
-        });
+      allPlayers.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.name;
+        opt.label = `${p.name} (${p.pos})`;
+        tradeList.appendChild(opt);
       });
     }
 
