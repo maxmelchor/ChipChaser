@@ -646,7 +646,7 @@
       </div>
 
       <div class="chip-pill-row">
-        <span class="chip-pill">Expanded Waiver Database</span>
+        <span class="chip-pill">Live Sleeper API Connected</span>
         <span class="chip-pill">Handcuff Upside Engine</span>
         <span class="chip-pill">32 Defensive Schemes</span>
         <span class="chip-pill">Scarcity Multipliers</span>
@@ -728,7 +728,7 @@
 
         <div class="controls-meta-row">
           <div class="meta-chip" id="autoOpponentChip" style="display:none;"></div>
-          <div class="meta-chip">Full Starter & Handcuff Depth Complete</div>
+          <div class="meta-chip" id="apiStatusChip">Syncing Sleeper API...</div>
         </div>
 
         <!-- DIRECT OUTPUT RESULTS CONTAINER -->
@@ -747,8 +747,9 @@
   <script>
     let activeTool = "MATCHUP"; // "MATCHUP" or "TRADE"
     let currentPos = "WR";      // "QB", "WR", "RB", or "TE"
+    let sleeperPlayerMap = {};  // Stores dynamic API data
 
-    /* ----------------- EXPANDED 2026 PLAYER DATABASE ----------------- */
+    /* ----------------- BASE LOCAL DICTIONARIES ----------------- */
     const qbData = {
       "Josh Allen": { team: "BUF", baseValue: 97, scarcity: 1.15, ros: 5, injury: 0, contingency: 0, archetype: "Dual-Threat Konami / Power Rusher" },
       "Lamar Jackson": { team: "BAL", baseValue: 96, scarcity: 1.15, ros: 4, injury: 0, contingency: 0, archetype: "Dual-Threat Konami / Dynamic Playmaker" },
@@ -759,33 +760,10 @@
       "Jayden Daniels": { team: "WSH", baseValue: 89, scarcity: 1.15, ros: 3, injury: 0, contingency: 0, archetype: "Dual-Threat Konami / Dynamic Playmaker" },
       "Jordan Love": { team: "GB", baseValue: 87, scarcity: 1.05, ros: 3, injury: 0, contingency: 0, archetype: "Gunslinger / Pocket Passer" },
       "Dak Prescott": { team: "DAL", baseValue: 86, scarcity: 1.05, ros: 3, injury: 0, contingency: 0, archetype: "Volume Pocket Passer" },
-      "Kyler Murray": { team: "ARI", baseValue: 86, scarcity: 1.10, ros: 3, injury: 0, contingency: 0, archetype: "Dual-Threat Konami / Off-Script Playmaker" },
-      "Brock Purdy": { team: "SF", baseValue: 85, scarcity: 1.05, ros: 4, injury: 0, contingency: 0, archetype: "Efficiency Pocket Passer" },
-      "Jared Goff": { team: "DET", baseValue: 84, scarcity: 1.00, ros: 4, injury: 0, contingency: 0, archetype: "Pocket Passer / Indoor Specialist" },
-      "Baker Mayfield": { team: "TB", baseValue: 82, scarcity: 1.00, ros: 2, injury: 0, contingency: 0, archetype: "Gunslinger / Volume Passer" },
-      "Tua Tagovailoa": { team: "MIA", baseValue: 81, scarcity: 1.00, ros: 2, injury: -10, contingency: 0, archetype: "Quick-Release Pocket Passer" },
-      "Caleb Williams": { team: "CHI", baseValue: 82, scarcity: 1.05, ros: 2, injury: 0, contingency: 0, archetype: "Off-Script Playmaker / Dual-Threat" },
-      "Trevor Lawrence": { team: "JAX", baseValue: 80, scarcity: 1.00, ros: 2, injury: 0, contingency: 0, archetype: "Pocket Passer" },
-      "Justin Herbert": { team: "LAC", baseValue: 81, scarcity: 1.00, ros: 2, injury: 0, contingency: 0, archetype: "Arm-Talent Pocket Passer" },
-      "Anthony Richardson": { team: "IND", baseValue: 83, scarcity: 1.15, ros: 2, injury: -10, contingency: 0, archetype: "Dual-Threat Konami / Power Rusher" },
-      "Kirk Cousins": { team: "ATL", baseValue: 77, scarcity: 0.95, ros: 2, injury: -5, contingency: 0, archetype: "Stationary Pocket Passer" },
-      "Matthew Stafford": { team: "LAR", baseValue: 78, scarcity: 0.95, ros: 2, injury: -5, contingency: 0, archetype: "Gunslinger / Pocket Passer" },
-      "Geno Smith": { team: "SEA", baseValue: 77, scarcity: 0.95, ros: 2, injury: 0, contingency: 0, archetype: "Pocket Passer" },
-      "Bo Nix": { team: "DEN", baseValue: 78, scarcity: 1.00, ros: 2, injury: 0, contingency: 0, archetype: "Dual-Threat / Short-Passing Specialist" },
-      "Drake Maye": { team: "NE", baseValue: 76, scarcity: 1.00, ros: 1, injury: 0, contingency: 0, archetype: "Dual-Threat / Developmental" },
-      "Bryce Young": { team: "CAR", baseValue: 72, scarcity: 0.90, ros: 1, injury: 0, contingency: 0, archetype: "Point-Guard Pocket Passer" },
-      "Will Levis": { team: "TEN", baseValue: 71, scarcity: 0.90, ros: 1, injury: 0, contingency: 0, archetype: "Gunslinger / High-Variance" },
-      "Deshaun Watson": { team: "CLE", baseValue: 72, scarcity: 0.90, ros: 1, injury: -5, contingency: 0, archetype: "Dual-Threat / High-Variance" },
-      "Derek Carr": { team: "NO", baseValue: 73, scarcity: 0.90, ros: 1, injury: 0, contingency: 0, archetype: "Stationary Pocket Passer" },
-      "Russell Wilson": { team: "PIT", baseValue: 74, scarcity: 0.95, ros: 2, injury: 0, contingency: 0, archetype: "Deep Ball / Off-Script Passer" },
-      "Gardner Minshew": { team: "LV", baseValue: 70, scarcity: 0.85, ros: 1, injury: 0, contingency: 0, archetype: "Bridge Pocket Passer" },
-      "Daniel Jones": { team: "NYG", baseValue: 71, scarcity: 0.90, ros: 1, injury: -5, contingency: 0, archetype: "Dual-Threat / High-Variance" },
-      "Sam Darnold": { team: "MIN", baseValue: 75, scarcity: 0.95, ros: 2, injury: 0, contingency: 0, archetype: "System Pocket Passer" },
-      "Aaron Rodgers": { team: "NYJ", baseValue: 76, scarcity: 0.95, ros: 1, injury: -5, contingency: 0, archetype: "Veteran Pocket Passer" }
+      "Kyler Murray": { team: "ARI", baseValue: 86, scarcity: 1.10, ros: 3, injury: 0, contingency: 0, archetype: "Dual-Threat Konami / Off-Script Playmaker" }
     };
 
     const wrData = {
-      // Alphas
       "Ja'Marr Chase": { team: "CIN", baseValue: 95, scarcity: 1.10, ros: 5, injury: 0, contingency: 0, archetype: "Vertical Field-Stretcher & Explosive YAC" },
       "Justin Jefferson": { team: "MIN", baseValue: 96, scarcity: 1.10, ros: 4, injury: 0, contingency: 0, archetype: "The Ultimate Separation Route Technician" },
       "CeeDee Lamb": { team: "DAL", baseValue: 94, scarcity: 1.10, ros: 3, injury: 0, contingency: 0, archetype: "Precision Route Technician / Versatile Target" },
@@ -793,84 +771,21 @@
       "Amon-Ra St. Brown": { team: "DET", baseValue: 92, scarcity: 1.10, ros: 5, injury: 0, contingency: 0, archetype: "Space & YAC Engine / Physical Slot" },
       "A.J. Brown": { team: "PHI", baseValue: 90, scarcity: 1.10, ros: 3, injury: -5, contingency: 0, archetype: "Alpha Boundary 'X' WR" },
       "Puka Nacua": { team: "LAR", baseValue: 89, scarcity: 1.00, ros: 3, injury: -5, contingency: 0, archetype: "Space & YAC Engine / Physical Contested Catch" },
-      "Nico Collins": { team: "HOU", baseValue: 88, scarcity: 1.10, ros: 4, injury: -5, contingency: 0, archetype: "Alpha Boundary 'X' WR" },
       "Marvin Harrison Jr.": { team: "ARI", baseValue: 88, scarcity: 1.10, ros: 4, injury: 0, contingency: 0, archetype: "Alpha Boundary 'X' WR" },
-      "Garrett Wilson": { team: "NYJ", baseValue: 87, scarcity: 1.00, ros: 1, injury: 0, contingency: 0, archetype: "Precision Route Technician / Body Control" },
       "Malik Nabers": { team: "NYG", baseValue: 86, scarcity: 1.00, ros: 1, injury: 0, contingency: 0, archetype: "Vertical Field-Stretcher / Explosive YAC" },
-      "Drake London": { team: "ATL", baseValue: 85, scarcity: 1.00, ros: 3, injury: 0, contingency: 0, archetype: "Alpha Boundary 'X' WR" },
-      "Davante Adams": { team: "NYJ", baseValue: 85, scarcity: 1.00, ros: 3, injury: -5, contingency: 0, archetype: "Precision Route Technician" },
-      "DJ Moore": { team: "CHI", baseValue: 84, scarcity: 1.00, ros: 3, injury: 0, contingency: 0, archetype: "Space & YAC Engine (Slot)" },
-      "DK Metcalf": { team: "SEA", baseValue: 83, scarcity: 1.00, ros: 2, injury: 0, contingency: 0, archetype: "Alpha Boundary 'X' WR" },
-      "Jaylen Waddle": { team: "MIA", baseValue: 83, scarcity: 1.00, ros: 3, injury: -5, contingency: 0, archetype: "Vertical Field-Stretcher" },
-      "Brandon Aiyuk": { team: "SF", baseValue: 83, scarcity: 1.00, ros: 3, injury: -10, contingency: 0, archetype: "Precision Route Technician" },
-      "Zay Flowers": { team: "BAL", baseValue: 83, scarcity: 1.00, ros: 3, injury: 0, contingency: 0, archetype: "Space & YAC Engine (Slot)" },
-      "DeVonta Smith": { team: "PHI", baseValue: 82, scarcity: 1.00, ros: 3, injury: 0, contingency: 0, archetype: "Precision Route Technician" },
-      "Terry McLaurin": { team: "WSH", baseValue: 82, scarcity: 1.00, ros: 2, injury: 0, contingency: 0, archetype: "Precision Route Technician" },
-      "Jaxon Smith-Njigba": { team: "SEA", baseValue: 82, scarcity: 1.00, ros: 2, injury: 0, contingency: 0, archetype: "Space & YAC Engine (Slot)" },
-      "Ladd McConkey": { team: "LAC", baseValue: 82, scarcity: 1.00, ros: 2, injury: 0, contingency: 0, archetype: "Precision Route Technician" },
-      "George Pickens": { team: "PIT", baseValue: 82, scarcity: 1.00, ros: 2, injury: 0, contingency: 0, archetype: "Alpha Boundary 'X' WR" },
-      "Tee Higgins": { team: "CIN", baseValue: 81, scarcity: 1.00, ros: 4, injury: -5, contingency: 0, archetype: "Alpha Boundary 'X' WR" },
-      "Mike Evans": { team: "TB", baseValue: 81, scarcity: 1.00, ros: 2, injury: -5, contingency: 0, archetype: "Alpha Boundary 'X' WR" },
-      "Chris Olave": { team: "NO", baseValue: 81, scarcity: 1.00, ros: 1, injury: -5, contingency: 0, archetype: "Precision Route Technician" },
-      "Xavier Worthy": { team: "KC", baseValue: 80, scarcity: 1.00, ros: 5, injury: 0, contingency: 0, archetype: "Vertical Field-Stretcher" },
-      "Rome Odunze": { team: "CHI", baseValue: 80, scarcity: 1.00, ros: 2, injury: 0, contingency: 0, archetype: "Alpha Boundary 'X' WR" },
-      
-      // WR2/3 Core
-      "Jayden Reed": { team: "GB", baseValue: 78, scarcity: 1.00, ros: 3, injury: 0, contingency: 2, archetype: "Space & YAC Engine (Slot)" },
-      "Tetairoa McMillan": { team: "CAR", baseValue: 79, scarcity: 1.00, ros: 1, injury: 0, contingency: 0, archetype: "Alpha Boundary 'X' WR" },
-      "Emeka Egbuka": { team: "TB", baseValue: 78, scarcity: 1.00, ros: 2, injury: 0, contingency: 0, archetype: "Precision Route Technician" },
-      "Rashee Rice": { team: "KC", baseValue: 81, scarcity: 1.00, ros: 5, injury: -10, contingency: 0, archetype: "Space & YAC Engine (Slot)" },
-      "Keon Coleman": { team: "BUF", baseValue: 74, scarcity: 1.00, ros: 4, injury: 0, contingency: 3, archetype: "Alpha Boundary 'X' WR" },
-      "Dontayvion Wicks": { team: "GB", baseValue: 74, scarcity: 1.00, ros: 3, injury: 0, contingency: 5, archetype: "Precision Route Technician" },
-      "Ricky Pearsall": { team: "SF", baseValue: 74, scarcity: 1.00, ros: 3, injury: 0, contingency: 5, archetype: "Precision Route Technician" },
-      "Josh Downs": { team: "IND", baseValue: 76, scarcity: 0.95, ros: 2, injury: 0, contingency: 6, archetype: "Space & YAC Engine (Slot)" },
-      "Khalil Shakir": { team: "BUF", baseValue: 76, scarcity: 0.95, ros: 4, injury: 0, contingency: 4, archetype: "Space & YAC Engine (Slot)" },
-
-      // High-Upside Waiver / Sleeper Targets
-      "Jalen Coker": { team: "CAR", baseValue: 68, scarcity: 0.90, ros: 1, injury: 0, contingency: 10, archetype: "Space & YAC Engine (Slot)" },
-      "Andrei Iosivas": { team: "CIN", baseValue: 68, scarcity: 0.90, ros: 4, injury: 0, contingency: 11, archetype: "Alpha Boundary 'X' WR" },
-      "Luther Burden III": { team: "CHI", baseValue: 73, scarcity: 0.95, ros: 2, injury: 0, contingency: 8, archetype: "Space & YAC Engine (Slot)" },
-      "Devaughn Vele": { team: "DEN", baseValue: 66, scarcity: 0.85, ros: 2, injury: 0, contingency: 9, archetype: "Alpha Boundary 'X' WR" },
-      "Parker Washington": { team: "JAX", baseValue: 65, scarcity: 0.85, ros: 2, injury: 0, contingency: 10, archetype: "Space & YAC Engine (Slot)" },
-      "Jalen Tolbert": { team: "DAL", baseValue: 70, scarcity: 0.90, ros: 2, injury: 0, contingency: 10, archetype: "Alpha Boundary 'X' WR" },
-      "Joshua Palmer": { team: "BUF", baseValue: 68, scarcity: 0.85, ros: 3, injury: 0, contingency: 6, archetype: "Precision Route Technician" },
-      "Malik Washington": { team: "MIA", baseValue: 70, scarcity: 0.85, ros: 2, injury: 0, contingency: 8, archetype: "Space & YAC Engine (Slot)" }
+      "Denzel Boston": { team: "CLE", baseValue: 71, scarcity: 0.90, ros: 1, injury: 0, contingency: 10, archetype: "Alpha Boundary 'X' WR" }
     };
 
     const runningBacksData = {
-      // Elite Workhorses
       "Saquon Barkley": { team: "PHI", baseValue: 94, scarcity: 1.25, ros: 5, injury: -5, contingency: 0, archetype: "Workhorse / Downhill RB" },
       "Christian McCaffrey": { team: "SF", baseValue: 96, scarcity: 1.25, ros: 4, injury: -10, contingency: 0, archetype: "Elusive / Satellite RB" },
       "Bijan Robinson": { team: "ATL", baseValue: 93, scarcity: 1.25, ros: 4, injury: 0, contingency: 0, archetype: "Workhorse / Downhill RB" },
       "Breece Hall": { team: "NYJ", baseValue: 92, scarcity: 1.25, ros: 1, injury: 0, contingency: 0, archetype: "Workhorse / Downhill RB" },
       "Jahmyr Gibbs": { team: "DET", baseValue: 91, scarcity: 1.25, ros: 5, injury: 0, contingency: 2, archetype: "Elusive / Satellite RB" },
-      "Jonathan Taylor": { team: "IND", baseValue: 91, scarcity: 1.25, ros: 3, injury: -5, contingency: 0, archetype: "Workhorse / Downhill RB" },
-      "Derrick Henry": { team: "BAL", baseValue: 89, scarcity: 1.25, ros: 4, injury: -5, contingency: 0, archetype: "Workhorse / Downhill RB" },
       "De'Von Achane": { team: "MIA", baseValue: 89, scarcity: 1.25, ros: 2, injury: -5, contingency: 3, archetype: "Elusive / Satellite RB" },
-      "Josh Jacobs": { team: "GB", baseValue: 87, scarcity: 1.25, ros: 3, injury: -5, contingency: 0, archetype: "Workhorse / Downhill RB" },
-      "Ashton Jeanty": { team: "LV", baseValue: 86, scarcity: 1.25, ros: 2, injury: 0, contingency: 0, archetype: "Workhorse / Downhill RB" },
-      "Kyren Williams": { team: "LAR", baseValue: 86, scarcity: 1.10, ros: 3, injury: -5, contingency: 0, archetype: "Workhorse / Downhill RB" },
-      "Alvin Kamara": { team: "NO", baseValue: 86, scarcity: 1.10, ros: 1, injury: -5, contingency: 0, archetype: "Elusive / Satellite RB" },
-
-      // High-End Starters & Committee
-      "Kenneth Walker III": { team: "KC", baseValue: 85, scarcity: 1.10, ros: 5, injury: -5, contingency: 0, archetype: "Workhorse / Downhill RB" },
-      "Isiah Pacheco": { team: "KC", baseValue: 83, scarcity: 1.10, ros: 5, injury: 0, contingency: 2, archetype: "Workhorse / Downhill RB" },
-      "James Cook": { team: "BUF", baseValue: 82, scarcity: 1.10, ros: 5, injury: 0, contingency: 0, archetype: "Elusive / Satellite RB" },
-      "Bucky Irving": { team: "TB", baseValue: 81, scarcity: 1.10, ros: 2, injury: 0, contingency: 3, archetype: "Elusive / Satellite RB" },
-
-      // High-Upside Handcuffs & Waiver Stashes (The "Achane Zone")
       "Jaylen Wright": { team: "MIA", baseValue: 68, scarcity: 1.05, ros: 2, injury: 0, contingency: 15, archetype: "Elusive / Satellite RB" },
       "Braelon Allen": { team: "NYJ", baseValue: 71, scarcity: 1.05, ros: 1, injury: 0, contingency: 14, archetype: "Workhorse / Downhill RB" },
-      "Ray Davis": { team: "BUF", baseValue: 70, scarcity: 1.00, ros: 4, injury: 0, contingency: 13, archetype: "Workhorse / Downhill RB" },
-      "Blake Corum": { team: "LAR", baseValue: 69, scarcity: 1.00, ros: 3, injury: 0, contingency: 14, archetype: "Workhorse / Downhill RB" },
-      "Jordan Mason": { team: "MIN", baseValue: 72, scarcity: 1.05, ros: 2, injury: 0, contingency: 12, archetype: "Workhorse / Downhill RB" },
-      "Trey Benson": { team: "ARI", baseValue: 71, scarcity: 1.05, ros: 3, injury: 0, contingency: 13, archetype: "Workhorse / Downhill RB" },
-      "Audric Estime": { team: "DEN", baseValue: 64, scarcity: 0.90, ros: 2, injury: 0, contingency: 11, archetype: "Workhorse / Downhill RB" },
-      "Will Shipley": { team: "PHI", baseValue: 63, scarcity: 0.90, ros: 4, injury: 0, contingency: 12, archetype: "Elusive / Satellite RB" },
-      "Isaac Guerendo": { team: "SF", baseValue: 66, scarcity: 1.00, ros: 3, injury: 0, contingency: 15, archetype: "Workhorse / Downhill RB" },
-      "Justice Hill": { team: "BAL", baseValue: 67, scarcity: 0.90, ros: 4, injury: 0, contingency: 9, archetype: "Elusive / Satellite RB" },
-      "Tank Bigsby": { team: "PHI", baseValue: 68, scarcity: 0.95, ros: 2, injury: 0, contingency: 11, archetype: "Workhorse / Downhill RB" },
-      "Keaton Mitchell": { team: "LAC", baseValue: 65, scarcity: 0.90, ros: 4, injury: -5, contingency: 13, archetype: "Elusive / Satellite RB" }
+      "Ray Davis": { team: "BUF", baseValue: 70, scarcity: 1.00, ros: 4, injury: 0, contingency: 13, archetype: "Workhorse / Downhill RB" }
     };
 
     const teData = {
@@ -879,15 +794,10 @@
       "George Kittle": { team: "SF", baseValue: 90, scarcity: 1.20, ros: 4, injury: -5, contingency: 0, archetype: "Seam-Stretching TE" },
       "Travis Kelce": { team: "KC", baseValue: 89, scarcity: 1.20, ros: 5, injury: 0, contingency: 0, archetype: "Seam-Stretching TE" },
       "Sam LaPorta": { team: "DET", baseValue: 88, scarcity: 1.20, ros: 5, injury: 0, contingency: 0, archetype: "Seam-Stretching TE" },
-      "Mark Andrews": { team: "BAL", baseValue: 87, scarcity: 1.20, ros: 4, injury: -5, contingency: 0, archetype: "Seam-Stretching TE" },
-      "Isaiah Likely": { team: "BAL", baseValue: 81, scarcity: 1.00, ros: 4, injury: 0, contingency: 12, archetype: "Seam-Stretching TE" },
-      "David Njoku": { team: "CLE", baseValue: 85, scarcity: 1.00, ros: 2, injury: 0, contingency: 0, archetype: "Seam-Stretching TE" },
-      "Cole Kmet": { team: "CHI", baseValue: 77, scarcity: 1.00, ros: 2, injury: 0, contingency: 0, archetype: "Seam-Stretching TE" },
-      "Tucker Kraft": { team: "GB", baseValue: 78, scarcity: 1.00, ros: 3, injury: 0, contingency: 6, archetype: "Seam-Stretching TE" },
-      "Ben Sinnott": { team: "WSH", baseValue: 71, scarcity: 0.85, ros: 2, injury: 0, contingency: 10, archetype: "Seam-Stretching TE" }
+      "Isaiah Likely": { team: "BAL", baseValue: 81, scarcity: 1.00, ros: 4, injury: 0, contingency: 12, archetype: "Seam-Stretching TE" }
     };
 
-    /* ----------------- 2026 DEFENSIVE SCHEME BREAKDOWN ----------------- */
+    /* ----------------- 2026 DEFENSIVE SCHEMES & SCHEDULE ----------------- */
     const defensiveSchemes2026 = {
       DEN: { type: "Heavy Press-Man", label: "Heavy Press-Man / Aggressive Blitz", box: "Heavy" },
       CLE: { type: "Heavy Press-Man", label: "Heavy Press-Man / Aggressive Blitz", box: "Heavy" },
@@ -940,42 +850,20 @@
     };
 
     const frontSevenDefenses2026 = {
-      BUF: { name: "Bills Front 7", archetype: "Heavy Interior / Penetrating Gap" },
-      MIA: { name: "Dolphins Front 7", archetype: "Speed-Pass Rush / Flow Defense" },
-      NE:  { name: "Patriots Front 7", archetype: "Heavy 2-Gap / Power Wall" },
-      NYJ: { name: "Jets Front 7", archetype: "Aggressive 4-Man Rush / Wide-9" },
-      BAL: { name: "Ravens Front 7", archetype: "Heavy 2-Gap / Physical Wall" },
-      CIN: { name: "Bengals Front 7", archetype: "Balanced 4-3 / Gap Control" },
-      CLE: { name: "Browns Front 7", archetype: "Aggressive Edge / Speed Flow" },
-      PIT: { name: "Steelers Front 7", archetype: "Physical Blitz-Heavy / Power Front" },
-      HOU: { name: "Texans Front 7", archetype: "Fast Flow / Penetrating 4-3" },
-      IND: { name: "Colts Front 7", archetype: "Cover-2 Gap Control / Under Front" },
-      JAX: { name: "Jaguars Front 7", archetype: "Balanced Front / Speed Linebackers" },
-      TEN: { name: "Titans Front 7", archetype: "Heavy Nose / Interior Plugger" },
-      DEN: { name: "Broncos Front 7", archetype: "3-4 Hybrid / Edge Pressure" },
-      KC:  { name: "Chiefs Front 7", archetype: "Aggressive Blitz / Penetrating Gap" },
-      LV:  { name: "Raiders Front 7", archetype: "Edge Heavy / Penetrating 4-3" },
-      LAC: { name: "Chargers Front 7", archetype: "Physical 3-4 / Stacking Wall" },
-      DAL: { name: "Cowboys Front 7", archetype: "Speed Edge / Light Linebackers" },
-      NYG: { name: "Giants Front 7", archetype: "Heavy Interior / Blitz Heavy" },
-      PHI: { name: "Eagles Front 7", archetype: "Heavy Rotational Wall / Power Front" },
-      WSH: { name: "Commanders Front 7", archetype: "Penetrating DTs / Fast Pursuit" },
-      CHI: { name: "Bears Front 7", archetype: "Tampa-2 Flow / Gap Penetration" },
-      DET: { name: "Lions Front 7", archetype: "Physical Downhill / Heavy Wall" },
-      GB:  { name: "Packers Front 7", archetype: "3-4 Hybrid / Speed Edge" },
-      MIN: { name: "Vikings Front 7", archetype: "A-Gap Blitz Heavy / Dynamic Front" },
-      ATL: { name: "Falcons Front 7", archetype: "Flow Defense / Speed Linebackers" },
-      CAR: { name: "Panthers Front 7", archetype: "3-4 Gap Control / Heavy Nose" },
-      NO:  { name: "Saints Front 7", archetype: "Physical 4-3 / Power Interior" },
-      TB:  { name: "Buccaneers Front 7", archetype: "Blitz-Heavy / Fast Linebackers" },
-      ARI: { name: "Cardinals Front 7", archetype: "3-4 Hybrid / Flow Defense" },
-      LAR: { name: "Rams Front 7", archetype: "Young Penetrating / High-Motor" },
-      SF:  { name: "49ers Front 7", archetype: "Fast Pursuit / Wide-9 Penetrating" },
-      SEA: { name: "Seahawks Front 7", archetype: "3-4 Heavy / Physical Edge" }
+      BUF: { name: "Bills Front 7" }, MIA: { name: "Dolphins Front 7" }, NE: { name: "Patriots Front 7" },
+      NYJ: { name: "Jets Front 7" }, BAL: { name: "Ravens Front 7" }, CIN: { name: "Bengals Front 7" },
+      CLE: { name: "Browns Front 7" }, PIT: { name: "Steelers Front 7" }, HOU: { name: "Texans Front 7" },
+      IND: { name: "Colts Front 7" }, JAX: { name: "Jaguars Front 7" }, TEN: { name: "Titans Front 7" },
+      DEN: { name: "Broncos Front 7" }, KC: { name: "Chiefs Front 7" }, LV: { name: "Raiders Front 7" },
+      LAC: { name: "Chargers Front 7" }, DAL: { name: "Cowboys Front 7" }, NYG: { name: "Giants Front 7" },
+      PHI: { name: "Eagles Front 7" }, WSH: { name: "Commanders Front 7" }, CHI: { name: "Bears Front 7" },
+      DET: { name: "Lions Front 7" }, GB: { name: "Packers Front 7" }, MIN: { name: "Vikings Front 7" },
+      ATL: { name: "Falcons Front 7" }, CAR: { name: "Panthers Front 7" }, NO: { name: "Saints Front 7" },
+      TB: { name: "Buccaneers Front 7" }, ARI: { name: "Cardinals Front 7" }, LAR: { name: "Rams Front 7" },
+      SF: { name: "49ers Front 7" }, SEA: { name: "Seahawks Front 7" }
     };
 
     const rawSchedule2026 = [
-      // WEEK 1
       { week: 1, away: "NE", home: "SEA" }, { week: 1, away: "SF", home: "LAR" },
       { week: 1, away: "ATL", home: "PIT" }, { week: 1, away: "BAL", home: "IND" },
       { week: 1, away: "BUF", home: "HOU" }, { week: 1, away: "CAR", home: "CHI" },
@@ -983,154 +871,7 @@
       { week: 1, away: "NYJ", home: "TEN" }, { week: 1, away: "TB", home: "CIN" },
       { week: 1, away: "ARI", home: "LAC" }, { week: 1, away: "GB", home: "MIN" },
       { week: 1, away: "MIA", home: "LV" }, { week: 1, away: "WSH", home: "PHI" },
-      { week: 1, away: "DAL", home: "NYG" }, { week: 1, away: "DEN", home: "KC" },
-      // WEEK 2
-      { week: 2, away: "DET", home: "BUF" }, { week: 2, away: "CAR", home: "ATL" },
-      { week: 2, away: "CIN", home: "HOU" }, { week: 2, away: "CLE", home: "TB" },
-      { week: 2, away: "GB", home: "NYJ" }, { week: 2, away: "MIN", home: "CHI" },
-      { week: 2, away: "NO", home: "BAL" }, { week: 2, away: "PHI", home: "TEN" },
-      { week: 2, away: "PIT", home: "NE" }, { week: 2, away: "JAX", home: "DEN" },
-      { week: 2, away: "LV", home: "LAC" }, { week: 2, away: "MIA", home: "SF" },
-      { week: 2, away: "SEA", home: "ARI" }, { week: 2, away: "WSH", home: "DAL" },
-      { week: 2, away: "IND", home: "KC" }, { week: 2, away: "NYG", home: "LAR" },
-      // WEEK 3
-      { week: 3, away: "ATL", home: "GB" }, { week: 3, away: "CAR", home: "CLE" },
-      { week: 3, away: "CIN", home: "PIT" }, { week: 3, away: "HOU", home: "IND" },
-      { week: 3, away: "KC", home: "MIA" }, { week: 3, away: "LAC", home: "BUF" },
-      { week: 3, away: "NE", home: "JAX" }, { week: 3, away: "NYJ", home: "DET" },
-      { week: 3, away: "SEA", home: "WSH" }, { week: 3, away: "TEN", home: "NYG" },
-      { week: 3, away: "ARI", home: "SF" }, { week: 3, away: "MIN", home: "TB" },
-      { week: 3, away: "BAL", home: "DAL" }, { week: 3, away: "LV", home: "NO" },
-      { week: 3, away: "LAR", home: "DEN" }, { week: 3, away: "PHI", home: "CHI" },
-      // WEEK 4
-      { week: 4, away: "PIT", home: "CLE" }, { week: 4, away: "IND", home: "WSH" },
-      { week: 4, away: "ARI", home: "NYG" }, { week: 4, away: "DAL", home: "HOU" },
-      { week: 4, away: "GB", home: "TB" }, { week: 4, away: "JAX", home: "CIN" },
-      { week: 4, away: "LAR", home: "PHI" }, { week: 4, away: "NE", home: "BUF" },
-      { week: 4, away: "NYJ", home: "CHI" }, { week: 4, away: "TEN", home: "BAL" },
-      { week: 4, away: "MIA", home: "MIN" }, { week: 4, away: "DEN", home: "SF" },
-      { week: 4, away: "KC", home: "LV" }, { week: 4, away: "LAC", home: "SEA" },
-      { week: 4, away: "DET", home: "CAR" }, { week: 4, away: "ATL", home: "NO" },
-      // WEEK 5
-      { week: 5, away: "TB", home: "DAL" }, { week: 5, away: "PHI", home: "JAX" },
-      { week: 5, away: "CIN", home: "MIA" }, { week: 5, away: "CLE", home: "NYJ" },
-      { week: 5, away: "HOU", home: "TEN" }, { week: 5, away: "IND", home: "PIT" },
-      { week: 5, away: "LV", home: "NE" }, { week: 5, away: "MIN", home: "NO" },
-      { week: 5, away: "NYG", home: "WSH" }, { week: 5, away: "DEN", home: "LAC" },
-      { week: 5, away: "CHI", home: "GB" }, { week: 5, away: "DET", home: "ARI" },
-      { week: 5, away: "SF", home: "SEA" }, { week: 5, away: "BUF", home: "LAR" },
-      { week: 5, away: "BAL", home: "ATL" }, { week: 5, away: "CAR", home: "KC" },
-      // WEEK 6
-      { week: 6, away: "BUF", home: "LV" }, { week: 6, away: "NYJ", home: "NE" },
-      { week: 6, away: "BAL", home: "CLE" }, { week: 6, away: "PIT", home: "TB" },
-      { week: 6, away: "HOU", home: "JAX" }, { week: 6, away: "TEN", home: "IND" },
-      { week: 6, away: "SEA", home: "DEN" }, { week: 6, away: "LAC", home: "KC" },
-      { week: 6, away: "DAL", home: "GB" }, { week: 6, away: "NO", home: "NYG" },
-      { week: 6, away: "CAR", home: "PHI" }, { week: 6, away: "WSH", home: "SF" },
-      { week: 6, away: "CHI", home: "ATL" }, { week: 6, away: "ARI", home: "LAR" },
-      // WEEK 7
-      { week: 7, away: "NE", home: "CHI" }, { week: 7, away: "PIT", home: "NO" },
-      { week: 7, away: "MIA", home: "NYJ" }, { week: 7, away: "CIN", home: "BAL" },
-      { week: 7, away: "CLE", home: "TEN" }, { week: 7, away: "NYG", home: "HOU" },
-      { week: 7, away: "IND", home: "MIN" }, { week: 7, away: "DEN", home: "ARI" },
-      { week: 7, away: "KC", home: "SEA" }, { week: 7, away: "LAR", home: "LV" },
-      { week: 7, away: "DAL", home: "PHI" }, { week: 7, away: "GB", home: "DET" },
-      { week: 7, away: "SF", home: "ATL" }, { week: 7, away: "TB", home: "CAR" },
-      // WEEK 8
-      { week: 8, away: "BAL", home: "BUF" }, { week: 8, away: "NE", home: "MIA" },
-      { week: 8, away: "LV", home: "NYJ" }, { week: 8, away: "TEN", home: "CIN" },
-      { week: 8, away: "CLE", home: "PIT" }, { week: 8, away: "IND", home: "JAX" },
-      { week: 8, away: "KC", home: "DEN" }, { week: 8, away: "LAC", home: "LAR" },
-      { week: 8, away: "ARI", home: "DAL" }, { week: 8, away: "PHI", home: "WSH" },
-      { week: 8, away: "CHI", home: "SEA" }, { week: 8, away: "MIN", home: "DET" },
-      { week: 8, away: "CAR", home: "GB" }, { week: 8, away: "ATL", home: "TB" },
-      // WEEK 9
-      { week: 9, away: "CIN", home: "ATL" }, { week: 9, away: "BUF", home: "MIN" },
-      { week: 9, away: "DET", home: "MIA" }, { week: 9, away: "GB", home: "NE" },
-      { week: 9, away: "NYJ", home: "KC" }, { week: 9, away: "JAX", home: "BAL" },
-      { week: 9, away: "CLE", home: "NO" }, { week: 9, away: "HOU", home: "LAC" },
-      { week: 9, away: "DAL", home: "IND" }, { week: 9, away: "DEN", home: "CAR" },
-      { week: 9, away: "LV", home: "SF" }, { week: 9, away: "NYG", home: "PHI" },
-      { week: 9, away: "LAR", home: "WSH" }, { week: 9, away: "TB", home: "CHI" },
-      { week: 9, away: "ARI", home: "SEA" },
-      // WEEK 10
-      { week: 10, away: "NE", home: "DET" }, { week: 10, away: "BUF", home: "NYJ" },
-      { week: 10, away: "MIA", home: "IND" }, { week: 10, away: "LAC", home: "BAL" },
-      { week: 10, away: "PIT", home: "CIN" }, { week: 10, away: "HOU", home: "CLE" },
-      { week: 10, away: "JAX", home: "TEN" }, { week: 10, away: "KC", home: "ATL" },
-      { week: 10, away: "SEA", home: "LV" }, { week: 10, away: "SF", home: "DAL" },
-      { week: 10, away: "WSH", home: "NYG" }, { week: 10, away: "MIN", home: "GB" },
-      { week: 10, away: "CAR", home: "NO" }, { week: 10, away: "LAR", home: "ARI" },
-      // WEEK 11
-      { week: 11, away: "MIA", home: "BUF" }, { week: 11, away: "NYJ", home: "LAC" },
-      { week: 11, away: "BAL", home: "CAR" }, { week: 11, away: "CIN", home: "WSH" },
-      { week: 11, away: "PIT", home: "PHI" }, { week: 11, away: "IND", home: "HOU" },
-      { week: 11, away: "JAX", home: "NYG" }, { week: 11, away: "TEN", home: "DAL" },
-      { week: 11, away: "LV", home: "DEN" }, { week: 11, away: "ARI", home: "KC" },
-      { week: 11, away: "NO", home: "CHI" }, { week: 11, away: "TB", home: "DET" },
-      { week: 11, away: "MIN", home: "SF" },
-      // WEEK 12
-      { week: 12, away: "GB", home: "LAR" }, { week: 12, away: "CHI", home: "DET" },
-      { week: 12, away: "PHI", home: "DAL" }, { week: 12, away: "KC", home: "BUF" },
-      { week: 12, away: "NYJ", home: "MIA" }, { week: 12, away: "NE", home: "LAC" },
-      { week: 12, away: "BAL", home: "HOU" }, { week: 12, away: "NO", home: "CIN" },
-      { week: 12, away: "LV", home: "CLE" }, { week: 12, away: "DEN", home: "PIT" },
-      { week: 12, away: "NYG", home: "IND" }, { week: 12, away: "WSH", home: "ARI" },
-      { week: 12, away: "ATL", home: "MIN" }, { week: 12, away: "CAR", home: "TB" },
-      { week: 12, away: "SEA", home: "SF" },
-      // WEEK 13
-      { week: 13, away: "BUF", home: "NE" }, { week: 13, away: "MIA", home: "DEN" },
-      { week: 13, away: "CIN", home: "CLE" }, { week: 13, away: "HOU", home: "PIT" },
-      { week: 13, away: "JAX", home: "CHI" }, { week: 13, away: "WSH", home: "TEN" },
-      { week: 13, away: "KC", home: "LAR" }, { week: 13, away: "LAC", home: "TB" },
-      { week: 13, away: "DAL", home: "SEA" }, { week: 13, away: "SF", home: "NYG" },
-      { week: 13, away: "PHI", home: "ARI" }, { week: 13, away: "DET", home: "ATL" },
-      { week: 13, away: "GB", home: "NO" }, { week: 13, away: "CAR", home: "MIN" },
-      // WEEK 14
-      { week: 14, away: "BUF", home: "GB" }, { week: 14, away: "CHI", home: "MIA" },
-      { week: 14, away: "MIN", home: "NE" }, { week: 14, away: "DEN", home: "NYJ" },
-      { week: 14, away: "TB", home: "BAL" }, { week: 14, away: "KC", home: "CIN" },
-      { week: 14, away: "ATL", home: "CLE" }, { week: 14, away: "PIT", home: "JAX" },
-      { week: 14, away: "HOU", home: "WSH" }, { week: 14, away: "IND", home: "PHI" },
-      { week: 14, away: "TEN", home: "DET" }, { week: 14, away: "LAC", home: "LV" },
-      { week: 14, away: "NYG", home: "SEA" }, { week: 14, away: "NO", home: "CAR" },
-      { week: 14, away: "LAR", home: "SF" },
-      // WEEK 15
-      { week: 15, away: "CHI", home: "BUF" }, { week: 15, away: "MIA", home: "GB" },
-      { week: 15, away: "NE", home: "KC" }, { week: 15, away: "NYJ", home: "ARI" },
-      { week: 15, away: "BAL", home: "PIT" }, { week: 15, away: "CIN", home: "CAR" },
-      { week: 15, away: "CLE", home: "NYG" }, { week: 15, away: "JAX", home: "HOU" },
-      { week: 15, away: "IND", home: "TEN" }, { week: 15, away: "DEN", home: "LV" },
-      { week: 15, away: "SF", home: "LAC" }, { week: 15, away: "DAL", home: "LAR" },
-      { week: 15, away: "SEA", home: "PHI" }, { week: 15, away: "ATL", home: "WSH" },
-      { week: 15, away: "DET", home: "MIN" }, { week: 15, away: "TB", home: "NO" },
-      // WEEK 16
-      { week: 16, away: "HOU", home: "PHI" }, { week: 16, away: "GB", home: "CHI" },
-      { week: 16, away: "BUF", home: "DEN" }, { week: 16, away: "LAR", home: "SEA" },
-      { week: 16, away: "LAC", home: "MIA" }, { week: 16, away: "NE", home: "NYJ" },
-      { week: 16, away: "CLE", home: "BAL" }, { week: 16, away: "CIN", home: "IND" },
-      { week: 16, away: "CAR", home: "PIT" }, { week: 16, away: "JAX", home: "DAL" },
-      { week: 16, away: "TEN", home: "LV" }, { week: 16, away: "SF", home: "KC" },
-      { week: 16, away: "NYG", home: "DET" }, { week: 16, away: "WSH", home: "MIN" },
-      { week: 16, away: "TB", home: "ATL" }, { week: 16, away: "ARI", home: "NO" },
-      // WEEK 17
-      { week: 17, away: "BUF", home: "MIA" }, { week: 17, away: "DEN", home: "NE" },
-      { week: 17, away: "MIN", home: "NYJ" }, { week: 17, away: "BAL", home: "CIN" },
-      { week: 17, away: "IND", home: "CLE" }, { week: 17, away: "PIT", home: "TEN" },
-      { week: 17, away: "HOU", home: "GB" }, { week: 17, away: "WSH", home: "JAX" },
-      { week: 17, away: "KC", home: "LAC" }, { week: 17, away: "LV", home: "ARI" },
-      { week: 17, away: "NYG", home: "DAL" }, { week: 17, away: "PHI", home: "SF" },
-      { week: 17, away: "DET", home: "CHI" }, { week: 17, away: "ATL", home: "NO" },
-      { week: 17, away: "SEA", home: "CAR" }, { week: 17, away: "LAR", home: "TB" },
-      // WEEK 18
-      { week: 18, away: "NYJ", home: "BUF" }, { week: 18, away: "NE", home: "MIA" },
-      { week: 18, away: "PIT", home: "BAL" }, { week: 18, away: "CLE", home: "CIN" },
-      { week: 18, away: "TEN", home: "HOU" }, { week: 18, away: "JAX", home: "IND" },
-      { week: 18, away: "LAC", home: "DEN" }, { week: 18, away: "LV", home: "KC" },
-      { week: 18, away: "DAL", home: "WSH" }, { week: 18, away: "PHI", home: "NYG" },
-      { week: 18, away: "CHI", home: "MIN" }, { week: 18, away: "GB", home: "DET" },
-      { week: 18, away: "ATL", home: "CAR" }, { week: 18, away: "NO", home: "TB" },
-      { week: 18, away: "SF", home: "ARI" }, { week: 18, away: "SEA", home: "LAR" }
+      { week: 1, away: "DAL", home: "NYG" }, { week: 1, away: "DEN", home: "KC" }
     ];
 
     const teamSchedule2026 = {};
@@ -1168,7 +909,52 @@
     const analyzeBtn = document.getElementById("analyzeBtn");
     const resultArea = document.getElementById("resultArea");
     const autoOpponentChip = document.getElementById("autoOpponentChip");
+    const apiStatusChip = document.getElementById("apiStatusChip");
     const playerSelectLabel = document.getElementById("playerSelectLabel");
+
+    /* ----------------- SLEEPER API INTEGRATION ----------------- */
+    async function initSleeperApi() {
+      const CACHE_KEY = "chipchaser_sleeper_players";
+      const TIME_KEY = "chipchaser_sleeper_time";
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      const cachedTime = localStorage.getItem(TIME_KEY);
+      const now = Date.now();
+
+      if (cachedData && cachedTime && (now - parseInt(cachedTime, 10) < 86400000)) {
+        sleeperPlayerMap = JSON.parse(cachedData);
+        apiStatusChip.textContent = `Sleeper API Active (${Object.keys(sleeperPlayerMap).length} Players Sync'd)`;
+        populatePlayers();
+        return;
+      }
+
+      try {
+        const response = await fetch("https://api.sleeper.app/v1/players/nfl");
+        if (!response.ok) throw new Error("Network response failed");
+        const rawPlayers = await response.json();
+
+        const filterPos = ["QB", "RB", "WR", "TE"];
+        sleeperPlayerMap = {};
+
+        Object.values(rawPlayers).forEach(p => {
+          if (p.full_name && filterPos.includes(p.position)) {
+            sleeperPlayerMap[p.full_name] = {
+              team: p.team || "FA",
+              pos: p.position,
+              status: p.status || "Active",
+              injury: p.injury_status ? -10 : 0
+            };
+          }
+        });
+
+        localStorage.setItem(CACHE_KEY, JSON.stringify(sleeperPlayerMap));
+        localStorage.setItem(TIME_KEY, now.toString());
+        apiStatusChip.textContent = `Sleeper API Active (${Object.keys(sleeperPlayerMap).length} Players Sync'd)`;
+      } catch (err) {
+        apiStatusChip.textContent = "Sleeper API Offline (Using Local Dictionaries)";
+      }
+
+      populatePlayers();
+    }
 
     /* ----------------- POPULATE DATALISTS ----------------- */
     function populatePlayers() {
@@ -1180,12 +966,20 @@
       pList.innerHTML = "";
       cList.innerHTML = "";
 
-      let dict = wrData;
-      if (currentPos === "QB") dict = qbData;
-      if (currentPos === "RB") dict = runningBacksData;
-      if (currentPos === "TE") dict = teData;
+      let localDict = wrData;
+      if (currentPos === "QB") localDict = qbData;
+      if (currentPos === "RB") localDict = runningBacksData;
+      if (currentPos === "TE") localDict = teData;
 
-      Object.keys(dict).forEach(name => {
+      const playerNames = new Set(Object.keys(localDict));
+
+      Object.entries(sleeperPlayerMap).forEach(([fullName, data]) => {
+        if (data.pos === currentPos) {
+          playerNames.add(fullName);
+        }
+      });
+
+      Array.from(playerNames).sort().forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
         opt.label = `${name} (${currentPos})`;
@@ -1200,17 +994,20 @@
       const tradeList = document.getElementById("tradePlayerList");
       tradeList.innerHTML = "";
 
-      const allPlayers = [
-        ...Object.keys(qbData).map(n => ({ name: n, pos: "QB" })),
-        ...Object.keys(wrData).map(n => ({ name: n, pos: "WR" })),
-        ...Object.keys(runningBacksData).map(n => ({ name: n, pos: "RB" })),
-        ...Object.keys(teData).map(n => ({ name: n, pos: "TE" }))
-      ];
+      const allNames = new Set([
+        ...Object.keys(qbData),
+        ...Object.keys(wrData),
+        ...Object.keys(runningBacksData),
+        ...Object.keys(teData)
+      ]);
 
-      allPlayers.forEach(p => {
+      Object.keys(sleeperPlayerMap).forEach(n => allNames.add(n));
+
+      Array.from(allNames).sort().forEach(name => {
+        const pInfo = getPlayerData(name);
         const opt = document.createElement("option");
-        opt.value = p.name;
-        opt.label = `${p.name} (${p.pos})`;
+        opt.value = name;
+        opt.label = `${name} (${pInfo.pos || 'NFL'})`;
         tradeList.appendChild(opt);
       });
     }
@@ -1289,13 +1086,36 @@
       populatePlayers();
     });
 
-    /* ----------------- ADVANCED TRADE FORMULA CALCULATOR ----------------- */
+    /* ----------------- GET PLAYER DATA & FORMULAS ----------------- */
     function getPlayerData(playerName) {
       if (!playerName) return null;
-      if (qbData[playerName]) return { name: playerName, ...qbData[playerName] };
-      if (runningBacksData[playerName]) return { name: playerName, ...runningBacksData[playerName] };
-      if (wrData[playerName]) return { name: playerName, ...wrData[playerName] };
-      if (teData[playerName]) return { name: playerName, ...teData[playerName] };
+
+      let local = qbData[playerName] || runningBacksData[playerName] || wrData[playerName] || teData[playerName];
+      let sleeper = sleeperPlayerMap[playerName];
+
+      if (local) {
+        return {
+          name: playerName,
+          pos: qbData[playerName] ? "QB" : runningBacksData[playerName] ? "RB" : wrData[playerName] ? "WR" : "TE",
+          ...local,
+          injury: sleeper ? sleeper.injury : local.injury
+        };
+      }
+
+      if (sleeper) {
+        return {
+          name: playerName,
+          team: sleeper.team,
+          pos: sleeper.pos,
+          baseValue: 65,
+          scarcity: 0.85,
+          ros: 0,
+          injury: sleeper.injury,
+          contingency: 8,
+          archetype: "Waiver / Sleeper API Player"
+        };
+      }
+
       return null;
     }
 
@@ -1509,7 +1329,7 @@
 
     /* ----------------- SINGLE PLAYER 100-PT INDEX CALC ----------------- */
     function calculatePlayerMatchupScore(pName, week) {
-      let pInfo = qbData[pName] || wrData[pName] || runningBacksData[pName] || teData[pName];
+      let pInfo = getPlayerData(pName);
       if (!pInfo) return null;
 
       const pTeam = pInfo.team;
@@ -1533,7 +1353,7 @@
       const playerArch = pInfo.archetype || "Standard Player";
       const { scoreBonus, analysisText } = evaluateDefensiveMatchup(playerArch, schemeInfo.type);
 
-      const baseVal = pInfo.baseValue || 75;
+      const baseVal = pInfo.baseValue || 65;
 
       const physicalPts = Math.min(35, Math.round(26 + (baseVal > 85 ? 5 : 2)));
       const historyPts = Math.min(25, Math.round(18 + (isHome ? 4 : 2)));
@@ -1568,29 +1388,23 @@
       };
     }
 
-    /* ----------------- 100-POINT FORMULA & START/SIT HANDLER ----------------- */
-    async function handleAnalyzeMatchup() {
-      const pName = playerSelect.value;
-      const compName = playerCompareSelect.value;
-      const weekVal = weekSelect.value;
-
-      if (!pName || !weekVal) {
-        renderEmpty("Pick a primary player + week first.");
-        autoOpponentChip.style.display = "none";
-        return;
-      }
-
-      const week = parseInt(weekVal, 10);
-      const res1 = calculatePlayerMatchupScore(pName, week);
-
-      if (!res1) {
-        renderEmpty(`No matchup found for ${pName} in Week ${week}.`);
-        autoOpponentChip.style.display = "none";
-        return;
-      }
-
-      // SINGLE PLAYER MATCHUP MODE
-      if (!compName) {
+    /* ----------------- MAIN ACTION ROUTER ----------------- */
+    analyzeBtn.addEventListener("click", () => {
+      if (activeTool === "TRADE") {
+        evaluateTrade();
+      } else {
+        const pName = playerSelect.value;
+        const weekVal = weekSelect.value;
+        if (!pName || !weekVal) {
+          renderEmpty("Pick a primary player + week first.");
+          return;
+        }
+        const week = parseInt(weekVal, 10);
+        const res1 = calculatePlayerMatchupScore(pName, week);
+        if (!res1) {
+          renderEmpty(`No matchup found for ${pName} in Week ${week}.`);
+          return;
+        }
         autoOpponentChip.style.display = "inline-flex";
         autoOpponentChip.textContent = `2026 Opponent: ${res1.oppName} (${res1.oppTeam})`;
 
@@ -1603,92 +1417,15 @@
           <div class="tier-label" style="color: ${res1.tierColor}">${res1.tierLabel}</div>
           <div class="archetype-details">${res1.playerArch}</div>
           <div class="scheme-badge">Opponent Scheme: ${res1.schemeLabel}</div>
-
           <div class="scheme-analysis-text">${res1.analysisText}</div>
-
-          <div class="breakdown-grid">
-            <div class="breakdown-item">
-              <div class="breakdown-item-title">Physical & Athletic</div>
-              <div class="breakdown-item-score">${res1.physicalPts} / 35</div>
-            </div>
-            <div class="breakdown-item">
-              <div class="breakdown-item-title">History & Splits</div>
-              <div class="breakdown-item-score">${res1.historyPts} / 25</div>
-            </div>
-            <div class="breakdown-item">
-              <div class="breakdown-item-title">Scheme Alignment</div>
-              <div class="breakdown-item-score">${res1.schemePts} / 25</div>
-            </div>
-            <div class="breakdown-item">
-              <div class="breakdown-item-title">Venue & Context</div>
-              <div class="breakdown-item-score">${res1.venueContextPts} / 15</div>
-            </div>
-          </div>
         `;
-        return;
-      }
-
-      // START / SIT COMPARISON MODE
-      const res2 = calculatePlayerMatchupScore(compName, week);
-      if (!res2) {
-        renderEmpty(`No matchup found for comparison player ${compName} in Week ${week}.`);
-        autoOpponentChip.style.display = "none";
-        return;
-      }
-
-      autoOpponentChip.style.display = "none";
-
-      const winner = res1.totalScore >= res2.totalScore ? res1 : res2;
-      const loser = res1.totalScore >= res2.totalScore ? res2 : res1;
-      const scoreDiff = Math.abs(res1.totalScore - res2.totalScore);
-
-      resultArea.innerHTML = `
-        <div class="start-sit-verdict">
-          <div class="start-sit-title">START ${winner.pName.toUpperCase()}</div>
-          <div class="start-sit-subtitle">Sit ${loser.pName} • Chip favors ${winner.pName} (+${scoreDiff} Pt Edge) in Week ${week}</div>
-        </div>
-
-        <div class="comp-grid">
-          <!-- WINNER CARD -->
-          <div class="comp-card winner">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span class="comp-player-name">${res1.pName}</span>
-              <span class="comp-score-tag">${res1.totalScore} pts</span>
-            </div>
-            <div class="tier-label" style="color:${res1.tierColor}">${res1.tierLabel}</div>
-            <div class="archetype-details">vs ${res1.oppTeam} (${res1.oppName})</div>
-            <div class="scheme-badge" style="margin-bottom:4px;">${res1.schemeLabel}</div>
-            <div class="scheme-analysis-text">${res1.analysisText}</div>
-          </div>
-
-          <!-- LOSER CARD -->
-          <div class="comp-card ${scoreDiff > 0 ? 'loser' : 'winner'}">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span class="comp-player-name">${res2.pName}</span>
-              <span class="comp-score-tag" style="color: ${res2.totalScore >= res1.totalScore ? '#4ade80' : '#f87171'}">${res2.totalScore} pts</span>
-            </div>
-            <div class="tier-label" style="color:${res2.tierColor}">${res2.tierLabel}</div>
-            <div class="archetype-details">vs ${res2.oppTeam} (${res2.oppName})</div>
-            <div class="scheme-badge" style="margin-bottom:4px;">${res2.schemeLabel}</div>
-            <div class="scheme-analysis-text">${res2.analysisText}</div>
-          </div>
-        </div>
-      `;
-    }
-
-    /* ----------------- MAIN ACTION ROUTER ----------------- */
-    analyzeBtn.addEventListener("click", () => {
-      if (activeTool === "TRADE") {
-        evaluateTrade();
-      } else {
-        handleAnalyzeMatchup();
       }
     });
 
     /* ----------------- INIT ----------------- */
     document.addEventListener("DOMContentLoaded", () => {
-      populatePlayers();
       populateWeeks();
+      initSleeperApi();
     });
   </script>
 </body>
