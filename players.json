@@ -1,0 +1,5 @@
+{
+  "saquon barkley": {"baseValue": 94, "scarcity": 1.25, "ros": 5, "injury": -5, "contingency": 0},
+  "jaylen wright": {"baseValue": 68, "scarcity": 1.05, "ros": 2, "injury": 0, "contingency": 15},
+  "denzel boston": {"baseValue": 71, "scarcity": 0.90, "ros": 1, "injury": 0, "contingency": 10}
+}
