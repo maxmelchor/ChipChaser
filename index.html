@@ -428,37 +428,6 @@
       border-left: 3px solid #a855ff;
     }
 
-    /* BREAKDOWN DISPLAY */
-    .breakdown-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px dashed rgba(168, 85, 247, 0.3);
-    }
-
-    .breakdown-item {
-      background: rgba(30, 41, 59, 0.6);
-      border: 1px solid rgba(148, 163, 255, 0.2);
-      border-radius: 8px;
-      padding: 8px;
-    }
-
-    .breakdown-item-title {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #a5b4fc;
-    }
-
-    .breakdown-item-score {
-      font-size: 14px;
-      font-weight: 800;
-      color: #ffffff;
-      margin-top: 2px;
-    }
-
     /* TRADE DISPLAY STYLES */
     .trade-verdict-header {
       display: flex;
@@ -585,8 +554,8 @@
 
       <div class="chip-pill-row">
         <span class="chip-pill">Sleeper API Hydrated</span>
+        <span class="chip-pill">Live NFL Calendar Sync</span>
         <span class="chip-pill">Live Trending Waiver Feed</span>
-        <span class="chip-pill">Handcuff Upside Engine</span>
         <span class="chip-pill">32 Defensive Schemes</span>
       </div>
 
@@ -827,6 +796,7 @@
     const teamSchedule2026 = {};
     const MAX_WEEKS = 18;
 
+    // Populate fallback schedule array
     rawSchedule2026.forEach(game => {
       const { week, away, home } = game;
       if (!teamSchedule2026[away]) teamSchedule2026[away] = {};
@@ -861,6 +831,40 @@
     const autoOpponentChip = document.getElementById("autoOpponentChip");
     const apiStatusChip = document.getElementById("apiStatusChip");
     const playerSelectLabel = document.getElementById("playerSelectLabel");
+
+    /* ----------------- DYNAMIC SCHEDULE HYDRATION ----------------- */
+    async function initLiveSchedule() {
+      try {
+        // 1. Fetch current active week from Sleeper State API
+        const stateResp = await fetch("https://api.sleeper.app/v1/state/nfl");
+        if (stateResp.ok) {
+          const stateData = await stateResp.json();
+          if (stateData && stateData.week) {
+            weekSelect.value = stateData.week; // Auto-select active week in dropdown
+          }
+        }
+
+        // 2. Hydrate schedule matrix directly from GitHub schedule.json
+        const schedResp = await fetch("https://raw.githubusercontent.com/maxmelchor/ChipChaser/main/schedule.json");
+        if (schedResp.ok) {
+          const schedData = await schedResp.json();
+          
+          Object.entries(schedData).forEach(([weekKey, games]) => {
+            const wkNum = parseInt(weekKey.replace("week_", ""), 10);
+            games.forEach(game => {
+              if (!teamSchedule2026[game.away]) teamSchedule2026[game.away] = {};
+              teamSchedule2026[game.away][wkNum] = { opponent: game.home, home: false };
+
+              if (!teamSchedule2026[game.home]) teamSchedule2026[game.home] = {};
+              teamSchedule2026[game.home][wkNum] = { opponent: game.away, home: true };
+            });
+          });
+          console.log("ChipChaser schedule successfully hydrated from GitHub!");
+        }
+      } catch (err) {
+        console.log("Using static schedule fallback.");
+      }
+    }
 
     /* ----------------- SLEEPER API INTEGRATION ----------------- */
     async function initSleeperApi() {
@@ -1436,6 +1440,8 @@
     /* ----------------- INIT ----------------- */
     document.addEventListener("DOMContentLoaded", () => {
       populateWeeks();
+      initLiveSchedule();
+
       initSleeperApi().then(() => {
         fetchSleeperTrendingAdds();
       });
