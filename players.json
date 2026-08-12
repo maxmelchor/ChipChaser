@@ -1985,7 +1985,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "seth williams": {
@@ -3638,7 +3638,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "ethan garbers": {
@@ -4867,7 +4867,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "peewee jarrett": {
@@ -9365,7 +9365,7 @@
     "baseValue": 89,
     "scarcity": 1.0,
     "ros": 3,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Space & YAC Engine / Physical Contested Catch"
   },
@@ -19773,7 +19773,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "travis vokolek": {
@@ -26547,7 +26547,7 @@
     "baseValue": 83,
     "scarcity": 1.0,
     "ros": 2,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Alpha Boundary 'X' WR"
   },
@@ -27483,7 +27483,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "wendell smallwood": {
