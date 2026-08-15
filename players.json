@@ -3291,7 +3291,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "ryan becker": {
@@ -3320,7 +3320,7 @@
     "baseValue": 82,
     "scarcity": 1.05,
     "ros": 2,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Quick-Release Precision Passer"
   },
@@ -12936,7 +12936,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jeremy maclin": {
@@ -13929,7 +13929,7 @@
     "baseValue": 91,
     "scarcity": 1.25,
     "ros": 5,
-    "injury": -10,
+    "injury": 0,
     "contingency": 2,
     "archetype": "Elusive / Satellite RB"
   },
@@ -15600,7 +15600,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "gavin lutman": {
@@ -22016,7 +22016,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "ra'shaun henry": {
@@ -23143,7 +23143,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jacob sirmon": {
@@ -24367,7 +24367,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "braylon sanders": {
