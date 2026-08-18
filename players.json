@@ -2328,7 +2328,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "ernst brun": {
@@ -3638,7 +3638,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "ethan garbers": {
@@ -5729,7 +5729,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "d'onta foreman": {
@@ -6358,7 +6358,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "dorian thompson-robinson": {
@@ -7193,7 +7193,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "denarius moore": {
@@ -7396,7 +7396,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "trevor wood": {
@@ -7735,7 +7735,7 @@
     "baseValue": 87,
     "scarcity": 1.0,
     "ros": 1,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Precision Route Technician"
   },
@@ -10289,7 +10289,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jonah trinnaman": {
@@ -10480,7 +10480,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "camerun peoples": {
@@ -10746,7 +10746,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "roman hemby": {
@@ -11039,6 +11039,13 @@
   "cam newton": {
     "baseValue": 65,
     "scarcity": 1.15,
+    "ros": 0,
+    "injury": 0,
+    "contingency": 8
+  },
+  "barika kpeenu": {
+    "baseValue": 65,
+    "scarcity": 1.25,
     "ros": 0,
     "injury": 0,
     "contingency": 8
@@ -12586,7 +12593,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "eli jenkins": {
@@ -14539,7 +14546,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "nick toon": {
@@ -16855,7 +16862,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "dion sims": {
@@ -19141,7 +19148,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "cam sutton": {
@@ -23996,7 +24003,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "mason rudolph": {
@@ -24551,7 +24558,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "brennan presley": {
@@ -24950,7 +24957,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "malik rutherford": {
@@ -26236,7 +26243,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "baylor cupp": {
@@ -26563,7 +26570,7 @@
     "baseValue": 92,
     "scarcity": 1.25,
     "ros": 1,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Workhorse / Downhill RB"
   },
