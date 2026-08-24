@@ -3370,7 +3370,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jalen hurts": {
@@ -11398,7 +11398,7 @@
     "baseValue": 86,
     "scarcity": 1.25,
     "ros": 2,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Workhorse / Downhill RB"
   },
@@ -12593,7 +12593,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "eli jenkins": {
@@ -26122,7 +26122,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "daniel sobkowicz": {
