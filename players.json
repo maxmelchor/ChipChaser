@@ -3123,7 +3123,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "tony moeaki": {
@@ -6095,7 +6095,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jalen mcmillan": {
@@ -7655,7 +7655,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "hassan hall": {
@@ -7720,7 +7720,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "zaire mitchell-paden": {
@@ -7813,7 +7813,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "chris blair": {
@@ -12488,7 +12488,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "detrich clark": {
@@ -12981,7 +12981,7 @@
     "baseValue": 82,
     "scarcity": 1.0,
     "ros": 3,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Precision Route Technician"
   },
@@ -15451,7 +15451,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "brittain brown": {
@@ -16519,7 +16519,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "bradley marquez": {
@@ -17697,7 +17697,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "kyle monangai": {
@@ -19892,7 +19892,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "damian copeland": {
@@ -20200,7 +20200,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jordan ta'amu": {
@@ -22849,7 +22849,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "drew plitt": {
@@ -23602,7 +23602,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "reggie begelton": {
@@ -24915,7 +24915,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "preston williams": {
@@ -26156,6 +26156,13 @@
   "allenzae staggers": {
     "baseValue": 65,
     "scarcity": 1.1,
+    "ros": 0,
+    "injury": 0,
+    "contingency": 8
+  },
+  "alex tecza": {
+    "baseValue": 65,
+    "scarcity": 1.25,
     "ros": 0,
     "injury": 0,
     "contingency": 8
@@ -27406,7 +27413,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "kevin kassis": {
