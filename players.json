@@ -12985,13 +12985,6 @@
     "contingency": 0,
     "archetype": "Precision Route Technician"
   },
-  "travis hunter": {
-    "baseValue": 65,
-    "scarcity": 1.1,
-    "ros": 0,
-    "injury": 0,
-    "contingency": 8
-  },
   "demetrius wilson": {
     "baseValue": 65,
     "scarcity": 1.1,
