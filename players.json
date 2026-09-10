@@ -434,7 +434,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "brian leonard": {
@@ -1267,7 +1267,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "alex bayer": {
@@ -1395,7 +1395,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "justin crawford": {
@@ -1782,7 +1782,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "rodney smith": {
@@ -1831,7 +1831,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "malik washington": {
@@ -1915,7 +1915,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "ja'quan gardner": {
@@ -2624,7 +2624,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jaylen waddle": {
@@ -3270,7 +3270,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "kaden smith": {
@@ -5208,7 +5208,7 @@
     "baseValue": 95,
     "scarcity": 1.1,
     "ros": 5,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Vertical Field-Stretcher & Explosive YAC"
   },
@@ -5496,7 +5496,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "andre patton": {
@@ -5525,7 +5525,7 @@
     "baseValue": 88,
     "scarcity": 1.2,
     "ros": 5,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Seam-Stretching TE"
   },
@@ -5974,7 +5974,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "patrick carr": {
@@ -6414,7 +6414,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jeremiah hall": {
@@ -6533,7 +6533,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "kelly akharaiyi": {
@@ -6701,7 +6701,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "greg salas": {
@@ -7114,7 +7114,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "kyle trask": {
@@ -7641,7 +7641,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jake haener": {
@@ -7655,7 +7655,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "hassan hall": {
@@ -8184,7 +8184,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jeremiah franklin": {
@@ -8227,7 +8227,7 @@
     "baseValue": 91,
     "scarcity": 1.1,
     "ros": 2,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Vertical Field-Stretcher / Home-Run Threat"
   },
@@ -8263,7 +8263,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "easton stick": {
@@ -9019,7 +9019,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "david garrard": {
@@ -9173,7 +9173,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jack doyle": {
@@ -9794,7 +9794,7 @@
     "baseValue": 90,
     "scarcity": 1.1,
     "ros": 3,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Alpha Boundary 'X' WR"
   },
@@ -10543,7 +10543,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "sam bradford": {
@@ -10746,7 +10746,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "roman hemby": {
@@ -11398,7 +11398,7 @@
     "baseValue": 86,
     "scarcity": 1.25,
     "ros": 2,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Workhorse / Downhill RB"
   },
@@ -11975,7 +11975,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "isaiah crowell": {
@@ -12297,7 +12297,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "quayvon hicks": {
@@ -12593,7 +12593,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "eli jenkins": {
@@ -12775,7 +12775,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "daniel thomas": {
@@ -12943,7 +12943,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jeremy maclin": {
@@ -13185,7 +13185,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "michael hill": {
@@ -14196,7 +14196,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "hank beatty": {
@@ -14659,7 +14659,7 @@
     "baseValue": 90,
     "scarcity": 1.2,
     "ros": 4,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Seam-Stretching TE / YAC Monster"
   },
@@ -15558,7 +15558,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "devon wylie": {
@@ -16855,7 +16855,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "dion sims": {
@@ -17459,7 +17459,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "stevie scott": {
@@ -17697,7 +17697,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "seantavius jones": {
@@ -19309,7 +19309,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "joshua palmer": {
@@ -20074,7 +20074,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "dede westbrook": {
@@ -20095,7 +20095,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "antonio nunn": {
@@ -21501,7 +21501,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "anthony gould": {
@@ -21890,7 +21890,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "keilan robinson": {
@@ -21995,7 +21995,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "lamar jordan": {
@@ -22310,7 +22310,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "danny etling": {
@@ -23180,7 +23180,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "ty fryfogle": {
@@ -24367,7 +24367,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "braylon sanders": {
@@ -24677,7 +24677,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "dennis dixon": {
@@ -24901,7 +24901,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "dylan thompson": {
@@ -25485,7 +25485,7 @@
     "baseValue": 93,
     "scarcity": 1.2,
     "ros": 3,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Seam-Stretching TE / Move Weapon"
   },
@@ -26334,7 +26334,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "deandre washington": {
@@ -26561,7 +26561,7 @@
     "baseValue": 83,
     "scarcity": 1.0,
     "ros": 2,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Alpha Boundary 'X' WR"
   },
@@ -26577,7 +26577,7 @@
     "baseValue": 92,
     "scarcity": 1.25,
     "ros": 1,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Workhorse / Downhill RB"
   },
@@ -26746,7 +26746,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "nelson agholor": {
