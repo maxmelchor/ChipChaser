@@ -4158,7 +4158,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jim dray": {
