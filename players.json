@@ -10550,7 +10550,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "sam bradford": {
@@ -11561,7 +11561,7 @@
     "baseValue": 84,
     "scarcity": 1.0,
     "ros": 3,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Space & YAC Engine"
   },
@@ -11821,7 +11821,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jaxon shipley": {
@@ -12304,7 +12304,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "quayvon hicks": {
@@ -13617,7 +13617,7 @@
     "baseValue": 80,
     "scarcity": 1.15,
     "ros": 2,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Dual-Threat Konami / Power Rusher"
   },
@@ -14084,7 +14084,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "tra carson": {
@@ -16673,7 +16673,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "lavance taylor": {
@@ -19050,7 +19050,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jamal custis": {
@@ -19176,7 +19176,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "mitch van vooren": {
@@ -21254,7 +21254,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jordan james": {
@@ -21345,7 +21345,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "mike washington": {
@@ -22597,7 +22597,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "charlie kolar": {
