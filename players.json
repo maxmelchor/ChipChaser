@@ -1915,7 +1915,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "ja'quan gardner": {
@@ -4165,7 +4165,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jim dray": {
@@ -5049,7 +5049,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "trey benson": {
@@ -7235,7 +7235,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "henry litwin": {
@@ -7981,7 +7981,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "elijah tau-tolliver": {
@@ -8473,7 +8473,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "mark sanchez": {
@@ -9765,7 +9765,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "chimere dike": {
@@ -10331,7 +10331,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "clayton tune": {
@@ -12988,7 +12988,7 @@
     "baseValue": 82,
     "scarcity": 1.0,
     "ros": 3,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Precision Route Technician"
   },
@@ -13454,7 +13454,7 @@
     "baseValue": 86,
     "scarcity": 1.0,
     "ros": 1,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Vertical Field-Stretcher / Explosive YAC"
   },
@@ -14084,7 +14084,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "tra carson": {
@@ -15929,7 +15929,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "trayveon williams": {
@@ -19148,7 +19148,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "cam sutton": {
@@ -19316,7 +19316,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "joshua palmer": {
@@ -19619,7 +19619,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "moochie dixon": {
@@ -20081,7 +20081,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "dede westbrook": {
@@ -21086,7 +21086,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "dane evans": {
@@ -25854,7 +25854,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "william thompson": {
@@ -26956,7 +26956,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jarvion franklin": {
