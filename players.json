@@ -3270,7 +3270,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "kaden smith": {
@@ -4214,7 +4214,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "devin gray": {
@@ -6066,7 +6066,7 @@
     "baseValue": 96,
     "scarcity": 1.15,
     "ros": 4,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Dual-Threat Konami / Dynamic Playmaker"
   },
@@ -7883,7 +7883,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "joique bell": {
@@ -8774,7 +8774,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "aaron lacombe": {
@@ -10303,7 +10303,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jonah trinnaman": {
@@ -13066,7 +13066,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "shane buechele": {
@@ -14800,7 +14800,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "matt fleming": {
@@ -19183,7 +19183,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "mitch van vooren": {
@@ -20193,7 +20193,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "luke lachey": {
@@ -20750,7 +20750,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "ventell bryant": {
@@ -21670,7 +21670,7 @@
     "baseValue": 83,
     "scarcity": 1.0,
     "ros": 3,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Space & YAC Engine"
   },
@@ -24894,7 +24894,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "tyrone broden": {
@@ -25463,7 +25463,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "irv smith": {
@@ -25783,7 +25783,7 @@
     "baseValue": 68,
     "scarcity": 1.05,
     "ros": 2,
-    "injury": -10,
+    "injury": 0,
     "contingency": 15,
     "archetype": "Elusive / Satellite RB"
   },
@@ -26683,7 +26683,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "antonio gates": {
@@ -26949,7 +26949,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "anthony torres": {
