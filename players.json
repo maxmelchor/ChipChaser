@@ -273,7 +273,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "bralon addison": {
@@ -2566,7 +2566,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "dai'jean dixon": {
@@ -2983,7 +2983,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "riley sharp": {
@@ -3270,7 +3270,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "kaden smith": {
@@ -5106,7 +5106,7 @@
     "baseValue": 81,
     "scarcity": 1.0,
     "ros": 4,
-    "injury": 0,
+    "injury": -10,
     "contingency": 12,
     "archetype": "Seam-Stretching TE / Move Weapon"
   },
@@ -6258,7 +6258,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "charleston rambo": {
@@ -7827,7 +7827,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "chris blair": {
@@ -8333,7 +8333,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "tutu atwell": {
@@ -9187,7 +9187,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jack doyle": {
@@ -10303,7 +10303,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jonah trinnaman": {
@@ -10338,7 +10338,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "clayton tune": {
@@ -10949,7 +10949,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "braxton deaver": {
@@ -10970,7 +10970,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "ezekiel elliott": {
@@ -11420,7 +11420,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "mitch mathews": {
@@ -11828,7 +11828,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jaxon shipley": {
@@ -12929,7 +12929,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "kyle dixon": {
@@ -13325,7 +13325,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "john brown": {
@@ -13461,7 +13461,7 @@
     "baseValue": 86,
     "scarcity": 1.0,
     "ros": 1,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Vertical Field-Stretcher / Explosive YAC"
   },
@@ -14119,7 +14119,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "brandon weeden": {
@@ -14961,7 +14961,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jordan thomas": {
@@ -17319,7 +17319,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "hunter thedford": {
@@ -17921,7 +17921,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "joel dreessen": {
@@ -18586,7 +18586,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "kendric pryor": {
@@ -18952,7 +18952,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "lawrance toafili": {
@@ -18973,7 +18973,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jordan williams-lambert": {
@@ -19393,7 +19393,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "junior hemingway": {
@@ -20806,7 +20806,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "josh crockett": {
@@ -21670,7 +21670,7 @@
     "baseValue": 83,
     "scarcity": 1.0,
     "ros": 3,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Space & YAC Engine"
   },
@@ -23412,7 +23412,7 @@
     "baseValue": 86,
     "scarcity": 1.1,
     "ros": 1,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Elusive / Satellite RB"
   },
@@ -24845,7 +24845,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "miles sanders": {
@@ -25499,7 +25499,7 @@
     "baseValue": 93,
     "scarcity": 1.2,
     "ros": 3,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Seam-Stretching TE / Move Weapon"
   },
@@ -25515,7 +25515,7 @@
     "baseValue": 89,
     "scarcity": 1.15,
     "ros": 3,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Dual-Threat Konami / Dynamic Playmaker"
   },
@@ -25994,7 +25994,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "larry rountree": {
@@ -26348,7 +26348,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "deandre washington": {
@@ -26949,7 +26949,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "anthony torres": {
