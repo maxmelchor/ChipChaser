@@ -1768,7 +1768,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "john david moore": {
@@ -2632,7 +2632,7 @@
     "baseValue": 83,
     "scarcity": 1.0,
     "ros": 3,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Vertical Field-Stretcher"
   },
@@ -3378,7 +3378,7 @@
     "baseValue": 93,
     "scarcity": 1.15,
     "ros": 4,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Dual-Threat Konami / Goal-Line Rusher"
   },
@@ -3736,7 +3736,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "nico evans": {
@@ -6051,7 +6051,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "brashard smith": {
@@ -7424,7 +7424,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "braxton westfield": {
@@ -7613,7 +7613,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "tommy tremble": {
@@ -7785,7 +7785,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "marvelle ross": {
@@ -7918,7 +7918,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "shaquelle evans": {
@@ -8333,7 +8333,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "tutu atwell": {
@@ -10949,7 +10949,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "braxton deaver": {
@@ -14574,7 +14574,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "timothy flanders": {
@@ -14821,7 +14821,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "kahale warring": {
@@ -18670,7 +18670,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "lance mason": {
@@ -18762,7 +18762,7 @@
     "baseValue": 82,
     "scarcity": 1.0,
     "ros": 2,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Alpha Boundary 'X' WR"
   },
@@ -20340,7 +20340,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "shawn bane": {
@@ -21515,7 +21515,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "anthony gould": {
@@ -21670,7 +21670,7 @@
     "baseValue": 83,
     "scarcity": 1.0,
     "ros": 3,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Space & YAC Engine"
   },
@@ -24691,7 +24691,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "dennis dixon": {
@@ -24964,7 +24964,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "blake watson": {
@@ -25499,7 +25499,7 @@
     "baseValue": 93,
     "scarcity": 1.2,
     "ros": 3,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Seam-Stretching TE / Move Weapon"
   },
