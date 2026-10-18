@@ -1831,7 +1831,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "malik washington": {
@@ -4620,7 +4620,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "rocky lombardi": {
@@ -7613,7 +7613,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "tommy tremble": {
@@ -7785,7 +7785,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "marvelle ross": {
@@ -18762,7 +18762,7 @@
     "baseValue": 82,
     "scarcity": 1.0,
     "ros": 2,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Alpha Boundary 'X' WR"
   },
@@ -19619,7 +19619,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "dareke young": {
@@ -26575,7 +26575,7 @@
     "baseValue": 83,
     "scarcity": 1.0,
     "ros": 2,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Alpha Boundary 'X' WR"
   },
