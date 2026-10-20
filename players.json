@@ -4165,7 +4165,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jim dray": {
@@ -6130,7 +6130,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "dalevon campbell": {
@@ -6187,7 +6187,7 @@
     "baseValue": 85,
     "scarcity": 1.0,
     "ros": 3,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Precision Route Technician"
   },
@@ -9808,7 +9808,7 @@
     "baseValue": 90,
     "scarcity": 1.1,
     "ros": 3,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Alpha Boundary 'X' WR"
   },
@@ -14933,7 +14933,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jehu chesson": {
@@ -17319,7 +17319,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "hunter thedford": {
@@ -18726,7 +18726,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "taj mcgowan": {
@@ -18762,7 +18762,7 @@
     "baseValue": 82,
     "scarcity": 1.0,
     "ros": 2,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Alpha Boundary 'X' WR"
   },
