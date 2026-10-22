@@ -181,7 +181,7 @@
     "baseValue": 81,
     "scarcity": 1.1,
     "ros": 2,
-    "injury": 0,
+    "injury": -10,
     "contingency": 3,
     "archetype": "Elusive / Space Back"
   },
@@ -563,7 +563,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "kyle pitts": {
+  "kyle pitts sr.": {
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
@@ -1053,7 +1053,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "pierre strong": {
+  "pierre strong jr.": {
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
@@ -1183,7 +1183,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "rasheed williams": {
@@ -1608,14 +1608,12 @@
     "injury": 0,
     "contingency": 8
   },
-  "james cook": {
-    "pos": "RB",
-    "baseValue": 82,
-    "scarcity": 1.1,
-    "ros": 5,
+  "james cook iii": {
+    "baseValue": 65,
+    "scarcity": 1.25,
+    "ros": 0,
     "injury": 0,
-    "contingency": 0,
-    "archetype": "Elusive / Space Back"
+    "contingency": 8
   },
   "darren andrews": {
     "baseValue": 65,
@@ -1764,7 +1762,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "robert henry": {
+  "robert henry jr.": {
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
@@ -1778,7 +1776,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "efton chism": {
+  "efton chism iii": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -1929,7 +1927,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "deshone kizer": {
@@ -2632,7 +2630,7 @@
     "baseValue": 83,
     "scarcity": 1.0,
     "ros": 3,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Vertical Field-Stretcher"
   },
@@ -2850,7 +2848,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "malik earl": {
@@ -3571,18 +3569,18 @@
     "injury": 0,
     "contingency": 8
   },
-  "ricky white": {
+  "ricky white iii": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
     "injury": 0,
     "contingency": 8
   },
-  "brian robinson": {
+  "brian robinson jr.": {
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "robert burns": {
@@ -3912,7 +3910,7 @@
     "baseValue": 87,
     "scarcity": 1.05,
     "ros": 3,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Gunslinger / Pocket Passer"
   },
@@ -4049,7 +4047,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "john metchie": {
+  "john metchie iii": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -4091,7 +4089,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "erick all": {
+  "erick all jr.": {
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
@@ -4210,7 +4208,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "chris godwin": {
+  "chris godwin jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -5303,7 +5301,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "calvin austin": {
+  "calvin austin iii": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -5977,7 +5975,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "luther burden": {
+  "luther burden iii": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -6047,7 +6045,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "montorie foster": {
+  "montorie foster jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -6198,7 +6196,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "deebo samuel": {
+  "deebo samuel sr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -6561,7 +6559,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "michael carter": {
@@ -6575,7 +6573,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "tyrion davis-price": {
@@ -6865,7 +6863,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "dean patterson": {
+  "dean patterson iv": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -6918,7 +6916,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jeremy kerley": {
@@ -7128,7 +7126,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "kyle trask": {
@@ -7315,7 +7313,7 @@
     "injury": -10,
     "contingency": 8
   },
-  "quincy skinner": {
+  "quincy skinner jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -7424,7 +7422,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "braxton westfield": {
@@ -8241,7 +8239,7 @@
     "baseValue": 91,
     "scarcity": 1.1,
     "ros": 2,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Vertical Field-Stretcher / Home-Run Threat"
   },
@@ -8406,7 +8404,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "jimmy horn": {
+  "jimmy horn jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -8602,7 +8600,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "velus jones": {
+  "velus jones jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -8704,7 +8702,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "taylor elgersma": {
@@ -9590,7 +9588,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "josh reynolds": {
@@ -9808,7 +9806,7 @@
     "baseValue": 90,
     "scarcity": 1.1,
     "ros": 3,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Alpha Boundary 'X' WR"
   },
@@ -10383,7 +10381,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "chris brazzell": {
+  "chris brazzell ii": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -10938,7 +10936,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "harrison wallace": {
+  "harrison wallace iii": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -11243,7 +11241,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "thaddeus lewis": {
@@ -11264,7 +11262,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "francis owusu": {
@@ -11493,7 +11491,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "chris rodriguez": {
+  "chris rodriguez jr.": {
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
@@ -11539,7 +11537,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "brandon burks": {
@@ -11549,7 +11547,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "mecole hardman": {
+  "mecole hardman jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -11572,7 +11570,7 @@
     "contingency": 0,
     "archetype": "Space & YAC Engine"
   },
-  "antwane wells": {
+  "antwane wells jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -11985,7 +11983,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "ollie gordon": {
+  "ollie gordon ii": {
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
@@ -12307,7 +12305,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "tyrone tracy": {
+  "tyrone tracy jr.": {
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
@@ -12498,7 +12496,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "marvin mims": {
+  "marvin mims jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -12554,7 +12552,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "michael penix": {
+  "michael penix jr.": {
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
@@ -13584,7 +13582,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "thomas fidone": {
+  "thomas fidone ii": {
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
@@ -13605,7 +13603,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "stetson bennett": {
+  "stetson bennett iv": {
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
@@ -13619,14 +13617,12 @@
     "injury": 0,
     "contingency": 8
   },
-  "anthony richardson": {
-    "pos": "QB",
-    "baseValue": 80,
+  "anthony richardson sr.": {
+    "baseValue": 65,
     "scarcity": 1.15,
-    "ros": 2,
+    "ros": 0,
     "injury": 0,
-    "contingency": 0,
-    "archetype": "Dual-Threat Konami / Power Rusher"
+    "contingency": 8
   },
   "joe burrow": {
     "pos": "QB",
@@ -14199,7 +14195,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "emmanuel henderson": {
+  "emmanuel henderson jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -14574,7 +14570,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "timothy flanders": {
@@ -14747,7 +14743,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "marvin harrison": {
+  "marvin harrison jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -15610,7 +15606,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "dont'e thornton": {
+  "dont'e thornton jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -16051,6 +16047,13 @@
     "injury": 0,
     "contingency": 8
   },
+  "kenneth walker iii": {
+    "baseValue": 65,
+    "scarcity": 1.25,
+    "ros": 0,
+    "injury": 0,
+    "contingency": 8
+  },
   "isaiah jacobs": {
     "baseValue": 65,
     "scarcity": 1.25,
@@ -16065,7 +16068,7 @@
     "injury": -10,
     "contingency": 8
   },
-  "odell beckham": {
+  "odell beckham jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -16473,7 +16476,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "anthony tyus": {
+  "anthony tyus iii": {
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
@@ -16764,7 +16767,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jaelen gill": {
@@ -17063,7 +17066,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "omar cooper": {
+  "omar cooper jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -17350,7 +17353,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "travis etienne": {
+  "travis etienne jr.": {
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
@@ -17525,7 +17528,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "vinny anthony": {
+  "vinny anthony ii": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -18001,7 +18004,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "brian thomas": {
+  "brian thomas jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -18197,7 +18200,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "carlos washington": {
+  "carlos washington jr.": {
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
@@ -18815,7 +18818,7 @@
     "injury": -10,
     "contingency": 8
   },
-  "aaron jones": {
+  "aaron jones sr.": {
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
@@ -18906,7 +18909,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "eric rivers": {
+  "eric rivers jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -19011,7 +19014,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "david sills": {
+  "david sills v": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -19685,7 +19688,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "theo wease": {
+  "theo wease jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -19909,7 +19912,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "gardner minshew": {
+  "gardner minshew ii": {
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
@@ -20161,6 +20164,13 @@
     "injury": 0,
     "contingency": 8
   },
+  "frank gore jr.": {
+    "baseValue": 65,
+    "scarcity": 1.25,
+    "ros": 0,
+    "injury": 0,
+    "contingency": 8
+  },
   "tanner koziol": {
     "baseValue": 65,
     "scarcity": 1.2,
@@ -20245,7 +20255,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "trent sherfield": {
+  "trent sherfield sr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -20319,7 +20329,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "thayer thomas": {
@@ -20333,7 +20343,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "elijah arroyo": {
@@ -20532,7 +20542,7 @@
     "baseValue": 96,
     "scarcity": 1.1,
     "ros": 4,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "The Ultimate Separation Route Technician"
   },
@@ -21355,11 +21365,11 @@
     "injury": 0,
     "contingency": 8
   },
-  "mike washington": {
+  "mike washington jr.": {
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "brenden rice": {
@@ -21651,7 +21661,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "lequint allen": {
+  "lequint allen jr.": {
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
@@ -21786,7 +21796,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "harold fannin": {
+  "harold fannin jr.": {
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
@@ -21896,7 +21906,7 @@
     "baseValue": 71,
     "scarcity": 0.9,
     "ros": 1,
-    "injury": 0,
+    "injury": -10,
     "contingency": 10,
     "archetype": "Alpha Boundary 'X' WR"
   },
@@ -22009,7 +22019,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "lamar jordan": {
@@ -23194,7 +23204,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "ty fryfogle": {
@@ -23412,7 +23422,7 @@
     "baseValue": 86,
     "scarcity": 1.1,
     "ros": 1,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Elusive / Satellite RB"
   },
@@ -24410,7 +24420,7 @@
     "baseValue": 89,
     "scarcity": 1.2,
     "ros": 5,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Zone-Finding Route Technician"
   },
@@ -24621,7 +24631,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jace amaro": {
@@ -25093,7 +25103,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "ted hurst": {
+  "ted hurst iii": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -25499,7 +25509,7 @@
     "baseValue": 93,
     "scarcity": 1.2,
     "ros": 3,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Seam-Stretching TE / Move Weapon"
   },
@@ -25533,7 +25543,7 @@
     "injury": -10,
     "contingency": 8
   },
-  "kevin coleman": {
+  "kevin coleman jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -25775,7 +25785,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jaylen wright": {
@@ -25783,7 +25793,7 @@
     "baseValue": 68,
     "scarcity": 1.05,
     "ros": 2,
-    "injury": 0,
+    "injury": -10,
     "contingency": 15,
     "archetype": "Elusive / Satellite RB"
   },
@@ -25994,7 +26004,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "larry rountree": {
@@ -26111,11 +26121,11 @@
     "injury": 0,
     "contingency": 8
   },
-  "kc concepcion": {
+  "kc concepcion jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "willis mcgahee": {
@@ -26344,7 +26354,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "michael pittman": {
+  "michael pittman jr.": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -27049,7 +27059,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "clyde gates": {
@@ -27353,7 +27363,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "phillip dorsett": {
+  "phillip dorsett ii": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -27511,7 +27521,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "wendell smallwood": {
