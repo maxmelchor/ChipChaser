@@ -1183,7 +1183,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "rasheed williams": {
@@ -3853,7 +3853,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "dominique davis": {
@@ -6573,7 +6573,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "tyrion davis-price": {
@@ -7126,7 +7126,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "kyle trask": {
@@ -8604,7 +8604,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "terrance williams": {
@@ -9822,7 +9822,7 @@
     "baseValue": 96,
     "scarcity": 1.25,
     "ros": 4,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Elusive / Satellite RB"
   },
@@ -10097,7 +10097,7 @@
     "baseValue": 94,
     "scarcity": 1.25,
     "ros": 5,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Workhorse / Downhill RB"
   },
@@ -13459,7 +13459,7 @@
     "baseValue": 86,
     "scarcity": 1.0,
     "ros": 1,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Vertical Field-Stretcher / Explosive YAC"
   },
@@ -15610,7 +15610,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "gavin lutman": {
@@ -16065,7 +16065,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "odell beckham jr.": {
@@ -19846,7 +19846,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "ellis merriweather": {
@@ -21532,7 +21532,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "kylen granson": {
@@ -21623,7 +21623,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "brandon aiyuk": {
@@ -21800,7 +21800,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jonathan adams": {
@@ -21906,7 +21906,7 @@
     "baseValue": 71,
     "scarcity": 0.9,
     "ros": 1,
-    "injury": -10,
+    "injury": 0,
     "contingency": 10,
     "archetype": "Alpha Boundary 'X' WR"
   },
@@ -22019,7 +22019,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "lamar jordan": {
@@ -23204,7 +23204,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "ty fryfogle": {
@@ -23422,7 +23422,7 @@
     "baseValue": 86,
     "scarcity": 1.1,
     "ros": 1,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Elusive / Satellite RB"
   },
@@ -23563,7 +23563,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "travis rudolph": {
@@ -26770,7 +26770,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "nelson agholor": {
@@ -27195,7 +27195,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "joseph manjack": {
+  "joseph manjack iv": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
