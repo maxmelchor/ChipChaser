@@ -3065,7 +3065,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "harvey binford": {
@@ -5120,7 +5120,7 @@
     "baseValue": 94,
     "scarcity": 1.1,
     "ros": 5,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Elite Pocket Passer / Off-Script Playmaker"
   },
@@ -5797,7 +5797,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "quali conley": {
@@ -6769,7 +6769,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "ed lee": {
@@ -7611,7 +7611,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "tommy tremble": {
@@ -7825,7 +7825,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "chris blair": {
@@ -8105,7 +8105,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "arrelious benn": {
@@ -8239,7 +8239,7 @@
     "baseValue": 91,
     "scarcity": 1.1,
     "ros": 2,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Vertical Field-Stretcher / Home-Run Threat"
   },
@@ -8702,7 +8702,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "taylor elgersma": {
@@ -10674,7 +10674,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "joe licata": {
@@ -11241,7 +11241,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "thaddeus lewis": {
@@ -11495,7 +11495,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "chad kelly": {
@@ -13197,7 +13197,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "michael hill": {
@@ -13644,7 +13644,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "kameron johnson": {
@@ -13700,7 +13700,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "isaiah spiller": {
@@ -14031,7 +14031,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jordan bly": {
@@ -14206,7 +14206,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "hank beatty": {
@@ -14747,7 +14747,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "josh huff": {
@@ -14768,7 +14768,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jameis winston": {
@@ -16065,7 +16065,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "odell beckham jr.": {
@@ -16199,7 +16199,7 @@
     "baseValue": 92,
     "scarcity": 1.1,
     "ros": 5,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Space & YAC Engine / Physical Slot"
   },
@@ -16613,7 +16613,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "cade klubnik": {
@@ -17070,7 +17070,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "elijah young": {
@@ -17476,7 +17476,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "stevie scott": {
@@ -19587,7 +19587,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "eli manning": {
@@ -19846,7 +19846,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "ellis merriweather": {
@@ -20203,7 +20203,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "luke lachey": {
@@ -21800,7 +21800,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jonathan adams": {
@@ -21906,7 +21906,7 @@
     "baseValue": 71,
     "scarcity": 0.9,
     "ros": 1,
-    "injury": 0,
+    "injury": -10,
     "contingency": 10,
     "archetype": "Alpha Boundary 'X' WR"
   },
@@ -23422,7 +23422,7 @@
     "baseValue": 86,
     "scarcity": 1.1,
     "ros": 1,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Elusive / Satellite RB"
   },
@@ -23836,7 +23836,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "siaosi mariner": {
@@ -24356,7 +24356,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "tre'shaun harrison": {
@@ -24568,7 +24568,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "nick mullens": {
@@ -25793,7 +25793,7 @@
     "baseValue": 68,
     "scarcity": 1.05,
     "ros": 2,
-    "injury": -10,
+    "injury": 0,
     "contingency": 15,
     "archetype": "Elusive / Satellite RB"
   },
@@ -27423,7 +27423,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "blake sims": {
