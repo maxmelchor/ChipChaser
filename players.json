@@ -434,7 +434,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "brian leonard": {
@@ -7804,7 +7804,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "bobby rainey": {
@@ -9806,7 +9806,7 @@
     "baseValue": 90,
     "scarcity": 1.1,
     "ros": 3,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Alpha Boundary 'X' WR"
   },
@@ -14768,7 +14768,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jameis winston": {
@@ -14957,7 +14957,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jordan thomas": {
@@ -16199,7 +16199,7 @@
     "baseValue": 92,
     "scarcity": 1.1,
     "ros": 5,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "Space & YAC Engine / Physical Slot"
   },
@@ -19396,7 +19396,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "junior hemingway": {
@@ -19622,7 +19622,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "dareke young": {
@@ -19846,7 +19846,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "ellis merriweather": {
@@ -24694,7 +24694,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "jalen milroe": {
@@ -26764,6 +26764,13 @@
     "scarcity": 1.1,
     "ros": 0,
     "injury": 0,
+    "contingency": 8
+  },
+  "max hurleman": {
+    "baseValue": 65,
+    "scarcity": 1.1,
+    "ros": 0,
+    "injury": -10,
     "contingency": 8
   },
   "john bates": {
