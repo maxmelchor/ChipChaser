@@ -490,7 +490,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "brad smith": {
@@ -3240,7 +3240,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "cameron marshall": {
@@ -10667,7 +10667,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "hunter henry": {
@@ -10782,7 +10782,7 @@
     "injury": 0,
     "contingency": 8
   },
-  "trebor pena": {
+  "trebor pe\u00f1a": {
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
@@ -11038,7 +11038,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "connor hamlett": {
@@ -21532,7 +21532,7 @@
     "baseValue": 65,
     "scarcity": 1.1,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "kylen granson": {
@@ -26040,7 +26040,7 @@
     "baseValue": 85,
     "scarcity": 1.0,
     "ros": 2,
-    "injury": -10,
+    "injury": 0,
     "contingency": 0,
     "archetype": "YAC Monster / Inline Weapon"
   },
