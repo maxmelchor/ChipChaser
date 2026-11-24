@@ -1766,7 +1766,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "john david moore": {
@@ -1829,7 +1829,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "malik washington": {
@@ -4513,7 +4513,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "jack velling": {
@@ -5530,7 +5530,7 @@
     "baseValue": 88,
     "scarcity": 1.2,
     "ros": 5,
-    "injury": 0,
+    "injury": -10,
     "contingency": 0,
     "archetype": "Seam-Stretching TE"
   },
@@ -9770,7 +9770,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "chimere dike": {
@@ -10947,7 +10947,7 @@
     "baseValue": 65,
     "scarcity": 1.25,
     "ros": 0,
-    "injury": -10,
+    "injury": 0,
     "contingency": 8
   },
   "braxton deaver": {
@@ -11588,7 +11588,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "traeshon holden": {
@@ -16114,7 +16114,7 @@
     "baseValue": 65,
     "scarcity": 1.2,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "mac hippenhammer": {
@@ -20753,7 +20753,7 @@
     "baseValue": 65,
     "scarcity": 1.15,
     "ros": 0,
-    "injury": 0,
+    "injury": -10,
     "contingency": 8
   },
   "durham smythe": {
